@@ -9,7 +9,8 @@ function print_arr_values($arr, $desc=""){
 }
 
 function console_log($any_data, $desc="") {
-        echo "<br>".$desc." ".$any_data."<br>";
+    $desc = empty($desc) ?  " " : $desc.": ";
+    echo "<br>".$desc.$any_data."<br>";
 }
 
 function new_line() {
@@ -24,11 +25,10 @@ function check_string( $key_value ) {
 }
 
 function replace_string($old_str, $new_str, $main_str) {
-    return str_replace($old_str, $new_str, $_SERVER['REDIRECT_URL']);
+    return str_replace($old_str, $new_str, $main_str);
 }
 
-function get(&$var, $default=null) {
+function get_or_null(&$var, $default=null) {
     return isset($var) ? $var : $default;
 }
-
 ?>
