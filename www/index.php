@@ -15,6 +15,4 @@
         }
         require $file_name;
     }
-    
-    require ROOT.'\\inc\\footer.php'; 
 ?>
