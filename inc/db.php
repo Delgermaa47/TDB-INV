@@ -1,13 +1,13 @@
 <?php
     define('PG_Conn', pg_connect("host=localhost port=5432 dbname=tdb_claim user=postgres password=Ankle123"));
 
-    function _select($sql, $execute_name, $params, $type="all") {
+    function _select($sql, $execute_name, $params=[], $type="all") {
 
         $result = pg_prepare(PG_Conn, $execute_name, $sql);
         $result = pg_execute(PG_Conn, $execute_name, [...$params]);
         $result = pg_fetch_all($result);
-        print_arr_values($result);
         pg_close();
+        return json_encode($result);
     }
 
 
