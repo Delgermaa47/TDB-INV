@@ -1,14 +1,48 @@
 <?php
-    class Staff
+    class NewTable
     {
-        private $name;
-        private $title;
-        protected $wage;
-        protected function clockIn() {
-        echo "Member $this->name clocked in at ".date("h:i:s");
+        public $cols;
+        public $rows;
+        public $headers;
+        function __set($propName, $propValue)
+        {
+            $this->$propName = $propValue;
         }
-        protected function clockOut() {
-        echo "Member $this->name clocked out at ".date("h:i:s");
+        
+        function __construct()
+        {
+            $this->put_table_header();
         }
-}
+
+        protected function put_table_header() {
+            echo "called";
+            $bla =  testBlockHTML(
+                "<table>
+                <tr>
+                  <th style='color: red'>Company</th>
+                  <th>Contact</th>
+                  <th>Country</th>
+                </tr>
+                <tr>
+                  <td>Alfreds Futterkiste</td>
+                  <td>Maria Anders</td>
+                  <td>Germany</td>
+                </tr>
+                <tr>
+                  <td>Centro comercial Moctezuma</td>
+                  <td>Francisco Chang</td>
+                  <td>Mexico</td>
+                </tr>
+              </table>"
+            );
+            echo $bla;
+        }
+    }
+
+    $employee = new NewTable();
+    $employee->cols = 3;
+    $employee->rows = 2;
+    $employee->headers = ["id", "name"];
+    echo $employee->cols;
+    print_arr_values( $employee->headers);
 ?>

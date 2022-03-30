@@ -31,4 +31,14 @@ function replace_string($old_str, $new_str, $main_str) {
 function get_or_null(&$var, $default=null) {
     return isset($var) ? $var : $default;
 }
+
+function testBlockHTML($replStr){
+    $template = 
+     '<html>
+       <body>
+         $str
+       </body>
+     </html>';
+   return strtr($template, array( '$str' => $replStr));
+  }
 ?>
