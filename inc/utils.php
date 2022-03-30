@@ -32,11 +32,11 @@ function get_or_null(&$var, $default=null) {
     return isset($var) ? $var : $default;
 }
 
-function testBlockHTML($replStr){
+function makeBlockHTML($replStr, $_element_class){
     $template = 
-        '<div class="container">
+        '<div class=$_element_class>
             $str
         </div>';
-   return strtr($template, array( '$str' => $replStr));
+   return strtr($template, array( '$str' => $replStr, '$_element_class'=>$_element_class));
   }
 ?>
