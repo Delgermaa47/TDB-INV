@@ -1,8 +1,6 @@
 <?php
     class NewTable
     {
-        public $cols;
-        public $rows;
         public $headers;
         function __set($propName, $propValue)
         {
@@ -15,11 +13,10 @@
         }
 
         protected function put_table_header() {
-            echo "called";
             $bla =  testBlockHTML(
-                "<table>
+                "<table class='inv-table table mt-4 pt-4'>
                 <tr>
-                  <th style='color: red'>Company</th>
+                  <th>Company</th>
                   <th>Contact</th>
                   <th>Country</th>
                 </tr>
@@ -40,9 +37,5 @@
     }
 
     $employee = new NewTable();
-    $employee->cols = 3;
-    $employee->rows = 2;
     $employee->headers = ["id", "name"];
-    echo $employee->cols;
-    print_arr_values( $employee->headers);
 ?>

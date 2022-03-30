@@ -1,5 +1,6 @@
 <?php
     define('ROOT',  dirname((dirname(__FILE__))));
+    define('ASSETS',  'http://localhost'.'\assets\\');
     require ROOT."\inc\header.php";
     $request_url = get_or_null($_SERVER['REDIRECT_URL']);
     $request_url = replace_string('/', '\\', $request_url);
@@ -15,4 +16,5 @@
         }
         require $file_name;
     }
+    require ROOT."\\inc\\footer.php";
 ?>

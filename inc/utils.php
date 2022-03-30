@@ -34,11 +34,9 @@ function get_or_null(&$var, $default=null) {
 
 function testBlockHTML($replStr){
     $template = 
-     '<html>
-       <body>
-         $str
-       </body>
-     </html>';
+        '<div class="container">
+            $str
+        </div>';
    return strtr($template, array( '$str' => $replStr));
   }
 ?>
