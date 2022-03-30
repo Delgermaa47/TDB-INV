@@ -29,26 +29,22 @@
             'invoice-template-save' => "/invoice-template-save" ,
         );
 
-
         $request_method = $_SERVER['REQUEST_METHOD'];
         if (in_array($request_method, ['GET', 'POST'])) {
-            $request_rules = $request_method === 'GET' ? $get_requests : $get_requests;
+            $request_rules = $request_method === 'GET' ? $get_requests : $post_requests;
+
             foreach ( $request_rules as $action => $rule ) {
                 if ( preg_match( '~^'.$rule.'$~i', $uri, $params ) ) {
-                    require ROOT."\\inc\\components\\table.php";
-                    $api_request_func = new ApiList();
-                    
+                    require ROOT."\\inc\\components\\api_request.php";
+
                     print_arr_values($params);
                     exit();
                 }
-                else {
-                    echo "here";
-                    http_response_code(404);
-                    include(ROOT."\pages\page404.php");
-                    die();
-                }
             }
 
+            http_response_code(404);
+            include(ROOT."\pages\page404.php");
+            die();
 
         }
         else {
