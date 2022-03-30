@@ -4,6 +4,7 @@
         public $header_details;
         public $className;
         public $body_datas;
+
         function __set($propName, $propValue)
         {
             $this->$propName = $propValue;
