@@ -16,5 +16,12 @@
         {"id":1, "name":" ", "phone":"999999"},
         {"id":2, "name":"deegii", "phone":""}
         ]', true);
-    $employee->diplay_table();
-?>
+    ?>
+    <div class="container">
+        <div>
+        </div>
+        <?php
+
+            $employee->diplay_table();
+        ?>
+    </div>
