@@ -18,6 +18,42 @@
             return json_encode($results);
         }
 
+        protected function inv_detial() {
+            $request_param = $this->params['id'];
+            $query = 'select id, first_name as name, phone_number as phone from users where id=$1';
+            $results = json_decode(_select($query, 'select_user_detail', [$request_param]), true);
+
+            header('Content-Type: application/json; charset=utf-8');
+            return json_encode($results);
+            // return json_encode($results);
+        }
+
+        public function request_res() {
+            $request_name = strtolower($this->request_name);
+
+            switch ($request_name) {
+                case 'invoice-list':
+                    return $this->inv_list();
+                
+                case 'invoice-history':
+                    return $this->inv_list();
+            
+                case 'invoice-template':
+                    return $this->inv_list();
+                      
+                case 'invoice-detail':
+                    return $this->inv_detial();
+                
+                case 'invoice-template-detail':
+                    return $this->inv_list();
+                                
+                case 'invoice-history-detail':
+                        return $this->inv_list();
+            }
+
+            return [];
+        }
+
     }
 
 ?>

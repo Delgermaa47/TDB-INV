@@ -33,11 +33,14 @@
         if (in_array($request_method, ['GET', 'POST'])) {
             $request_rules = $request_method === 'GET' ? $get_requests : $post_requests;
 
-            foreach ( $request_rules as $action => $rule ) {
+            foreach ( $request_rules as $action_name => $rule ) {
                 if ( preg_match( '~^'.$rule.'$~i', $uri, $params ) ) {
                     require ROOT."\\inc\\components\\api_request.php";
-
-                    print_arr_values($params);
+                    $req = new ApiList();
+                    $req->request_name = $action_name;
+                    $req->params = $params;
+                    $res = $req->request_res();
+                    // write_to_file($res);
                     exit();
                 }
             }
