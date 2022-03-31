@@ -4,7 +4,6 @@
     {
         public $request_name;
         public $request_params;
-
         
         function __set($propName, $propValue)
         {

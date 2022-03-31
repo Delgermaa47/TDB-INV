@@ -51,13 +51,6 @@
             header($_SERVER["SERVER_PROTOCOL"]." 405 Method Not Allowed", true, 405);
             die();
         }
-        
-        // if(!file_exists($file_name) ){
-        //     http_response_code(404);
-        //     include(ROOT."\pages\page404.php");
-        //     die();
-        // }
-        // require $file_name;
     }
     require ROOT."\\inc\\footer.php";
 ?>
