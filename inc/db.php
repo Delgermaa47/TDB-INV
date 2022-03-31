@@ -29,20 +29,3 @@
         pg_query(PG_Conn, $query);
     }
 ?>
-
-<!-- 
-
-/* ---select---
-$query = "select * from users where first_name=$1";
-
-_select($query, 'select_users', ['deegi']);
-
-*/
-
-/* ---insert---
-$datas = [['svhee', 'luwsan', '99999911'],['orgil', 'bat', '99999912'],['odko', 'dorj', '99999913']];
-$query = "insert into users(first_name, last_name, phone_number) values ";
-bulk_insert($query, $datas )
-*/
-
-// _update('users', "last_name='sanj'", "first_name='deegi'"); -->

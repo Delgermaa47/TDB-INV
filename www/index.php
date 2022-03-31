@@ -1,7 +1,6 @@
 <?php
     define('ROOT',  dirname((dirname(__FILE__))));
-    require ROOT."\inc\header.php";
-
+    require ROOT."\inc\utils.php";
 
     $request_url = get_or_null($_SERVER['REDIRECT_URL']);
     if (!$request_url) {
@@ -12,15 +11,14 @@
         $uri = rtrim(dirname($_SERVER["SCRIPT_NAME"]), '/' );
         $uri = '/' . trim( str_replace( $uri, '', $_SERVER['REQUEST_URI'] ), '/' );
         $uri = urldecode( $uri );
-
         $get_requests = array( 
             'invoice-list' => "/invoice-list",
             'invoice-history' => "/invoice-history",
             'invoice-template' => "/invoice-template",
             'invoice-detail' => "/invoice-detail/(?'id'\d+)",
             'invoice-cancel' => "/invoice-cancel/(?'id'\d+)" ,
-            'invoice-template-detail' => "/invoice-template-detail/(?'id'\d+)" ,
-            'invoice-history-detail' => "/invoice-history-detail/(?'id'\d+)" ,
+            'invoice-template-detail' => "/invoice-template-detail/(?'id'\d+)",
+            'invoice-history-detail' => "/invoice-history-detail/(?'id'\d+)",
         );
 
         $post_requests = array(
@@ -39,8 +37,10 @@
                     $req->request_name = $action_name;
                     $req->params = $params;
                     $res = $req->request_res();
-                    // write_to_file($res);
-                    exit();
+                    header('Access-Control-Allow-Origin: *');
+                    header('Content-Type: application/json');
+                    echo $res;
+                    die();
                 }
             }
 
@@ -54,5 +54,4 @@
             die();
         }
     }
-    require ROOT."\\inc\\footer.php";
 ?>

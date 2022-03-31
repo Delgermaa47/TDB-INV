@@ -1,4 +1,5 @@
 <?php
+    require_once ROOT."\\inc\\header.php";
     require_once ROOT."\\inc\\components\\table.php";
     $employee = new NewTable();
     $employee->className="table table-dark mt-4 pt-4";
@@ -11,11 +12,9 @@
         ]
     }', true);
 
-    $employee->body_datas= json_decode('[
-        {"id":" ", "name":"deegii", "phone":"999999"},
-        {"id":1, "name":" ", "phone":"999999"},
-        {"id":2, "name":"deegii", "phone":""}
-        ]', true);
+    $bla = json_decode(file_get_contents('http://172.26.153.11/invoice-list'), true);
+    
+    $employee->body_datas = $bla;
     ?>
     <div class="container">
         <div>
@@ -25,3 +24,5 @@
             $employee->diplay_table();
         ?>
     </div>
+    <? require ROOT."\\inc\\footer.php"?>
+    

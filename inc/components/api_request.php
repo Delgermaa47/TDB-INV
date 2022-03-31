@@ -13,8 +13,6 @@
         protected function inv_list() {
             $query = 'select id, first_name as name, phone_number as phone from users';
             $results = json_decode(_select($query, 'select_users'), true);
-
-            header('Content-Type: application/json; charset=utf-8');
             return json_encode($results);
         }
 
@@ -22,8 +20,6 @@
             $request_param = $this->params['id'];
             $query = 'select id, first_name as name, phone_number as phone from users where id=$1';
             $results = json_decode(_select($query, 'select_user_detail', [$request_param]), true);
-
-            header('Content-Type: application/json; charset=utf-8');
             return json_encode($results);
             // return json_encode($results);
         }
@@ -48,7 +44,7 @@
                     return $this->inv_list();
                                 
                 case 'invoice-history-detail':
-                        return $this->inv_list();
+                    return $this->inv_list();
             }
 
             return [];
