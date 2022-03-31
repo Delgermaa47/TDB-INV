@@ -4,6 +4,7 @@
         public $header_details;
         public $className;
         public $body_datas;
+        public $add_fields;
 
         function __set($propName, $propValue)
         {
@@ -34,9 +35,11 @@
 
             $bla =  makeBlockHTML(
                 "<table class='{$table_class_name}'>
-                <tr class='{$_header_className}'>
-                    $header_body
-                </tr>
+                <thead>
+                    <tr class='{$_header_className}'>
+                        $header_body
+                    </tr>
+                </thead>
                 $table_body
               </table>"
             ,"table-responsive");
