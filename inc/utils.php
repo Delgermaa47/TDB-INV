@@ -24,7 +24,9 @@
         return $key_value;
     }
 
+    
     function replace_string($old_str, $new_str, $main_str) {
+        // $request_url = replace_string('/', '\\', $request_url
         return str_replace($old_str, $new_str, $main_str);
     }
 

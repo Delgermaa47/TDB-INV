@@ -4,7 +4,6 @@
 
 
     $request_url = get_or_null($_SERVER['REDIRECT_URL']);
-    // $request_url = replace_string('/', '\\', $request_url);
     if (!$request_url) {
         require ROOT."\pages\home.php";
     }
