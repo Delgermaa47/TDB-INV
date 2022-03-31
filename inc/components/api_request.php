@@ -1,5 +1,4 @@
 <?php
-    require ROOT."\inc\db.php";
     class ApiList
     {
         public $request_name;
@@ -21,7 +20,6 @@
             $query = 'select id, first_name as name, phone_number as phone from users where id=$1';
             $results = json_decode(_select($query, 'select_user_detail', [$request_param]), true);
             return json_encode($results);
-            // return json_encode($results);
         }
 
         public function request_res() {
@@ -33,12 +31,6 @@
                 
                 case 'invoice-history':
                     return $this->inv_list();
-            
-                case 'invoice-template':
-                    return $this->inv_list();
-                      
-                case 'invoice-detail':
-                    return $this->inv_detial();
                 
                 case 'invoice-template-detail':
                     return $this->inv_list();
