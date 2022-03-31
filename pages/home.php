@@ -17,8 +17,6 @@
     $employee->body_datas = $bla;
     ?>
     <div class="container">
-        <div>
-        </div>
         <?php
 
             $employee->diplay_table();
