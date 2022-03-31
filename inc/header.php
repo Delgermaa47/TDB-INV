@@ -13,3 +13,27 @@
     <title>TDB inv </title>
 </head>
 <body>
+    <div class="container">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container main_header">
+            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                <div class="container-fluid">
+                    <div class="collapse navbar-collapse">
+                        <ul class="navbar-nav list-unstyled">
+                            <li class="nav-item">
+                                <a class="nav-link col-md-12" href="\">Нэхэмжлэлийн жагсаалт</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link  col-md-12" href="\invoice-history">Нэхэмжлэлийн түүх</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link  col-md-12"  href='\invoice-create'>Нэхэмжлэл Үүсгэх</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                </nav>
+            </div>
+        </div>
+    </nav>
+    </div>

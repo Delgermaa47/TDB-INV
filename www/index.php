@@ -11,14 +11,17 @@
         $uri = rtrim(dirname($_SERVER["SCRIPT_NAME"]), '/' );
         $uri = '/' . trim( str_replace( $uri, '', $_SERVER['REQUEST_URI'] ), '/' );
         $uri = urldecode( $uri );
+
         $get_requests = array( 
-            'invoice-list' => "/invoice-list",
-            'invoice-history' => "/invoice-history",
-            'invoice-template' => "/invoice-template",
-            'invoice-detail' => "/invoice-detail/(?'id'\d+)",
-            'invoice-cancel' => "/invoice-cancel/(?'id'\d+)" ,
-            'invoice-template-detail' => "/invoice-template-detail/(?'id'\d+)",
-            'invoice-history-detail' => "/invoice-history-detail/(?'id'\d+)",
+            'invoice-list' => "/api/invoice-list",
+            'invoice-history' => "/api/invoice-history",
+            'invoice-template' => "/api/invoice-template",
+            'invoice-detail' => "/api/invoice-detail/(?'id'\d+)",
+            'invoice-cancel' => "/api/invoice-cancel/(?'id'\d+)" ,
+            'invoice-template-detail' => "/api/invoice-template-detail/(?'id'\d+)",
+            'invoice-history-detail' => "/api/invoice-history-detail/(?'id'\d+)",
+
+            'invoice-save' => "/api/invoice-save",
         );
 
         $post_requests = array(
@@ -43,11 +46,15 @@
                     die();
                 }
             }
+            $uri = ROOT.'\\pages\\'.replace_string('/', '\\', $uri).'.php';
+            if (file_exists($uri)) {
+                require $uri;
+                die();
+            }
 
             http_response_code(404);
             include(ROOT."\pages\page404.php");
             die();
-
         }
         else {
             header($_SERVER["SERVER_PROTOCOL"]." 405 Method Not Allowed", true, 405);

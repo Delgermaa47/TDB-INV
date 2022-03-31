@@ -1,3 +1,9 @@
+body {
+    color:whitesmoke;
+    padding-top: 200px;
+    background-color:black;
+}
+
 .inv-table td{
     color:darkblue;
 }

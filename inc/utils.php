@@ -8,7 +8,7 @@
 
     }
 
-    function console_log($any_data, $desc="") {
+    function console_log($desc="", $any_data="") {
         $desc = empty($desc) ?  " " : $desc.": ";
         echo "<br>".$desc.$any_data."<br>";
     }

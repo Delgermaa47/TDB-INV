@@ -12,7 +12,7 @@
         ]
     }', true);
 
-    $bla = json_decode(file_get_contents('http://172.26.153.11/invoice-list'), true);
+    $bla = json_decode(file_get_contents('http://172.26.153.11/api/invoice-list'), true);
     
     $employee->body_datas = $bla;
     ?>
