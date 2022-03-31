@@ -28,7 +28,7 @@
                                             <a class="nav-link  col-md-12" href="\invoice-history">Нэхэмжлэлийн түүх</a>
                                         </li>
                                         <li class="nav-item">
-                                            <a class="nav-link  col-md-12"  href="\invoice-create">Нэхэмжлэл Үүсгэх</a>
+                                            <a class="nav-link  col-md-12"  href="\invoice-save">Нэхэмжлэл Үүсгэх</a>
                                         </li>
                                     </ul>
                                 </div>
@@ -59,11 +59,15 @@
         }
 
         protected function invoice_history() {
-            return '<div><h1 class="text-danger">invoice histtory</h1></div>';
+            echo '<div><h1 class="text-danger">invoice histtory</h1></div>';
         }
 
         protected function inv_detial() {
-            return '<div><h1 class="text-danger">invoice detail</h1></div>';
+            echo '<div><h1 class="text-danger">invoice detail</h1></div>';
+        }
+
+        protected function inv_save() {
+            echo '<div><h1 class="text-danger">invoice save</h1></div>';
         }
 
         protected function page404() {
@@ -87,7 +91,8 @@
                 $this->invoice_history();
             }
             elseif(strstr($this->request_url, "invoice-detail")) {
-
+                $this->navbar();
+                $this->inv_detial();
             }
             elseif(strstr($this->request_url, "invoice-cancel")) {
 
@@ -96,6 +101,8 @@
 
             }
             elseif(strstr($this->request_url, "invoice-save")) {
+                $this->navbar();
+                $this->inv_save();
 
             }
 

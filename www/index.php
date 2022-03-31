@@ -14,7 +14,6 @@
         'invoice-detail' => "/api/invoice-detail/(?'id'\d+)",
         'invoice-cancel' => "/api/invoice-cancel/(?'id'\d+)" ,
         'invoice-history-detail' => "/api/invoice-history-detail/(?'id'\d+)",
-
         'invoice-save' => "/api/invoice-save",
     );
 
@@ -50,12 +49,6 @@
         // if (file_exists($uri)) {
         //     require $uri;
         // }
-
-
-
-        http_response_code(404);
-        include(ROOT."\pages\page404.php");
-        die();
     }
     else {
         header($_SERVER["SERVER_PROTOCOL"]." 405 Method Not Allowed", true, 405);
