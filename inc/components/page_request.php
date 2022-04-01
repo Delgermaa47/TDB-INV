@@ -30,7 +30,6 @@
 
             $request_name = strtolower($this->request_name);
 
-            write_to_file($request_name);
             switch ($request_name) {
                 case 'home':
                     $this->navbar();
