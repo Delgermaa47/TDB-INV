@@ -29,8 +29,8 @@
 
     $post_requests = array(
         'invoice-save' => "/api/invoice-save",
+        'invoice-edit' => "/api/invoice-edit/(?'id'\d+)",
     );
-
     $request_method = $_SERVER['REQUEST_METHOD'];
     if (in_array($request_method, ['GET', 'POST'])) {
 

@@ -23,14 +23,13 @@
         echo $query;
         pg_query(PG_Conn, $query);
     }
-    
-    function _update($table_name, $params, $condition) {
-        $query = 'update '.$table_name.' set ';
-        $query = $query.$params.' where '.$condition;
-        pg_query(PG_Conn, $query);
-    }
 
     function _delete($query, $execute_name, $params) {
+        pg_prepare(PG_Conn, $execute_name, $query);
+        pg_execute(PG_Conn, $execute_name, [...$params]);
+    }
+    
+    function _update($query, $execute_name, $params) {
         pg_prepare(PG_Conn, $execute_name, $query);
         pg_execute(PG_Conn, $execute_name, [...$params]);
     }

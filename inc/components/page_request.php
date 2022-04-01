@@ -133,6 +133,7 @@
         protected function inv_detial() {
             $invoice_form = new InvoiceForm();
             $invoice_id = $this->params['id'];
+            $invoice_form->action_uri = '/api/invoice-edit/'.$this->params['id'];
             $data = json_decode(file_get_contents('http://172.26.153.11/api/invoice-detail/'.$invoice_id), true);
             if (count($data)>0) {
                 extract($data[0]);

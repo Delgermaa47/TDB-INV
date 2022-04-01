@@ -3,11 +3,17 @@
         public $fname;
         public $lname;
         public $phone_number;
+        public $action_uri;
+        
+        public function __construct() {
+            $this->action_uri ='/api/invoice-save';
+        }
+
         public function display_form() {
 
             echo '
             <div class="container text-primary">
-                <form action="/api/invoice-save" method="POST">
+                <form action="'.$this->action_uri.'" method="POST">
                     <div className="row">
                         <div class="form-row col-md-8">
                             <div className="col-md-12 mt-4">

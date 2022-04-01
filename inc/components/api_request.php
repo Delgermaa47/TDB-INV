@@ -39,6 +39,19 @@
             // return json_encode('{"success": "true"}');
         }
 
+        protected function inv_edit() {
+            extract($_POST);
+            $invoice_id = $this->params['id'];
+            $params = [$fname, $lname, $phone_number, $invoice_id];
+            
+            $query = '
+                update
+                    users SET first_name=$1, last_name=$2, phone_number=$3 WHERE id=$4';
+            _update($query, 'update_user_data', $params);
+            redirect("/");
+            // return json_encode('{"success": "true"}');
+        }
+
         public function request_res() {
             $request_name = strtolower($this->request_name);
 
@@ -51,6 +64,9 @@
                 
                 case 'invoice-detail':
                         return $this->inv_detail();
+                
+                case 'invoice-edit':
+                    return $this->inv_edit();
                             
                 case 'delete-invoice':
                     return $this->inv_delete();
