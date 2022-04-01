@@ -17,3 +17,7 @@ body {
 .page404 p {
     text-decoration: underline;
 }
+
+.mt-4 {
+    margin-top: 10px !important;
+}

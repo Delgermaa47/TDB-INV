@@ -2,18 +2,20 @@
 <?php
     require_once ROOT."\\inc\\header.php";
     require_once ROOT."\\inc\\components\\table.php";
+    require_once ROOT."\\inc\\components\\sub_components\\invoice_form.php";
 
     
     class PageRequest
     {
-        public $request_url;
-        public $request_params;
+        public $request_name;
+        public $params;
         function __set($propName, $propValue)
         {
             $this->$propName = $propValue;
         }
 
         protected function page404() {
+            http_response_code(404);
             console_log(
                 '<div class="page404">
                     <span>404</span>      
@@ -25,37 +27,40 @@
         }
         
         public function request_res() {
-            if($this->request_url === '/') {
-                $this->navbar();
-                $this->home();
-            }
-            elseif(strstr($this->request_url, "invoice-history")) {
-                $this->navbar();
-                $this->invoice_history();
-            }
-            elseif(strstr($this->request_url, "invoice-detail")) {
-                $this->navbar();
-                $this->inv_detial();
-            }
-            elseif(strstr($this->request_url, "invoice-cancel")) {
+
+            $request_name = strtolower($this->request_name);
+
+            switch ($request_name) {
+                case 'home':
+                    $this->navbar();
+                    $this->home();
+                    die();
+                
+                case 'invoice-history':
+                    $this->navbar();
+                    $this->invoice_history();
+                    die();
+              
+                case 'invoice-detail':
+                    $this->navbar();
+                    $this->inv_detial();
+                    die();
+                              
+                case 'invoice-cancel':
+                    return '';
+                              
+                case 'invoice-history-detail':
+                    return '';
+                
+                case 'invoice-save':
+                    $this->navbar();
+                    $this->inv_save();
+                    die();
+                                    
+                default: $this->page404();
 
             }
-            elseif(strstr($this->request_url, "invoice-history-detail")) {
-
-            }
-            elseif(strstr($this->request_url, "invoice-save")) {
-                $this->navbar();
-                $this->inv_save();
-
-            }
-
-            elseif(strstr($this->request_url, "invoice-detail")) {
-
-            }
-            else $this->page404();
-
         }
-
         protected function  navbar() {
             echo 
                 '<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -85,14 +90,13 @@
         protected function home() {
 
             function _delete_comp($id) {
-                $api_name = '\delete-invoice\\'.$id;
                 return '
                     <a class="text-danger" href="\api\delete-invoice\\'.$id.'" role="button"><i class="fa fa-trash" aria-hidden="true"></i></a>
                 ';
             }
 
             function _edit_comp($id) {
-                return '<a class="text-success" ="\api\edit-invoice\\'.$id.'"><i class="fa fa-trash" aria-hidden="true"></i></a>';
+                return '<a class="text-success" href="\invoice-detail\\'.$id.'" role="button"><i class="fa fa-user" aria-hidden="true"></i></a>';
             }
             
             $employee = new NewTable();
@@ -103,8 +107,8 @@
                     {"field":"id", "value":"№", "className":"", "scope": " ", "action":false, "have_icon": false},
                     {"field":"name", "value":"Name", "className":"", "scope": " ", "action":false, "have_icon": false},
                     {"field":"phone", "value":"Phone Number", "className":"", "scope": " ", "action":false, "have_icon": false},
-                    {"field":"id", "value":"", "className":"", "scope": " ", "action":true, "have_icon": true, "key_name": "delete_row"},
-                    {"field":"id", "value":"", "className":"", "scope": " ","action":true, "have_icon": true, "key_name": "edit_row"}
+                    {"field":"id", "value":"", "className":"", "scope": " ","action":true, "have_icon": true, "key_name": "edit_row"},
+                    {"field":"id", "value":"", "className":"", "scope": " ", "action":true, "have_icon": true, "key_name": "delete_row"}
                 ]
             }', true);
 
@@ -126,11 +130,22 @@
         }
 
         protected function inv_detial() {
-            echo '<div><h1 class="text-danger">invoice detail</h1></div>';
+            $invoice_form = new InvoiceForm();
+            $invoice_id = $this->params['id'];
+            $invoice_form->action_uri = '/api/invoice-edit/'.$this->params['id'];
+            $data = json_decode(file_get_contents('http://172.26.153.11/api/invoice-detail/'.$invoice_id), true);
+            if (count($data)>0) {
+                extract($data[0]);
+                $invoice_form->fname = $fname;
+                $invoice_form->lname = $lname;
+                $invoice_form->phone_number = $phone_number;
+            }
+            echo $invoice_form->display_form();
         }
 
         protected function inv_save() {
-            echo '<div><h1 class="text-danger">invoice save</h1></div>';
+            $invoice_form = new InvoiceForm();
+            echo $invoice_form->display_form();
         }
 
     }
