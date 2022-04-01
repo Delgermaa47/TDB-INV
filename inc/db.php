@@ -20,6 +20,7 @@
             }
             $query = $query.$inner_comma.'('.join(",", array_map("check_string", $value)).')'. $inner_comma;
         }
+        echo $query;
         pg_query(PG_Conn, $query);
     }
     
@@ -30,8 +31,7 @@
     }
 
     function _delete($query, $execute_name, $params) {
-        // echo "irsen";
-        // pg_prepare(PG_Conn, $execute_name, $query);
-        // pg_execute(PG_Conn, $execute_name, [...$params]);
+        pg_prepare(PG_Conn, $execute_name, $query);
+        pg_execute(PG_Conn, $execute_name, [...$params]);
     }
 ?>

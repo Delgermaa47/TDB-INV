@@ -30,6 +30,15 @@
             // return json_encode('{"success": "true"}');
         }
 
+        protected function inv_save() {
+            extract($_POST);
+            $values = [[$fname, $lname, $phone_number]];
+            $query = 'insert into users(first_name, last_name, phone_number) values';
+            bulk_insert($query, $values );
+            redirect("/");
+            // return json_encode('{"success": "true"}');
+        }
+
         public function request_res() {
             $request_name = strtolower($this->request_name);
 
@@ -50,7 +59,7 @@
                     return $this->inv_delete();
                 
                 case 'invoice-save':
-                        return $this->inv_list();
+                        return $this->inv_save();
                 
                 case 'invoice-reffresh':
                     return $this->inv_list();

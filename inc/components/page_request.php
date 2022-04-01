@@ -14,6 +14,7 @@
         }
 
         protected function page404() {
+            http_response_code(404);
             console_log(
                 '<div class="page404">
                     <span>404</span>      
@@ -85,7 +86,6 @@
         protected function home() {
 
             function _delete_comp($id) {
-                $api_name = '\delete-invoice\\'.$id;
                 return '
                     <a class="text-danger" href="\api\delete-invoice\\'.$id.'" role="button"><i class="fa fa-trash" aria-hidden="true"></i></a>
                 ';
@@ -130,7 +130,46 @@
         }
 
         protected function inv_save() {
-            echo '<div><h1 class="text-danger">invoice save</h1></div>';
+            
+            echo '
+            <div class="container text-primary">
+                <form action="/api/invoice-save" method="POST">
+                    <div className="row">
+                        <div class="form-row col-md-8">
+                            <div className="col-md-12 mt-4">
+                                <label htmlFor="" class="col-md-3">Нэр</label>
+                                <input
+                                    type="text"
+                                    name="fname"
+                                    class="rounded col-5 mt-4"
+                                />
+                            </div>
+                            <div className="col-md-12 mt-4">
+                                <label htmlFor="" class="col-md-3">Овог</label>
+                                <input
+                                    type="text"
+                                    name="lname"
+                                    class="rounded col-5 mt-4"
+                                />
+                            </div>
+                            <div className="col-md-12 mt-4">
+                                <label htmlFor="" class="col-md-3">Дугаар</label>
+                                <input
+                                    type="text"
+                                    name="phone_number"
+                                    class="rounded col-5 mt-4"
+                                />
+                            </div>
+                            <button
+                                type="submit"
+                                class="btn btn btn-primary col-md-6 mt-4"
+                            >
+                                Хадгалах
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>';
         }
 
     }
