@@ -13,6 +13,49 @@
             $this->$propName = $propValue;
         }
 
+        protected function page404() {
+            console_log(
+                '<div class="page404">
+                    <span>404</span>      
+                    <p>page not found</p>
+                </div>
+                '
+            );
+            
+        }
+        
+        public function request_res() {
+            if($this->request_url === '/') {
+                $this->navbar();
+                $this->home();
+            }
+            elseif(strstr($this->request_url, "invoice-history")) {
+                $this->navbar();
+                $this->invoice_history();
+            }
+            elseif(strstr($this->request_url, "invoice-detail")) {
+                $this->navbar();
+                $this->inv_detial();
+            }
+            elseif(strstr($this->request_url, "invoice-cancel")) {
+
+            }
+            elseif(strstr($this->request_url, "invoice-history-detail")) {
+
+            }
+            elseif(strstr($this->request_url, "invoice-save")) {
+                $this->navbar();
+                $this->inv_save();
+
+            }
+
+            elseif(strstr($this->request_url, "invoice-detail")) {
+
+            }
+            else $this->page404();
+
+        }
+
         protected function  navbar() {
             echo 
                 '<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -51,7 +94,6 @@
                     {"field":"phone", "value":"Phone Number", "className":"", "scope": " "}
                 ]
             }', true);
-
             $employee->body_datas = json_decode(file_get_contents('http://172.26.153.11/api/invoice-list'), true);
             console_log(
                '<div class="container">'.$employee->diplay_table().'</div>'
@@ -68,49 +110,6 @@
 
         protected function inv_save() {
             echo '<div><h1 class="text-danger">invoice save</h1></div>';
-        }
-
-        protected function page404() {
-            console_log(
-                '<div class="page404">
-                    <span>404</span>      
-                    <p>page not found</p>
-                </div>
-                '
-            );
-            
-        }
-
-        public function request_res() {
-            if($this->request_url === '/') {
-                $this->navbar();
-                $this->home();
-            }
-            elseif(strstr($this->request_url, "invoice-history")) {
-                $this->navbar();
-                $this->invoice_history();
-            }
-            elseif(strstr($this->request_url, "invoice-detail")) {
-                $this->navbar();
-                $this->inv_detial();
-            }
-            elseif(strstr($this->request_url, "invoice-cancel")) {
-
-            }
-            elseif(strstr($this->request_url, "invoice-history-detail")) {
-
-            }
-            elseif(strstr($this->request_url, "invoice-save")) {
-                $this->navbar();
-                $this->inv_save();
-
-            }
-
-            elseif(strstr($this->request_url, "invoice-detail")) {
-
-            }
-            else $this->page404();
-
         }
 
     }
