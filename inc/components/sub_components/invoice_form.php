@@ -34,6 +34,7 @@
                                     type="text"
                                     name="phone_number"
                                     class="rounded col-5 mt-4"
+                                    value='.$this->phone_number.'
                                     ></input>
                             </div>
                             <button

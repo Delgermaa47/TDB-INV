@@ -132,17 +132,15 @@
 
         protected function inv_detial() {
             $invoice_form = new InvoiceForm();
-            // $invoice_id = $this->params;
-            console_log($this->request_name, "dkfjslkfjldskjflskd");
-            console_log($this->request_name, "dkfjslkfjldskjflskd");
-            console_log($this->request_name, "dkfjslkfjldskjflskd");
-            console_log($this->request_name, "dkfjslkfjldskjflskd");
-            console_log($this->request_name, "dkfjslkfjldskjflskd");
-            print_arr_values($this->params);
-            // $data = json_decode(file_get_contents('http://172.26.153.11/api/invoice-detail/'.$invoice_id), true);
-            // write_to_file($data);
-            // $invoice_form->invoice_id = json_decode(file_get_contents('http://172.26.153.11/api/invoice-list'), true);
-            // echo $invoice_form->display_form();
+            $invoice_id = $this->params['id'];
+            $data = json_decode(file_get_contents('http://172.26.153.11/api/invoice-detail/'.$invoice_id), true);
+            if (count($data)>0) {
+                extract($data[0]);
+                $invoice_form->fname = $fname;
+                $invoice_form->lname = $lname;
+                $invoice_form->phone_number = $phone_number;
+            }
+            echo $invoice_form->display_form();
         }
 
         protected function inv_save() {

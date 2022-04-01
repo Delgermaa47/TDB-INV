@@ -15,9 +15,9 @@
             return json_encode($results);
         }
 
-        protected function inv_detial() {
+        protected function inv_detail() {
             $request_param = $this->params['id'];
-            $query = 'select id, first_name as name, phone_number as phone from users where id=$1';
+            $query = 'select id, first_name as fname, phone_number, last_name  as lname from users where id=$1';
             $results = json_decode(_select($query, 'select_user_detail', [$request_param]), true);
             return json_encode($results);
         }
@@ -49,8 +49,8 @@
                 case 'invoice-save':
                     return $this->inv_save();
                 
-                case 'invoice-save':
-                        return $this->inv_save();
+                case 'invoice-detail':
+                        return $this->inv_detail();
                             
                 case 'delete-invoice':
                     return $this->inv_delete();

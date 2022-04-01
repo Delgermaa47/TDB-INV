@@ -44,7 +44,7 @@
             require_once ROOT."\\inc\\components\\page_request.php";
             $req = new PageRequest();
         }
-
+        
         foreach ( $request_rules as $action_name => $rule ) {
             if ( preg_match( '~^'.$rule.'$~i', $uri, $params ) ) {
                 $req->request_name = $action_name;
