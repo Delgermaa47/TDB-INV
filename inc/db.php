@@ -2,8 +2,17 @@
     define('PG_Conn', pg_connect("host=localhost port=5432 dbname=tdb_claim user=postgres password=Ankle123"));
     
     function sql_execute($sql, $execute_name, $params) {
-        pg_prepare(PG_Conn, $execute_name, $sql);
-        return pg_execute(PG_Conn, $execute_name, [...$params]);
+        
+            pg_prepare(PG_Conn, $execute_name, $sql);
+            $bla = pg_execute(PG_Conn, $execute_name, [...$params]);
+            try {
+                // $execute_error = pg_last_error($bla);
+                console_log('erro handliin   = '.strval($bla));
+            } catch (Exception $e) {
+                console_log(strval($e->getMessage()));
+            }
+            return $bla;
+      
     }
 
     function _select($sql, $execute_name, $params=[]) {
@@ -25,5 +34,6 @@
         }
         echo $query;
         pg_query(PG_Conn, $query);
+        pg_close();
     }
 ?>
