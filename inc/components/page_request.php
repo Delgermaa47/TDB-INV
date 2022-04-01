@@ -92,7 +92,7 @@
             }
 
             function _edit_comp($id) {
-                return '<a class="text-success" ="\api\edit-invoice\\'.$id.'"><i class="fa fa-trash" aria-hidden="true"></i></a>';
+                return '<a class="text-success" ="\api\edit-invoice\\'.$id.'"><i class="fa fa-user" aria-hidden="true"></i></a>';
             }
             
             $employee = new NewTable();
@@ -103,8 +103,8 @@
                     {"field":"id", "value":"№", "className":"", "scope": " ", "action":false, "have_icon": false},
                     {"field":"name", "value":"Name", "className":"", "scope": " ", "action":false, "have_icon": false},
                     {"field":"phone", "value":"Phone Number", "className":"", "scope": " ", "action":false, "have_icon": false},
-                    {"field":"id", "value":"", "className":"", "scope": " ", "action":true, "have_icon": true, "key_name": "delete_row"},
-                    {"field":"id", "value":"", "className":"", "scope": " ","action":true, "have_icon": true, "key_name": "edit_row"}
+                    {"field":"id", "value":"", "className":"", "scope": " ","action":true, "have_icon": true, "key_name": "edit_row"},
+                    {"field":"id", "value":"", "className":"", "scope": " ", "action":true, "have_icon": true, "key_name": "delete_row"}
                 ]
             }', true);
 
