@@ -22,6 +22,13 @@
             return json_encode($results);
         }
 
+        protected function inv_delete() {
+            $requested_id = $this->params['id'];
+            $query = 'delete from users where id=$1';
+            _delete($query, 'delete_user', [$requested_id]);
+            return json_encode('{"success": "true"}');
+        }
+
         public function request_res() {
             $request_name = strtolower($this->request_name);
 
@@ -37,6 +44,16 @@
                                 
                 case 'invoice-history-detail':
                     return $this->inv_list();
+                
+                case 'delete-invoice':
+                    return $this->inv_delete();
+                
+                case 'invoice-save':
+                        return $this->inv_list();
+                
+                case 'invoice-reffresh':
+                    return $this->inv_list();
+                    
             }
 
             return [];
