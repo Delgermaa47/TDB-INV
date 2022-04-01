@@ -30,7 +30,8 @@
     }
 
     function _delete($query, $execute_name, $params) {
-        pg_prepare(PG_Conn, $execute_name, $query);
-        pg_execute(PG_Conn, $execute_name, [...$params]);
+        // echo "irsen";
+        // pg_prepare(PG_Conn, $execute_name, $query);
+        // pg_execute(PG_Conn, $execute_name, [...$params]);
     }
 ?>

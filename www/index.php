@@ -14,7 +14,9 @@
         'invoice-detail' => "/api/invoice-detail/(?'id'\d+)",
         'invoice-cancel' => "/api/invoice-cancel/(?'id'\d+)" ,
         'invoice-history-detail' => "/api/invoice-history-detail/(?'id'\d+)",
+        
         'invoice-save' => "/api/invoice-save",
+        'delete-invoice' => "/api/delete-invoice/(?'id'\d+)",
     );
 
     $post_requests = array(

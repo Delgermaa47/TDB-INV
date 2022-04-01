@@ -84,12 +84,15 @@
 
         protected function home() {
 
-            function _delete_req($id) {
-                return '<a action="\delete-invoice\\'.$id.'"><i class="fa fa-trash text-danger" aria-hidden="true"></i></a>';
+            function _delete_comp($id) {
+                $api_name = '\delete-invoice\\'.$id;
+                return '
+                    <a class="text-danger" href="\api\delete-invoice\\'.$id.'" role="button"><i class="fa fa-trash" aria-hidden="true"></i></a>
+                ';
             }
 
-            function _edit_req($id) {
-                return '<a action="\edit-invoice\\'.$id.'"><i class="fa fa-pencil text-danger" aria-hidden="true"></i></a>';
+            function _edit_comp($id) {
+                return '<a class="text-success" ="\api\edit-invoice\\'.$id.'"><i class="fa fa-trash" aria-hidden="true"></i></a>';
             }
             
             $employee = new NewTable();
@@ -107,8 +110,8 @@
 
             $employee->added_datas = json_decode('
             {
-                "delete_row": "_delete_req",
-                "edit_row": "_edit_req"
+                "delete_row": "_delete_comp",
+                "edit_row": "_edit_comp"
             }
             ', true);
 

@@ -26,7 +26,8 @@
             $requested_id = $this->params['id'];
             $query = 'delete from users where id=$1';
             _delete($query, 'delete_user', [$requested_id]);
-            return json_encode('{"success": "true"}');
+            redirect("/");
+            // return json_encode('{"success": "true"}');
         }
 
         public function request_res() {
