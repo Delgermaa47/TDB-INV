@@ -1,10 +1,13 @@
 <?php
     define('PG_Conn', pg_connect("host=localhost port=5432 dbname=tdb_claim user=postgres password=Ankle123"));
+    
+    function sql_execute($sql, $execute_name, $params) {
+        pg_prepare(PG_Conn, $execute_name, $sql);
+        return pg_execute(PG_Conn, $execute_name, [...$params]);
+    }
 
     function _select($sql, $execute_name, $params=[]) {
-
-        $result = pg_prepare(PG_Conn, $execute_name, $sql);
-        $result = pg_execute(PG_Conn, $execute_name, [...$params]);
+        $result = sql_execute($sql, $execute_name, $params);
         $result = pg_fetch_all($result);
         pg_close();
         return json_encode($result);
@@ -22,15 +25,5 @@
         }
         echo $query;
         pg_query(PG_Conn, $query);
-    }
-
-    function _delete($query, $execute_name, $params) {
-        pg_prepare(PG_Conn, $execute_name, $query);
-        pg_execute(PG_Conn, $execute_name, [...$params]);
-    }
-    
-    function _update($query, $execute_name, $params) {
-        pg_prepare(PG_Conn, $execute_name, $query);
-        pg_execute(PG_Conn, $execute_name, [...$params]);
     }
 ?>

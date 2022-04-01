@@ -25,7 +25,8 @@
         protected function inv_delete() {
             $requested_id = $this->params['id'];
             $query = 'delete from users where id=$1';
-            _delete($query, 'delete_user', [$requested_id]);
+            
+            sql_execute($query, 'delete_user', [$requested_id]);
             redirect("/");
             // return json_encode('{"success": "true"}');
         }
@@ -47,7 +48,7 @@
             $query = '
                 update
                     users SET first_name=$1, last_name=$2, phone_number=$3 WHERE id=$4';
-            _update($query, 'update_user_data', $params);
+            sql_execute($query, 'update_user_data', $params);
             redirect("/");
             // return json_encode('{"success": "true"}');
         }
