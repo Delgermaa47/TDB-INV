@@ -7,8 +7,8 @@
     
     class PageRequest
     {
-        public $request_url;
-        public $request_params;
+        public $request_name;
+        public $params;
         function __set($propName, $propValue)
         {
             $this->$propName = $propValue;
@@ -27,37 +27,41 @@
         }
         
         public function request_res() {
-            if($this->request_url === '/') {
-                $this->navbar();
-                $this->home();
-            }
-            elseif(strstr($this->request_url, "invoice-history")) {
-                $this->navbar();
-                $this->invoice_history();
-            }
-            elseif(strstr($this->request_url, "invoice-detail")) {
-                $this->navbar();
-                $this->inv_detial();
-            }
-            elseif(strstr($this->request_url, "invoice-cancel")) {
+
+            $request_name = strtolower($this->request_name);
+
+            write_to_file($request_name);
+            switch ($request_name) {
+                case 'home':
+                    $this->navbar();
+                    $this->home();
+                    die();
+                
+                case 'invoice-history':
+                    $this->navbar();
+                    $this->invoice_history();
+                    die();
+              
+                case 'invoice-detail':
+                    $this->navbar();
+                    $this->inv_detial();
+                    die();
+                              
+                case 'invoice-cancel':
+                    return '';
+                              
+                case 'invoice-history-detail':
+                    return '';
+                
+                case 'invoice-save':
+                    $this->navbar();
+                    $this->inv_save();
+                    die();
+                                    
+                default: $this->page404();
 
             }
-            elseif(strstr($this->request_url, "invoice-history-detail")) {
-
-            }
-            elseif(strstr($this->request_url, "invoice-save")) {
-                $this->navbar();
-                $this->inv_save();
-
-            }
-
-            elseif(strstr($this->request_url, "invoice-detail")) {
-
-            }
-            else $this->page404();
-
         }
-
         protected function  navbar() {
             echo 
                 '<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -93,7 +97,7 @@
             }
 
             function _edit_comp($id) {
-                return '<a class="text-success" ="\api\edit-invoice\\'.$id.'"><i class="fa fa-user" aria-hidden="true"></i></a>';
+                return '<a class="text-success" href="\invoice-detail\\'.$id.'" role="button"><i class="fa fa-user" aria-hidden="true"></i></a>';
             }
             
             $employee = new NewTable();
@@ -127,7 +131,18 @@
         }
 
         protected function inv_detial() {
-            echo '<div><h1 class="text-danger">invoice detail</h1></div>';
+            $invoice_form = new InvoiceForm();
+            // $invoice_id = $this->params;
+            console_log($this->request_name, "dkfjslkfjldskjflskd");
+            console_log($this->request_name, "dkfjslkfjldskjflskd");
+            console_log($this->request_name, "dkfjslkfjldskjflskd");
+            console_log($this->request_name, "dkfjslkfjldskjflskd");
+            console_log($this->request_name, "dkfjslkfjldskjflskd");
+            print_arr_values($this->params);
+            // $data = json_decode(file_get_contents('http://172.26.153.11/api/invoice-detail/'.$invoice_id), true);
+            // write_to_file($data);
+            // $invoice_form->invoice_id = json_decode(file_get_contents('http://172.26.153.11/api/invoice-list'), true);
+            // echo $invoice_form->display_form();
         }
 
         protected function inv_save() {

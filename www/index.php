@@ -17,38 +17,58 @@
         'delete-invoice' => "/api/delete-invoice/(?'id'\d+)",
     );
 
+    $page_requests = array( 
+        'home' => "/",
+        'invoice-history' => "/invoice-history",
+        'invoice-detail' => "/invoice-detail/(?'id'\d+)",
+        'invoice-save' => "/invoice-save",
+        'invoice-cancel' => "/invoice-cancel/(?'id'\d+)" ,
+        'invoice-history-detail' => "/invoice-history-detail/(?'id'\d+)",
+        'delete-invoice' => "/delete-invoice/(?'id'\d+)",
+    );
+
     $post_requests = array(
         'invoice-save' => "/api/invoice-save",
     );
 
     $request_method = $_SERVER['REQUEST_METHOD'];
     if (in_array($request_method, ['GET', 'POST'])) {
-        $request_rules = $request_method === 'GET' ? $get_requests : $post_requests;
+
+        if (strstr($uri, "api")) {
+            $request_rules = $request_method === 'GET' ? $get_requests : $post_requests;
+            require_once ROOT."\\inc\\components\\api_request.php";
+            $req = new ApiList(); 
+        }
+        else {
+            $request_rules = $page_requests;
+            require_once ROOT."\\inc\\components\\page_request.php";
+            $req = new PageRequest();
+        }
+
         foreach ( $request_rules as $action_name => $rule ) {
             if ( preg_match( '~^'.$rule.'$~i', $uri, $params ) ) {
-                require_once ROOT."\\inc\\components\\api_request.php";
-                $req = new ApiList();
                 $req->request_name = $action_name;
                 $req->params = $params;
                 $res = $req->request_res();
-                header('Access-Control-Allow-Origin: *');
-                header('Content-Type: application/json');
-                echo $res;
-                die();
+                if (strstr($uri, "api")) {
+                    header('Access-Control-Allow-Origin: *');
+                    header('Content-Type: application/json');
+                    echo $res;
+                    die();
+                }
+              
             }
         }
-        
-        require_once ROOT."\\inc\\components\\page_request.php";
-        $req = new PageRequest();
-        $req->request_url = $uri;
-        $req->params = $params;
-        $res = $req->request_res();
-        die();
-        
-        // $uri = ROOT.'\\pages\\'.replace_string('/', '\\', $uri).'.php';
-        // if (file_exists($uri)) {
-        //     require $uri;
-        // }
+
+        http_response_code(404);
+        console_log(
+            '<div class="page404">
+                <span>404</span>      
+                <p>page not found</p>
+            </div>
+            '
+        );
+
     }
     else {
         header($_SERVER["SERVER_PROTOCOL"]." 405 Method Not Allowed", true, 405);
