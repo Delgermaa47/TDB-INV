@@ -1,7 +1,7 @@
 <?php
     define('PG_Conn', pg_connect("host=localhost port=5432 dbname=tdb_claim user=postgres password=Ankle123"));
 
-    function _select($sql, $execute_name, $params=[], $type="all") {
+    function _select($sql, $execute_name, $params=[]) {
 
         $result = pg_prepare(PG_Conn, $execute_name, $sql);
         $result = pg_execute(PG_Conn, $execute_name, [...$params]);
@@ -23,26 +23,15 @@
         pg_query(PG_Conn, $query);
     }
     
-    function _update($table_name, $datas, $condition) {
+    function _update($table_name, $params, $condition) {
         $query = 'update '.$table_name.' set ';
-        $query = $query.$datas.' where '.$condition;
+        $query = $query.$params.' where '.$condition;
         pg_query(PG_Conn, $query);
     }
+
+    function _delete($query, $execute_name, $params) {
+        // echo "irsen";
+        // pg_prepare(PG_Conn, $execute_name, $query);
+        // pg_execute(PG_Conn, $execute_name, [...$params]);
+    }
 ?>
-
-<!-- 
-
-/* ---select---
-$query = "select * from users where first_name=$1";
-
-_select($query, 'select_users', ['deegi']);
-
-*/
-
-/* ---insert---
-$datas = [['svhee', 'luwsan', '99999911'],['orgil', 'bat', '99999912'],['odko', 'dorj', '99999913']];
-$query = "insert into users(first_name, last_name, phone_number) values ";
-bulk_insert($query, $datas )
-*/
-
-// _update('users', "last_name='sanj'", "first_name='deegi'"); -->
