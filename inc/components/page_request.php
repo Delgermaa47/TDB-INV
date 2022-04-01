@@ -98,26 +98,25 @@
             function _edit_comp($id) {
                 return '<a class="text-success" href="\invoice-detail\\'.$id.'" role="button"><i class="fa fa-user" aria-hidden="true"></i></a>';
             }
-            
+
             $employee = new NewTable();
             $employee->className="table table-dark mt-4 pt-4";
-            $employee->header_details= json_decode('{
-                "class_name": "bg-dark text-white",
-                "header_data":[
-                    {"field":"id", "value":"№", "className":"", "scope": " ", "action":false, "have_icon": false},
-                    {"field":"name", "value":"Name", "className":"", "scope": " ", "action":false, "have_icon": false},
-                    {"field":"phone", "value":"Phone Number", "className":"", "scope": " ", "action":false, "have_icon": false},
-                    {"field":"id", "value":"", "className":"", "scope": " ","action":true, "have_icon": true, "key_name": "edit_row"},
-                    {"field":"id", "value":"", "className":"", "scope": " ", "action":true, "have_icon": true, "key_name": "delete_row"}
-                ]
-            }', true);
+            // array("Peter"=>"35", "Ben"=>"37", "Joe"=>"43");
+            $employee->header_details = array(
+                "class_name" => "bg-dark text-white",
+                "header_data" => array(
+                    array("field"=>"id", "value"=>"№", "className"=>"", "scope"=> " ", "action"=>false, "have_icon"=> false),
+                    array("field"=>"name", "value"=>"Нэр", "className"=>"", "scope"=> " ", "action"=>false, "have_icon"=> false),
+                    array("field"=>"phone", "value"=>"Утас", "className"=>"", "scope"=> " ", "action"=>false, "have_icon"=> false),
+                    array("field"=>"id", "value"=>"", "className"=>"", "scope"=> " ", "action"=>true, "have_icon"=> true, "key_name"=> "edit_row"),
+                    array("field"=>"id", "value"=>"", "className"=>"", "scope"=> " ", "action"=>true, "have_icon"=> true, "key_name"=> "delete_row")
+                )
+            );
 
-            $employee->added_datas = json_decode('
-            {
-                "delete_row": "_delete_comp",
-                "edit_row": "_edit_comp"
-            }
-            ', true);
+            $employee->added_datas = array(
+                "delete_row" => "_delete_comp",
+                "edit_row" => "_edit_comp"
+            );
 
             $employee->body_datas = json_decode(file_get_contents('http://172.26.153.11/api/invoice-list'), true);
             console_log(
