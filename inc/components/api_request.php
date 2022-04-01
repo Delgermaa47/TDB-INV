@@ -46,20 +46,20 @@
                 case 'invoice-list':
                     return $this->inv_list();
                 
-                case 'invoice-history':
-                    return $this->inv_list();
-                
-                case 'invoice-template-detail':
-                    return $this->inv_list();
-                                
-                case 'invoice-history-detail':
-                    return $this->inv_list();
-                
-                case 'delete-invoice':
-                    return $this->inv_delete();
+                case 'invoice-save':
+                    return $this->inv_save();
                 
                 case 'invoice-save':
                         return $this->inv_save();
+                            
+                case 'delete-invoice':
+                    return $this->inv_delete();
+
+                case 'invoice-history':
+                    return $this->inv_list();
+                
+                case 'invoice-history-detail':
+                    return $this->inv_list();
                 
                 case 'invoice-reffresh':
                     return $this->inv_list();

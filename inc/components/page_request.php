@@ -2,6 +2,7 @@
 <?php
     require_once ROOT."\\inc\\header.php";
     require_once ROOT."\\inc\\components\\table.php";
+    require_once ROOT."\\inc\\components\\sub_components\\invoice_form.php";
 
     
     class PageRequest
@@ -130,46 +131,8 @@
         }
 
         protected function inv_save() {
-            
-            echo '
-            <div class="container text-primary">
-                <form action="/api/invoice-save" method="POST">
-                    <div className="row">
-                        <div class="form-row col-md-8">
-                            <div className="col-md-12 mt-4">
-                                <label htmlFor="" class="col-md-3">Нэр</label>
-                                <input
-                                    type="text"
-                                    name="fname"
-                                    class="rounded col-5 mt-4"
-                                />
-                            </div>
-                            <div className="col-md-12 mt-4">
-                                <label htmlFor="" class="col-md-3">Овог</label>
-                                <input
-                                    type="text"
-                                    name="lname"
-                                    class="rounded col-5 mt-4"
-                                />
-                            </div>
-                            <div className="col-md-12 mt-4">
-                                <label htmlFor="" class="col-md-3">Дугаар</label>
-                                <input
-                                    type="text"
-                                    name="phone_number"
-                                    class="rounded col-5 mt-4"
-                                />
-                            </div>
-                            <button
-                                type="submit"
-                                class="btn btn btn-primary col-md-6 mt-4"
-                            >
-                                Хадгалах
-                            </button>
-                        </div>
-                    </div>
-                </form>
-            </div>';
+            $invoice_form = new InvoiceForm();
+            echo $invoice_form->display_form();
         }
 
     }
