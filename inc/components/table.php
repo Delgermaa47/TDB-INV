@@ -14,6 +14,8 @@
         public function diplay_table() {
             $table_class_name = $this->className ? $this->className : "table";
             $header_body_req = get_or_null($this->header_details['header_data']);
+            $added_datas = get_or_null($this->added_datas);
+
             $body_datas = empty($this->body_datas) || gettype($this->body_datas) === 'string' ? [] : $this->body_datas;
             
             $header_body = '';
@@ -25,13 +27,24 @@
             }
 
             $table_body = '';
+            
             foreach($body_datas as $key=>$body_value) {
                 $table_body = $table_body.'<tr>';
                 foreach($header_body_req as $key=>$head_value) {
-                    $table_body = $table_body.'<td>'.$body_value[$head_value['field']].'</td>';
+                    $table_body = $table_body.'<td class='.$head_value['className'].'>';
+                    $table_body = $table_body.($head_value['have_icon'] ? " " : $body_value[$head_value['field']]);
+                    
+                    if($added_datas && $head_value['action']) {
+                        $field_action = $added_datas[$head_value['key_name']];
+                        $table_body = $table_body.$field_action($body_value[$head_value['field']]);
+                        
+                    }
+
+                    $table_body = $table_body.'</td>';
                 }
                 $table_body = $table_body.'</tr>';
             }
+            
             return makeBlockHTML(
                 "<table class='{$table_class_name}'>
                 <thead>

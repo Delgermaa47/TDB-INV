@@ -83,17 +83,35 @@
         }
 
         protected function home() {
+
+            function _delete_req($id) {
+                return '<a action="\delete-invoice\\'.$id.'"><i class="fa fa-trash text-danger" aria-hidden="true"></i></a>';
+            }
+
+            function _edit_req($id) {
+                return '<a action="\edit-invoice\\'.$id.'"><i class="fa fa-pencil text-danger" aria-hidden="true"></i></a>';
+            }
             
             $employee = new NewTable();
             $employee->className="table table-dark mt-4 pt-4";
             $employee->header_details= json_decode('{
                 "class_name": "bg-dark text-white",
                 "header_data":[
-                    {"field":"id", "value":"№", "className":"", "scope": " "},
-                    {"field":"name", "value":"Name", "className":"", "scope": " "},
-                    {"field":"phone", "value":"Phone Number", "className":"", "scope": " "}
+                    {"field":"id", "value":"№", "className":"", "scope": " ", "action":false, "have_icon": false},
+                    {"field":"name", "value":"Name", "className":"", "scope": " ", "action":false, "have_icon": false},
+                    {"field":"phone", "value":"Phone Number", "className":"", "scope": " ", "action":false, "have_icon": false},
+                    {"field":"id", "value":"", "className":"", "scope": " ", "action":true, "have_icon": true, "key_name": "delete_row"},
+                    {"field":"id", "value":"", "className":"", "scope": " ","action":true, "have_icon": true, "key_name": "edit_row"}
                 ]
             }', true);
+
+            $employee->added_datas = json_decode('
+            {
+                "delete_row": "_delete_req",
+                "edit_row": "_edit_req"
+            }
+            ', true);
+
             $employee->body_datas = json_decode(file_get_contents('http://172.26.153.11/api/invoice-list'), true);
             console_log(
                '<div class="container">'.$employee->diplay_table().'</div>'
