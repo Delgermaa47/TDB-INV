@@ -109,12 +109,12 @@
                     array("field"=>"name", "value"=>"Нэр", "className"=>"", "scope"=> " ", "action"=>false, "have_icon"=> false),
                     array("field"=>"phone", "value"=>"Утас", "className"=>"", "scope"=> " ", "action"=>false, "have_icon"=> false),
                     array("field"=>"id", "value"=>"", "className"=>"", "scope"=> " ", "action"=>true, "have_icon"=> true, "key_name"=> "edit_row"),
-                    array("field"=>"id", "value"=>"", "className"=>"", "scope"=> " ", "action"=>true, "have_icon"=> true, "key_name"=> "delete_row")
+                    // array("field"=>"id", "value"=>"", "className"=>"", "scope"=> " ", "action"=>true, "have_icon"=> true, "key_name"=> "delete_row")
                 )
             );
 
             $employee->added_datas = array(
-                "delete_row" => "_delete_comp",
+                // "delete_row" => "_delete_comp",
                 "edit_row" => "_edit_comp"
             );
 
