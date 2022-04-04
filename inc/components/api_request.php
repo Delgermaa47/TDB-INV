@@ -52,6 +52,45 @@
             redirect("/");
             // return json_encode('{"success": "true"}');
         }
+        
+        protected function insert_invoice_status() {
+            $invoice_status_datas = [
+                ["code"=> "send", "name"=> "илгээсэн"],
+                ["code"=> "revoked", "name"=> "цуцласан"],
+                ["code"=> "paid", "name"=> "төлөгдсөн"],
+            ];
+            
+            $query = 'insert into invoicestatus(code, name) values';
+            bulk_insert($query, $invoice_status_datas );
+            echo "done";
+        }
+
+        protected  function create_tables() {
+
+            $invoice_status_sql = 'create table '.DB_SCHEMA.'invoiceStatus(
+                    id integer generated always as identity,
+                    name varchar(40),
+                    code varchar(40)
+                )';
+            
+            $invoice_sql = 'create table '.DB_SCHEMA.'Invoice(
+                    invno integer generated always as identity,
+                    recno integer,
+                    amount integer,
+                    fromcustno character varying(16) NOT NULL,
+                    fromaccntno character varying(16) NOT NULL,
+                    tocustno character varying(16) NOT NULL,
+                    toaccntno character varying(16) NOT NULL,
+                    invstatus integer NOT NULL,
+                    invdesc character varying(100) NOT NULL,
+                    created_at timestamp 
+                )';
+            
+            sql_execute($invoice_status_sql, 'create_table');
+            sql_execute($invoice_sql, 'invoice_sql');
+            echo "done";
+        }
+
 
         public function request_res() {
             $request_name = strtolower($this->request_name);
@@ -80,6 +119,12 @@
                 
                 case 'invoice-reffresh':
                     return $this->inv_list();
+                
+                case 'create-inv-tables':
+                    return $this->create_tables();
+
+                case 'insert-inv-status':
+                    return $this->insert_invoice_status();
                     
             }
 

@@ -15,6 +15,8 @@
         'invoice-cancel' => "/api/invoice-cancel/(?'id'\d+)" ,
         'invoice-history-detail' => "/api/invoice-history-detail/(?'id'\d+)",
         'delete-invoice' => "/api/delete-invoice/(?'id'\d+)",
+        'create-inv-tables' => '/api/create-inv-tables',
+        'insert-inv-status' => '/api/insert-inv-status',
     );
 
     $page_requests = array( 
