@@ -126,28 +126,24 @@
             $invoice_sql = 'create table '.DB_SCHEMA.'InvoiceSent(
                     invno integer generated always as identity,
                     amount integer,
-
                     custno character varying(16) NOT NULL,
                     accntno character varying(16) NOT NULL,
                     invstatus integer NOT NULL,
-
                     invdesc character varying(100) NOT NULL,
-                    created_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-                    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+                    created_at timestamp DEFAULT CURRENT_TIMESTAMP,
+                    updated_at timestamp DEFAULT CURRENT_TIMESTAMP,
                 )';
             
             $invoice_rec_sql = 'create table '.DB_SCHEMA.'InvoiceRec(
                     recno integer generated always as identity,
                     invno integer,
                     amount integer,
-                    
                     custno character varying(16) NOT NULL,
                     accntno character varying(16) NOT NULL,
                     handphone character varying(16) NOT NULL,
                     invstatus integer NOT NULL,
-                    
-                    created_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-                    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+                    created_at timestamp DEFAULT CURRENT_TIMESTAMP,
+                    updated_at timestamp DEFAULT CURRENT_TIMESTAMP
                 )';
             sql_execute($invoice_status_sql);
             sql_execute($invoice_sql);
