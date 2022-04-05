@@ -107,6 +107,7 @@
                 ["code"=> "send", "status_name"=> "илгээсэн"],
                 ["code"=> "revoked", "status_name"=> "цуцласан"],
                 ["code"=> "paid", "status_name"=> "төлөгдсөн"],
+                ["code"=> "new", "status_name"=> "шинэ"]
             ];
             
             $query = 'insert into vbismiddle.invoicestatus(code, status_name) values';
@@ -124,21 +125,30 @@
             
             $invoice_sql = 'create table '.DB_SCHEMA.'Invoice(
                     invno integer generated always as identity,
-                    all_amount integer,
-                    current_amount integer,
-                    fromcustno character varying(16) NOT NULL,
-                    fromaccntno character varying(16) NOT NULL,
-                    tocustno character varying(16) NOT NULL,
-                    toaccntno character varying(16) NOT NULL,
-                    tophone character varying(16) NOT NULL,
+                    amount integer,
+                    custno character varying(16) NOT NULL,
+                    accntno character varying(16) NOT NULL,
                     invstatus integer NOT NULL,
                     invdesc character varying(100) NOT NULL,
                     created_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
                     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
                 )';
             
+            $invoice_rec_sql = 'create table '.DB_SCHEMA.'Invoice(
+                    recno integer generated always as identity,
+                    invno integer,
+                    amount integer,
+                    
+                    custno character varying(16) NOT NULL,
+                    accntno character varying(16) NOT NULL,
+                    handphone character varying(16) NOT NULL,
+                    invstatus integer NOT NULL,
+                    created_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+                    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+                )';
             sql_execute($invoice_status_sql);
             sql_execute($invoice_sql);
+            sql_execute($invoice_rec_sql);
             echo "done";
         }
 
