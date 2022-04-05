@@ -35,7 +35,6 @@
  
     
     function sql_execute($sql) {
-        echo $sql;
         $stid = oci_parse(PG_Conn, $sql);
         oci_execute($stid);
         return $stid;

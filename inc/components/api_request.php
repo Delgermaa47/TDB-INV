@@ -11,11 +11,11 @@
 
         protected function inv_list() {
             $query = '
-                select 
-                    *
-                FROM 
-                    vbismiddle.invoice
-                ';
+            select 
+                invno, custno, accntno, amount, invstatus, invdesc, created_at
+            FROM 
+                vbismiddle.invoicesent
+            ';
             return _select($query, []);
         }
 

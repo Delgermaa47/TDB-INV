@@ -104,15 +104,17 @@
             $employee->header_details = array(
                 "class_name" => "bg-dark text-white",
                 "header_data" => array(
-                    array("field"=>"custno", "value"=>"№", "className"=>"", "scope"=> " ", "action"=>false, "have_icon"=> false),
-                    array("field"=>"id1", "value"=>"Регистр", "className"=>"", "scope"=> " ", "action"=>false, "have_icon"=> false),
-                    array("field"=>"custname", "value"=>"Утас", "className"=>"", "scope"=> " ", "action"=>false, "have_icon"=> false),
-                    array("field"=>"email", "value"=>"Утас", "className"=>"", "scope"=> " ", "action"=>false, "have_icon"=> false),
-                    array("field"=>"handphone", "value"=>"Утас", "className"=>"", "scope"=> " ", "action"=>false, "have_icon"=> false),
-                    array("field"=>"custno", "value"=>"", "className"=>"", "scope"=> " ", "action"=>true, "have_icon"=> true, "key_name"=> "edit_row"),
-                    array("field"=>"custno", "value"=>"", "className"=>"", "scope"=> " ", "action"=>true, "have_icon"=> true, "key_name"=> "delete_row")
+                    array("field"=>"invno", "value"=>"№", "className"=>"", "scope"=> " ", "action"=>false, "have_icon"=> false),
+                    array("field"=>"accntno", "value"=>"Хүлээн авах данс", "className"=>"", "scope"=> " ", "action"=>false, "have_icon"=> false),
+                    array("field"=>"amount", "value"=>"Нийт дүн", "className"=>"", "scope"=> " ", "action"=>false, "have_icon"=> false),
+                    array("field"=>"invstatus", "value"=>"Төлөв", "className"=>"", "scope"=> " ", "action"=>false, "have_icon"=> false),
+                    array("field"=>"invdesc", "value"=>"Талбар", "className"=>"", "scope"=> " ", "action"=>false, "have_icon"=> false),
+                    array("field"=>"created_at", "value"=>"Огноо", "className"=>"", "scope"=> " ", "action"=>false, "have_icon"=> false),
+                    array("field"=>"invno", "value"=>"", "className"=>"", "scope"=> " ", "action"=>true, "have_icon"=> true, "key_name"=> "edit_row"),
+                    array("field"=>"invno", "value"=>"", "className"=>"", "scope"=> " ", "action"=>true, "have_icon"=> true, "key_name"=> "delete_row")
                 )
             );
+
 
             $employee->added_datas = array(
                 "delete_row" => "_delete_comp",
@@ -121,8 +123,12 @@
 
             $employee->body_datas = json_decode(file_get_contents('http://172.26.153.11/api/invoice-list'), true);
             console_log(
-               '<div class="container">'.$employee->diplay_table().'</div>'
+               '<div class="container"><label>Илгээсэн</label>'.$employee->diplay_table().'</div>'
             );
+
+            console_log(
+                '<div class="container"><label>Хүлээн авсан</label>'.$employee->diplay_table().'</div>'
+             );
         }
 
         protected function invoice_history() {
