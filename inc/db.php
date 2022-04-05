@@ -1,39 +1,52 @@
 <?php
 
-    define('DB_SCHEMA', '');
-    $db_user = (DB_SCHEMA === 'vbismiddle') ? "gb" : "postgres";
-    $db_pass = (DB_SCHEMA === 'vbismiddle') ? "*" : "Ankle123";
-    $db_name = (DB_SCHEMA === 'vbismiddle') ? "gb96" : "tdb_claim";
-    $db_host = (DB_SCHEMA === 'vbismiddle') ? "172.29.2.71" : "localhost";
-    $db_port = (DB_SCHEMA === 'vbismiddle') ? "1521" : "5432";
+    define('DB_SCHEMA', 'vbismiddle');
+    $db_user = (DB_SCHEMA === 'vbismiddle') ? 'gb' : 'postgres';
+    $db_pass = (DB_SCHEMA === 'vbismiddle') ? 'gb96gb318454' : 'Ankle123';
+    $db_name = (DB_SCHEMA === 'vbismiddle') ? 'gb96' : 'tdb_claim';
+    $db_host = (DB_SCHEMA === 'vbismiddle') ? '172.29.2.71' : 'localhost';
+    $db_port = (DB_SCHEMA === 'vbismiddle') ? '1521' : '5432';
     
     ini_set("dipley_errors", 1);
-
-    $db_con = pg_connect("host=$db_host port=$db_port dbname=$db_name user= $db_user password= $db_pass");
-    if (!$db_con) {
-        echo "Датабааз-тай холбогдоход алдаа гарлаа !!!";
+    
+    if (empty(DB_SCHEMA)) {
+        $db_con = pg_connect("host=$db_host port=$db_port dbname=$db_name user= $db_user password= $db_pass");
+        define('PG_Conn', $db_con); 
     }
-    else define('PG_Conn', $db_con); 
-
-    
-    function sql_execute($sql, $execute_name, $params=[]) {
-    
-        pg_prepare(PG_Conn, $execute_name, $sql);
+    else {
         
-        $result = pg_execute(PG_Conn, $execute_name, [...$params]);
-        if(!$result) {
-            return  ["status" => false, "info" => "Холболт үүсгэхэд алдаа гарлаа", "result"=> []];
+       $conn = oci_connect($db_user, $db_pass, $db_host.'/'.$db_name);
+
+       if (!$conn) {
+           $e = oci_error();
+           echo htmlentities($e['message'], ENT_QUOTES);
+           unset($db_user); unset($db_pass);
+       }
+       define('PG_Conn', $conn); 
+    }
+
+    function fetch_rows($stid) {
+        $res = [];
+        while (($row = oci_fetch_array($stid, OCI_ASSOC+OCI_RETURN_LOBS)) != false) {
+            array_push($res, $row);
         }
-        return $result;
+        return $res;
+    }
+ 
+    
+    function sql_execute($sql) {
+        echo $sql;
+        $stid = oci_parse(PG_Conn, $sql);
+        oci_execute($stid);
+        return $stid;
     }
 
-    function _select($sql, $execute_name, $params=[]) {
-        $result = sql_execute($sql, $execute_name, $params);
-        $result = pg_fetch_all($result);
-        pg_close();
-        return json_encode($result);
-    }
+    function _select($query, $params) {
 
+        $query = strtr($query, $params);
+        $stid = sql_execute($query);
+        return json_encode(fetch_rows($stid));
+    }
 
     function bulk_insert($query, $datas ) {
         

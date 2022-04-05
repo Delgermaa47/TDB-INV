@@ -10,45 +10,81 @@
         }
 
         protected function inv_list() {
-            $query = 'select id, first_name as name, phone_number as phone from users';
-            $results = json_decode(_select($query, 'select_users'), true);
-            return json_encode($results);
+            $query = '
+                select 
+                    custno, id1, email, handphone 
+                FROM 
+                    invoice
+                ';
+            return _select($query, []);
         }
 
         protected function inv_detail() {
-            $request_param = $this->params['id'];
-            $query = 'select id, first_name as fname, phone_number, last_name  as lname from users where id=$1';
-            $results = json_decode(_select($query, 'select_user_detail', [$request_param]), true);
-            return json_encode($results);
+            $request_param_id = $this->params['id'];
+            
+            $query = '
+            select 
+                custno, id1, email, handphone 
+            FROM 
+                invoice
+            where 
+                id=$id';
+            
+            $params['$id'] = $request_param_id;
+            // $params['$custno'] = check_string('90400005635');
+            return json_decode(_select($query, $params), true);
         }
 
         protected function inv_delete() {
-            $requested_id = $this->params['id'];
-            $query = 'delete from users where id=$1';
-            
-            sql_execute($query, 'delete_user', [$requested_id]);
+            $query = 'delete from users where id=$id';
+            $params['$id'] = $this->params['id'];
+            sql_execute($query, $params);
             redirect("/");
             // return json_encode('{"success": "true"}');
         }
 
         protected function inv_save() {
             extract($_POST);
-            $values = [[$fname, $lname, $phone_number]];
-            $query = 'insert into users(first_name, last_name, phone_number) values';
-            bulk_insert($query, $values );
+            $created_at = now();
+            $values = [[
+               $amount, $fromcustno, $fromaccntno, 
+               $tocustno, $toaccntno, $invstatus, 
+               $invdesc, $created_at 
+            ]];
+            $query = 'insert into invoice(
+            amount, fromcustno, fromaccntno, 
+            tocustno, toaccntno, invstatus, 
+            invdesc, created_at
+            ) values';
+            bulk_insert($query, $values);
             redirect("/");
             // return json_encode('{"success": "true"}');
         }
 
         protected function inv_edit() {
             extract($_POST);
-            $invoice_id = $this->params['id'];
-            $params = [$fname, $lname, $phone_number, $invoice_id];
-            
+
+            $params['$id'] = $this->params['id'];;
+            $params['$amount'] = $amount;
+            $params['$fromcustno'] = $fromcustno;
+            $params['$fromaccntno'] = $fromaccntno;
+            $params['$tocustno'] = $tocustno;
+            $params['$toaccntno'] = $toaccntno;
+            $params['$invstatus'] = $invstatus;
+            $params['$invdesc'] = $invdesc;
+            $params['$updated_at'] = now();
+
             $query = '
                 update
-                    users SET first_name=$1, last_name=$2, phone_number=$3 WHERE id=$4';
-            sql_execute($query, 'update_user_data', $params);
+                    invoice 
+                SET 
+                    amount=$amount, fromcustno=$fromcustno, 
+                    fromaccntno=$fromaccntno, 
+                    tocustno=$tocustno, toaccntno=$toaccntno, 
+                    invstatus=$invstatus, 
+                    invdesc=$invdesc, created_at=$created_at
+                 WHERE id=$id';
+            sql_execute($query, $params);
             redirect("/");
             // return json_encode('{"success": "true"}');
         }
@@ -69,13 +105,12 @@
 
             $invoice_status_sql = 'create table '.DB_SCHEMA.'invoiceStatus(
                     id integer generated always as identity,
-                    name varchar(40),
+                    status_name varchar(40),
                     code varchar(40)
                 )';
             
             $invoice_sql = 'create table '.DB_SCHEMA.'Invoice(
                     invno integer generated always as identity,
-                    recno integer,
                     amount integer,
                     fromcustno character varying(16) NOT NULL,
                     fromaccntno character varying(16) NOT NULL,
@@ -83,11 +118,12 @@
                     toaccntno character varying(16) NOT NULL,
                     invstatus integer NOT NULL,
                     invdesc character varying(100) NOT NULL,
-                    created_at timestamp 
+                    created_at timestamp,
+                    updated_at timestamp 
                 )';
             
-            sql_execute($invoice_status_sql, 'create_table');
-            sql_execute($invoice_sql, 'invoice_sql');
+            sql_execute($invoice_status_sql);
+            sql_execute($invoice_sql);
             echo "done";
         }
 

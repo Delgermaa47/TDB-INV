@@ -101,20 +101,21 @@
 
             $employee = new NewTable();
             $employee->className="table table-dark mt-4 pt-4";
-            // array("Peter"=>"35", "Ben"=>"37", "Joe"=>"43");
             $employee->header_details = array(
                 "class_name" => "bg-dark text-white",
                 "header_data" => array(
-                    array("field"=>"id", "value"=>"№", "className"=>"", "scope"=> " ", "action"=>false, "have_icon"=> false),
-                    array("field"=>"name", "value"=>"Нэр", "className"=>"", "scope"=> " ", "action"=>false, "have_icon"=> false),
-                    array("field"=>"phone", "value"=>"Утас", "className"=>"", "scope"=> " ", "action"=>false, "have_icon"=> false),
-                    array("field"=>"id", "value"=>"", "className"=>"", "scope"=> " ", "action"=>true, "have_icon"=> true, "key_name"=> "edit_row"),
-                    // array("field"=>"id", "value"=>"", "className"=>"", "scope"=> " ", "action"=>true, "have_icon"=> true, "key_name"=> "delete_row")
+                    array("field"=>"custno", "value"=>"№", "className"=>"", "scope"=> " ", "action"=>false, "have_icon"=> false),
+                    array("field"=>"id1", "value"=>"Регистр", "className"=>"", "scope"=> " ", "action"=>false, "have_icon"=> false),
+                    array("field"=>"custname", "value"=>"Утас", "className"=>"", "scope"=> " ", "action"=>false, "have_icon"=> false),
+                    array("field"=>"email", "value"=>"Утас", "className"=>"", "scope"=> " ", "action"=>false, "have_icon"=> false),
+                    array("field"=>"handphone", "value"=>"Утас", "className"=>"", "scope"=> " ", "action"=>false, "have_icon"=> false),
+                    array("field"=>"custno", "value"=>"", "className"=>"", "scope"=> " ", "action"=>true, "have_icon"=> true, "key_name"=> "edit_row"),
+                    array("field"=>"custno", "value"=>"", "className"=>"", "scope"=> " ", "action"=>true, "have_icon"=> true, "key_name"=> "delete_row")
                 )
             );
 
             $employee->added_datas = array(
-                // "delete_row" => "_delete_comp",
+                "delete_row" => "_delete_comp",
                 "edit_row" => "_edit_comp"
             );
 

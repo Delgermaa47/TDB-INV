@@ -51,4 +51,8 @@
     function redirect($uri) {
         header('Location: '.$uri);
     }
+
+    function now() {
+        return date('Y-m-d H:i:s');
+    }
 ?>
