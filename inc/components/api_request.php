@@ -12,7 +12,7 @@
         protected function inv_list() {
             $query = '
                 select 
-                    custno, id1, email, handphone 
+                    *
                 FROM 
                     vbismiddle.invoice
                 ';
@@ -116,6 +116,7 @@
                     fromaccntno character varying(16) NOT NULL,
                     tocustno character varying(16) NOT NULL,
                     toaccntno character varying(16) NOT NULL,
+                    tophone character varying(16) NOT NULL,
                     invstatus integer NOT NULL,
                     invdesc character varying(100) NOT NULL,
                     created_at timestamp,
