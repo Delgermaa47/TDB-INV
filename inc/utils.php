@@ -18,6 +18,7 @@
     }
 
     function check_string( $key_value ) {
+        
         if(gettype($key_value) === 'string') {
             $key_value = "'".$key_value."'";
         }

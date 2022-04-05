@@ -51,14 +51,13 @@
     function bulk_insert($query, $datas ) {
         
         foreach($datas as $key=>$value){
-            $inner_comma = ',';
-            if ($key === 0 || $key === count($datas)-1) {
-                $inner_comma = ' ';
-            }
-            $query = $query.$inner_comma.'('.join(",", array_map("check_string", $value)).')'. $inner_comma;
+            // $inner_comma = ',';
+            // if ($key === 0 || $key === count($datas)-1) {
+            //     $inner_comma = ' ';
+            // }
+            $bla = $query.'('.join(", ", array_map("check_string", $value)).')';
+            sql_execute($bla);
         }
         
-        pg_query(PG_Conn, $query);
-        pg_close();
     }
 ?>

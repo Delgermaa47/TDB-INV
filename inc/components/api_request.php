@@ -14,7 +14,7 @@
                 select 
                     custno, id1, email, handphone 
                 FROM 
-                    invoice
+                    vbismiddle.invoice
                 ';
             return _select($query, []);
         }
@@ -26,7 +26,7 @@
             select 
                 custno, id1, email, handphone 
             FROM 
-                invoice
+                vbismiddle.invoice
             where 
                 id=$id';
             
@@ -36,7 +36,7 @@
         }
 
         protected function inv_delete() {
-            $query = 'delete from users where id=$id';
+            $query = 'delete from vbismiddle.invoice where id=$id';
             $params['$id'] = $this->params['id'];
             sql_execute($query, $params);
             redirect("/");
@@ -51,7 +51,7 @@
                $tocustno, $toaccntno, $invstatus, 
                $invdesc, $created_at 
             ]];
-            $query = 'insert into invoice(
+            $query = 'insert into vbismiddle.invoice(
             amount, fromcustno, fromaccntno, 
             tocustno, toaccntno, invstatus, 
             invdesc, created_at
@@ -76,7 +76,7 @@
 
             $query = '
                 update
-                    invoice 
+                    vbismiddle.invoice 
                 SET 
                     amount=$amount, fromcustno=$fromcustno, 
                     fromaccntno=$fromaccntno, 
@@ -91,12 +91,12 @@
         
         protected function insert_invoice_status() {
             $invoice_status_datas = [
-                ["code"=> "send", "name"=> "илгээсэн"],
-                ["code"=> "revoked", "name"=> "цуцласан"],
-                ["code"=> "paid", "name"=> "төлөгдсөн"],
+                ["code"=> "send", "status_name"=> "илгээсэн"],
+                ["code"=> "revoked", "status_name"=> "цуцласан"],
+                ["code"=> "paid", "status_name"=> "төлөгдсөн"],
             ];
             
-            $query = 'insert into invoicestatus(code, name) values';
+            $query = 'insert into vbismiddle.invoicestatus(code, status_name) values';
             bulk_insert($query, $invoice_status_datas );
             echo "done";
         }
