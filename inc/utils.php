@@ -18,7 +18,7 @@
     }
 
     function check_string( $key_value ) {
-        
+        echo gettype($key_value);
         if(gettype($key_value) === 'string') {
             $key_value = "'".$key_value."'";
         }
@@ -54,6 +54,6 @@
     }
 
     function now() {
-        return date('Y-m-d H:i:s');
+        return date('d-m-Y');
     }
 ?>

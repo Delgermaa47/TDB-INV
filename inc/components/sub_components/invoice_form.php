@@ -13,17 +13,18 @@
         public $created_at;
         public $invdesc;
         public $tophone;
+        public $status_name;
         
         public function __construct() {
             $this->action_uri ='/api/invoice-save';
         }
      
-        protected function _display_in_label($label, $key, $value, $classname='col-md-6', $main_class='col-md-6') {
+        protected function _display_in_label($label, $key, $value, $type, $classname='col-md-6', $main_class='col-md-6') {
             $content  = ' 
             <div className="'.$main_class.'">
                 <label htmlFor="" class="'.$classname.'">'.$label.'</label>
                 <input
-                    type="text"
+                    type='.$type.'
                     name='.$key.'
                     class="rounded col-5 mt-4"
                     value='.$value.'
@@ -37,7 +38,7 @@
             
             foreach ($datas as $key =>  &$value) {
                 extract($value);
-                $current_data = $current_data.$this -> _display_in_label($label, $key, $value, $classname);
+                $current_data = $current_data.$this -> _display_in_label($label, $key, $value, $type, $classname);
             }
             return $current_data;
         }
@@ -46,25 +47,25 @@
         public function display_form() {
         
             $send_keys = [
-                ['key'=>'fromcustno', 'value'=>$this->fromcustno, 'label'=>'Sip Дугаар', 'classname'=>'col-md-6'],
-                ['key'=>'fname', 'value'=>$this->fname, 'label'=>'Нэр', 'classname'=>'col-md-6'],
-                ['key'=>'all_amount', 'value'=>$this->all_amount, 'label'=>'Нийт дүн', 'classname'=>'col-md-6'],
-                ['key'=>'fromaccntno', 'value'=>$this->fromaccntno, 'label'=>'Данс', 'classname'=>'col-md-6'],
-                ['key'=>'tophone', 'value'=>$this->tophone, 'label'=>'Хүлээн авагчийн дугаар', 'classname'=>'col-md-6']
+                ['key'=>'fromcustno', 'type'=>'text', 'value'=>$this->fromcustno, 'label'=>'Sip Дугаар', 'classname'=>'col-md-6'],
+                ['key'=>'fname', 'type'=>'text', 'value'=>$this->fname, 'label'=>'Нэр', 'classname'=>'col-md-6'],
+                ['key'=>'all_amount', 'type'=>'number', 'value'=>$this->all_amount, 'label'=>'Нийт дүн', 'classname'=>'col-md-6'],
+                ['key'=>'fromaccntno', 'type'=>'text', 'value'=>$this->fromaccntno, 'label'=>'Данс', 'classname'=>'col-md-6'],
+                ['key'=>'tophone', 'type'=>'text', 'value'=>$this->tophone, 'label'=>'Хүлээн авагчийн дугаар', 'classname'=>'col-md-6']
             ];
 
             $rec_keys = [
-                ['key'=>'tocustno', 'value'=>$this->tocustno, 'label'=>'Sip Дугаар', 'classname'=>'col-md-6'],
-                ['key'=>'recfname', 'value'=>$this->recfname, 'label'=>'Нэр', 'classname'=>'col-md-6'],
-                ['key'=>'current_amount', 'value'=>$this->current_amount, 'label'=>'Нийт дүн', 'classname'=>'col-md-6'],
-                ['key'=>'toaccntno', 'value'=>$this->fromaccntno, 'label'=>'Данс', 'classname'=>'col-md-6'],
-                ['key'=>'fromaccntno', 'value'=>$this->fromaccntno, 'label'=>'Хүлээн авагчийн дугаар', 'classname'=>'col-md-6']
+                ['key'=>'tocustno', 'type'=>'text', 'value'=>$this->tocustno, 'label'=>'Sip Дугаар', 'classname'=>'col-md-6'],
+                ['key'=>'recfname', 'type'=>'text', 'value'=>$this->recfname, 'label'=>'Нэр', 'classname'=>'col-md-6'],
+                ['key'=>'current_amount', 'type'=>'number', 'value'=>$this->current_amount, 'label'=>'Нийт дүн', 'classname'=>'col-md-6'],
+                ['key'=>'toaccntno', 'type'=>'text', 'value'=>$this->fromaccntno, 'label'=>'Данс', 'classname'=>'col-md-6'],
+                ['key'=>'fromaccntno', 'type'=>'text', 'value'=>$this->fromaccntno, 'label'=>'Хүлээн авагчийн дугаар', 'classname'=>'col-md-6']
             ];
 
             $both_keys = [
-                ['key'=>'invstatus', 'value'=>$this->invstatus, 'label'=>'Төлөв', 'classname'=>'col-md-9'],
-                ['key'=>'status_name', 'value'=>$this->status_name, 'label'=>'Нэр', 'classname'=>'col-md-9'],
-                ['key'=>'invdesc', 'value'=>$this->invdesc, 'label'=>'Тайлбар', 'classname'=>'col-md-9']
+                ['key'=>'invstatus', 'type'=>'number', 'value'=>$this->invstatus, 'label'=>'Төлөв', 'classname'=>'col-md-9'],
+                ['key'=>'status_name', 'type'=>'text', 'value'=>$this->status_name, 'label'=>'Нэр', 'classname'=>'col-md-9'],
+                ['key'=>'invdesc', 'type'=>'text', 'value'=>$this->invdesc, 'label'=>'Тайлбар', 'classname'=>'col-md-9']
             ];
 
             $sender_data =  $this->_append_datas($send_keys);

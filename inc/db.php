@@ -56,6 +56,7 @@
             //     $inner_comma = ' ';
             // }
             $bla = $query.'('.join(", ", array_map("check_string", $value)).')';
+            // echo $bla;
             sql_execute($bla);
         }
         

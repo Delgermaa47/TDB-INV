@@ -47,18 +47,19 @@
             extract($_POST);
             $created_at = now();
             $values = [[
-               $amount, $fromcustno, $fromaccntno, 
+                $all_amount, $current_amount, $fromcustno, $fromaccntno, 
                $tocustno, $toaccntno, $invstatus, 
-               $invdesc, $created_at 
+               $invdesc,  'TO_DATE('.$created_at.', "DD/MM/YYYY")', $tophone
             ]];
+
             $query = 'insert into vbismiddle.invoice(
-            amount, fromcustno, fromaccntno, 
+            all_amount, current_amount, fromcustno, fromaccntno, 
             tocustno, toaccntno, invstatus, 
-            invdesc, created_at
+            invdesc, created_at, tophone
             ) values';
             bulk_insert($query, $values);
-            redirect("/");
-            // return json_encode('{"success": "true"}');
+            // redirect("/");
+            return json_encode('{"success": "true"}');
         }
 
         protected function inv_edit() {
@@ -114,7 +115,8 @@
             
             $invoice_sql = 'create table '.DB_SCHEMA.'Invoice(
                     invno integer generated always as identity,
-                    amount integer,
+                    all_amount integer,
+                    current_amount integer,
                     fromcustno character varying(16) NOT NULL,
                     fromaccntno character varying(16) NOT NULL,
                     tocustno character varying(16) NOT NULL,
