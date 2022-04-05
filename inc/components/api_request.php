@@ -44,18 +44,27 @@
         }
 
         protected function inv_save() {
+            $number_values = ['all_amount', 'current_amount', 'invstatus'];
+            foreach ($_POST as $key => $value) {
+                if (in_array($key, $number_values) && !empty($value)) {
+                    $_POST[$key] = floatval($value);
+                }
+            }
+
             extract($_POST);
+            
             $created_at = now();
+
             $values = [[
                 $all_amount, $current_amount, $fromcustno, $fromaccntno, 
                $tocustno, $toaccntno, $invstatus, 
-               $invdesc,  'TO_DATE('.$created_at.', "DD/MM/YYYY")', $tophone
+               $invdesc, $tophone
             ]];
 
             $query = 'insert into vbismiddle.invoice(
             all_amount, current_amount, fromcustno, fromaccntno, 
             tocustno, toaccntno, invstatus, 
-            invdesc, created_at, tophone
+            invdesc, tophone
             ) values';
             bulk_insert($query, $values);
             // redirect("/");
@@ -124,8 +133,8 @@
                     tophone character varying(16) NOT NULL,
                     invstatus integer NOT NULL,
                     invdesc character varying(100) NOT NULL,
-                    created_at timestamp,
-                    updated_at timestamp 
+                    created_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+                    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
                 )';
             
             sql_execute($invoice_status_sql);
