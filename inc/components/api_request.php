@@ -65,13 +65,15 @@
             extract($_POST);
 
             $params['$id'] = $this->params['id'];;
-            $params['$amount'] = $amount;
             $params['$fromcustno'] = $fromcustno;
             $params['$fromaccntno'] = $fromaccntno;
             $params['$tocustno'] = $tocustno;
             $params['$toaccntno'] = $toaccntno;
             $params['$invstatus'] = $invstatus;
             $params['$invdesc'] = $invdesc;
+            $params['$tophone'] = $tophone;
+            $params['$all_amount'] = $all_amount;
+            $params['$current_amount'] = $current_amount;
             $params['$updated_at'] = now();
 
             $query = '
@@ -82,7 +84,8 @@
                     fromaccntno=$fromaccntno, 
                     tocustno=$tocustno, toaccntno=$toaccntno, 
                     invstatus=$invstatus, 
-                    invdesc=$invdesc, created_at=$created_at
+                    invdesc=$invdesc, created_at=$created_at,
+                    tophone=$tophone
                  WHERE id=$id';
             sql_execute($query, $params);
             redirect("/");
