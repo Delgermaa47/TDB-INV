@@ -10,12 +10,7 @@
         }
 
         protected function inv_list() {
-            $query = '
-            select 
-                invno, custno, accntno, amount, invstatus, invdesc, created_at
-            FROM 
-                vbismiddle.invoicesent
-            ';
+            $query = $_POST['query'];
             return _select($query, []);
         }
 

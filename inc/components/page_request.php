@@ -120,11 +120,39 @@
                 "delete_row" => "_delete_comp",
                 "edit_row" => "_edit_comp"
             );
-
-            $employee->body_datas = json_decode(file_get_contents('http://172.26.153.11/api/invoice-list'), true);
+            $query = 'select * from vbismiddle.invoicesent';
+            $employee->body_datas = json_decode(file_post_contents('http://172.26.153.11/api/invoice-list', ["query"=>$query]), true);
+            
             console_log(
                '<div class="container"><label>Илгээсэн</label>'.$employee->diplay_table().'</div>'
             );
+
+
+            $employee = new NewTable();
+            $employee->className="table table-dark mt-4 pt-4";
+            $employee->header_details = array(
+                "class_name" => "bg-dark text-white",
+                "header_data" => array(
+                    array("field"=>"recno", "value"=>"№", "className"=>"", "scope"=> " ", "action"=>false, "have_icon"=> false),
+                    array("field"=>"invno", "value"=>"№", "className"=>"", "scope"=> " ", "action"=>false, "have_icon"=> false),
+                    array("field"=>"accntno", "value"=>"Хүлээн авах данс", "className"=>"", "scope"=> " ", "action"=>false, "have_icon"=> false),
+                    array("field"=>"amount", "value"=>"Нийт дүн", "className"=>"", "scope"=> " ", "action"=>false, "have_icon"=> false),
+                    array("field"=>"invstatus", "value"=>"Төлөв", "className"=>"", "scope"=> " ", "action"=>false, "have_icon"=> false),
+                    array("field"=>"created_at", "value"=>"Огноо", "className"=>"", "scope"=> " ", "action"=>false, "have_icon"=> false),
+                    array("field"=>"invno", "value"=>"", "className"=>"", "scope"=> " ", "action"=>true, "have_icon"=> true, "key_name"=> "edit_row"),
+                    array("field"=>"invno", "value"=>"", "className"=>"", "scope"=> " ", "action"=>true, "have_icon"=> true, "key_name"=> "delete_row")
+                )
+            );
+
+
+            $employee->added_datas = array(
+                "delete_row" => "_delete_comp",
+                "edit_row" => "_edit_comp"
+            );
+            // $employee->body_datas = json_decode(file_get_contents('http://172.26.153.11/api/invoice-list'), true);
+            $query = 'select * from vbismiddle.invoicerec';
+            $employee->body_datas = json_decode(file_post_contents('http://172.26.153.11/api/invoice-list', ["query"=>$query]), true);
+            
 
             console_log(
                 '<div class="container"><label>Хүлээн авсан</label>'.$employee->diplay_table().'</div>'

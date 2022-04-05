@@ -9,7 +9,6 @@
     $uri = urldecode( $uri );
 
     $get_requests = array( 
-        'invoice-list' => "/api/invoice-list",
         'invoice-history' => "/api/invoice-history",
         'invoice-detail' => "/api/invoice-detail/(?'id'\d+)",
         'invoice-cancel' => "/api/invoice-cancel/(?'id'\d+)" ,
@@ -30,6 +29,7 @@
     );
 
     $post_requests = array(
+        'invoice-list' => "/api/invoice-list",
         'invoice-save' => "/api/invoice-save",
         'invoice-edit' => "/api/invoice-edit/(?'id'\d+)",
     );
