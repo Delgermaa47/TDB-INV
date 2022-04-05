@@ -52,21 +52,25 @@
             }
 
             extract($_POST);
+            $sent_values = [
+                $all_amount, $fromcustno, $fromaccntno, 
+                $invstatus, $invdesc
+            ];
             
-            $created_at = now();
-
-            $values = [[
-                $all_amount, $current_amount, $fromcustno, $fromaccntno, 
-               $tocustno, $toaccntno, $invstatus, 
-               $invdesc, $tophone
-            ]];
-
-            $query = 'insert into vbismiddle.invoice(
-            all_amount, current_amount, fromcustno, fromaccntno, 
-            tocustno, toaccntno, invstatus, 
-            invdesc, tophone
+            $sent_query = 'insert into vbismiddle.invoicesent(
+            amount, custno, accntno, invstatus, invdesc
             ) values';
-            bulk_insert($query, $values);
+
+            $rec_query = 'insert into vbismiddle.invoiceRec(
+                invno, amount, custno, accntno, invstatus, handphone
+                ) values';
+
+            $last_id = bulk_insert($sent_query, $sent_values);
+            $recieve_datas = [
+                $last_id, $current_amount, $tocustno, $toaccntno, 
+                $invstatus, $tophone
+            ];
+            bulk_insert($rec_query, $recieve_datas);
             // redirect("/");
             return json_encode('{"success": "true"}');
         }

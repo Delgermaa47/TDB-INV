@@ -50,15 +50,13 @@
 
     function bulk_insert($query, $datas ) {
         
-        foreach($datas as $key=>$value){
-            // $inner_comma = ',';
-            // if ($key === 0 || $key === count($datas)-1) {
-            //     $inner_comma = ' ';
-            // }
-            $bla = $query.'('.join(", ", array_map("check_string", $value)).')';
-            // echo $bla;
-            sql_execute($bla);
-        }
-        
+        $idNumber = '';
+        $bla = $query.'('.join(", ", array_map("check_string", $datas)).')';
+        $bla = $bla.' RETURNING invno INTO :invno1';
+
+        $parsed = oci_parse(PG_Conn, $bla);
+        oci_bind_by_name($parsed, ":invno1", $idNumber);
+        oci_execute($parsed);
+        return  intval($idNumber);
     }
 ?>
