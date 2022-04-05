@@ -99,6 +99,10 @@
                 return '<a class="text-success" href="\invoice-detail\\'.$id.'" role="button"><i class="fa fa-user" aria-hidden="true"></i></a>';
             }
 
+            function _pay_comp($id) {
+                return '<a class="text-warning" href="\invoice-detail\\'.$id.'" role="button"><i class="fas fa-dollar-sign" aria-hidden="true"></i></a>';
+            }
+
             $employee = new NewTable();
             $employee->className="table table-dark mt-4 pt-4";
             $employee->header_details = array(
@@ -112,13 +116,15 @@
                     array("field"=>"created_at", "value"=>"Огноо", "className"=>"", "scope"=> " ", "action"=>false, "have_icon"=> false),
                     array("field"=>"invno", "value"=>"", "className"=>"", "scope"=> " ", "action"=>true, "have_icon"=> true, "key_name"=> "edit_row"),
                     array("field"=>"invno", "value"=>"", "className"=>"", "scope"=> " ", "action"=>true, "have_icon"=> true, "key_name"=> "delete_row")
+                    
                 )
             );
 
 
             $employee->added_datas = array(
                 "delete_row" => "_delete_comp",
-                "edit_row" => "_edit_comp"
+                "edit_row" => "_edit_comp",
+                // "pay_row" => "_pay_comp"
             );
             $query = 'select * from vbismiddle.invoicesent';
             $employee->body_datas = json_decode(file_post_contents('http://172.26.153.11/api/invoice-list', ["query"=>$query]), true);
@@ -140,6 +146,7 @@
                     array("field"=>"invstatus", "value"=>"Төлөв", "className"=>"", "scope"=> " ", "action"=>false, "have_icon"=> false),
                     array("field"=>"created_at", "value"=>"Огноо", "className"=>"", "scope"=> " ", "action"=>false, "have_icon"=> false),
                     array("field"=>"invno", "value"=>"", "className"=>"", "scope"=> " ", "action"=>true, "have_icon"=> true, "key_name"=> "edit_row"),
+                    array("field"=>"invno", "value"=>"", "className"=>"", "scope"=> " ", "action"=>true, "have_icon"=> true, "key_name"=> "pay_row"),
                     array("field"=>"invno", "value"=>"", "className"=>"", "scope"=> " ", "action"=>true, "have_icon"=> true, "key_name"=> "delete_row")
                 )
             );
@@ -147,7 +154,8 @@
 
             $employee->added_datas = array(
                 "delete_row" => "_delete_comp",
-                "edit_row" => "_edit_comp"
+                "edit_row" => "_edit_comp",
+                "pay_row" => "_pay_comp"
             );
             // $employee->body_datas = json_decode(file_get_contents('http://172.26.153.11/api/invoice-list'), true);
             $query = 'select * from vbismiddle.invoicerec';
