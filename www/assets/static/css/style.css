@@ -21,3 +21,26 @@ body {
 .mt-4 {
     margin-top: 10px !important;
 }
+
+.popup {
+    margin: 70px auto;
+    padding: 20px;
+    background: rgb(167, 158, 158);
+    border-radius: 5px;
+    position: absolute;
+    width: 30%;
+    transition: all 5s ease-in-out;
+    z-index: 1 !important;
+    box-shadow: 0 2px 15px 0 black;
+}
+.popup .content {
+    overflow: auto;
+}
+
+.enableBlur>* {
+    filter: blur(1.2px);
+  }
+  
+.disableBlur {
+filter: blur(0);
+}
