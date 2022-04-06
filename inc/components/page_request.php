@@ -91,7 +91,7 @@
 
             function _delete_comp($id) {
                 return '
-                    <a class="text-danger" href="\api\delete-invoice\\'.$id.'" role="button"><i class="fa fa-trash" aria-hidden="true"></i></a>
+                    <a class="text-danger" href="\api\delete-sent-invoice\\'.$id.'" role="button"><i class="fa fa-trash" aria-hidden="true"></i></a>
                 ';
             }
 
@@ -140,7 +140,7 @@
                 "class_name" => "bg-dark text-white",
                 "header_data" => array(
                     array("field"=>"recno", "value"=>"№", "className"=>"", "scope"=> " ", "action"=>false, "have_icon"=> false),
-                    array("field"=>"invno", "value"=>"№", "className"=>"", "scope"=> " ", "action"=>false, "have_icon"=> false),
+                    array("field"=>"invno", "value"=>"Илгээгчийн дугаар", "className"=>"", "scope"=> " ", "action"=>false, "have_icon"=> false),
                     array("field"=>"accntno", "value"=>"Хүлээн авах данс", "className"=>"", "scope"=> " ", "action"=>false, "have_icon"=> false),
                     array("field"=>"amount", "value"=>"Нийт дүн", "className"=>"", "scope"=> " ", "action"=>false, "have_icon"=> false),
                     array("field"=>"invstatus", "value"=>"Төлөв", "className"=>"", "scope"=> " ", "action"=>false, "have_icon"=> false),

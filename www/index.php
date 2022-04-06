@@ -13,7 +13,8 @@
         'invoice-detail' => "/api/invoice-detail/(?'id'\d+)",
         'invoice-cancel' => "/api/invoice-cancel/(?'id'\d+)" ,
         'invoice-history-detail' => "/api/invoice-history-detail/(?'id'\d+)",
-        'delete-invoice' => "/api/delete-invoice/(?'id'\d+)",
+        'delete-sent-invoice' => "/api/delete-sent-invoice/(?'id'\d+)",
+        'delete-rec-invoice' => "/api/delete-recieve-invoice/(?'id'\d+)",
         'create-inv-tables' => '/api/create-inv-tables',
         'insert-inv-status' => '/api/insert-inv-status',
     );
@@ -35,7 +36,6 @@
     );
     
     $request_method = $_SERVER['REQUEST_METHOD'];
-
     if (in_array($request_method, ['GET', 'POST'])) {
 
         if (strstr($uri, "api")) {
