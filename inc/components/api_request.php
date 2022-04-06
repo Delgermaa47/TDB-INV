@@ -9,6 +9,48 @@
             $this->$propName = $propValue;
         }
 
+        public function request_res() {
+            $request_name = strtolower($this->request_name);
+
+            switch ($request_name) {
+                case 'invoice-list':
+                    return $this->inv_list();
+                
+                case 'invoice-save':
+                    return $this->inv_save();
+                
+                case 'invoice-detail':
+                        return $this->inv_detail();
+                
+                case 'invoice-edit':
+                    return $this->inv_edit();
+                            
+                case 'delete-sent-invoice':
+                    return $this->inv_sent_delete();
+                
+                case 'delete-rec-invoice':
+                    return $this->inv_rec_delete();
+
+                case 'invoice-history':
+                    return $this->inv_list();
+                
+                case 'invoice-history-detail':
+                    return $this->inv_list();
+                
+                case 'invoice-reffresh':
+                    return $this->inv_list();
+                
+                case 'create-inv-tables':
+                    return $this->create_tables();
+
+                case 'insert-inv-status':
+                    return $this->insert_invoice_status();
+                    
+            }
+
+            return [];
+        }
+
         protected function inv_list() {
             $query = $_POST['query'];
             return _select($query, []);
@@ -30,8 +72,20 @@
             return json_decode(_select($query, $params), true);
         }
 
-        protected function inv_delete() {
-            $query = 'delete from vbismiddle.invoice where id=$id';
+        protected function inv_sent_delete() {
+            // delete from vbismiddle.invoicerec where invno= $invno;
+            $query = '
+                delete from vbismiddle.invoicesent where invno= $invno
+            ';
+            $params['$invno'] = $this->params['id'];
+            write_to_file($query);
+            sql_execute($query, $params);
+            redirect("/");
+            return json_encode('{"success": "true"}');
+        }
+
+        protected function inv_rec_delete() {
+            $query = 'delete from vbismiddle.invoiceRec where id= $id';
             $params['$id'] = $this->params['id'];
             sql_execute($query, $params);
             redirect("/");
@@ -148,46 +202,6 @@
             sql_execute($invoice_sql);
             sql_execute($invoice_rec_sql);
             echo "done";
-        }
-
-
-        public function request_res() {
-            $request_name = strtolower($this->request_name);
-
-            switch ($request_name) {
-                case 'invoice-list':
-                    return $this->inv_list();
-                
-                case 'invoice-save':
-                    return $this->inv_save();
-                
-                case 'invoice-detail':
-                        return $this->inv_detail();
-                
-                case 'invoice-edit':
-                    return $this->inv_edit();
-                            
-                case 'delete-invoice':
-                    return $this->inv_delete();
-
-                case 'invoice-history':
-                    return $this->inv_list();
-                
-                case 'invoice-history-detail':
-                    return $this->inv_list();
-                
-                case 'invoice-reffresh':
-                    return $this->inv_list();
-                
-                case 'create-inv-tables':
-                    return $this->create_tables();
-
-                case 'insert-inv-status':
-                    return $this->insert_invoice_status();
-                    
-            }
-
-            return [];
         }
 
     }

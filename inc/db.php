@@ -34,16 +34,15 @@
     }
  
     
-    function sql_execute($sql) {
-        $stid = oci_parse(PG_Conn, $sql);
+    function sql_execute($sql, $params=[]) {
+        $query = strtr($sql, $params);
+        $stid = oci_parse(PG_Conn, $query);
         oci_execute($stid);
         return $stid;
     }
 
     function _select($query, $params) {
-
-        $query = strtr($query, $params);
-        $stid = sql_execute($query);
+        $stid = sql_execute($query, $params);
         return json_encode(fetch_rows($stid));
     }
 
