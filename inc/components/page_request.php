@@ -160,10 +160,11 @@
             // $employee->body_datas = json_decode(file_get_contents('http://172.26.153.11/api/invoice-list'), true);
             $query = 'select * from vbismiddle.invoicerec';
             $employee->body_datas = json_decode(file_post_contents('http://172.26.153.11/api/invoice-list', ["query"=>$query]), true);
-            
 
             console_log(
-                '<div class="container"><label>Хүлээн авсан</label>'.$employee->diplay_table().'</div>'
+                '
+                    <div class="container"><label>Хүлээн авсан</label>
+                '.$employee->diplay_table().'</div>'
              );
         }
 
@@ -192,5 +193,5 @@
 
     }
 
-    require ROOT."\\inc\\footer.php"
+    require_once ROOT."\\inc\\footer.php"
 ?>

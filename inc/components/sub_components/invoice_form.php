@@ -1,5 +1,9 @@
+
 <?php
+    require_once ROOT."\\inc\\components\\sub_components\\popup.php";
+
     class InvoiceForm {
+        public $enable_pop;
         public $fname;
         public $recfname;
         public $cip;
@@ -15,8 +19,14 @@
         public $tophone;
         public $status_name;
         
+        function __set($propName, $propValue)
+        {
+            $this->$propName = $propValue;
+        }
+
         public function __construct() {
-            $this->action_uri ='/api/invoice-save';
+            $this->action_uri = '/api/invoice-save';
+            $this->enable_pop = false;
         }
      
         protected function _display_in_label($label, $key, $value, $type, $classname='col-md-6', $main_class='col-md-6') {
@@ -43,7 +53,6 @@
             return $current_data;
         }
 
-
         public function display_form() {
         
             $send_keys = [
@@ -63,42 +72,53 @@
             ];
 
             $both_keys = [
-                ['key'=>'invstatus', 'type'=>'number', 'value'=>$this->invstatus, 'label'=>'Төлөв', 'classname'=>'col-md-9'],
-                ['key'=>'status_name', 'type'=>'text', 'value'=>$this->status_name, 'label'=>'Нэр', 'classname'=>'col-md-9'],
-                ['key'=>'invdesc', 'type'=>'text', 'value'=>$this->invdesc, 'label'=>'Тайлбар', 'classname'=>'col-md-9']
+                ['key'=>'invstatus', 'type'=>'number', 'value'=>$this->invstatus, 'label'=>'Төлөв', 'classname'=>'col-md-6'],
+                ['key'=>'status_name', 'type'=>'text', 'value'=>$this->status_name, 'label'=>'Нэр', 'classname'=>'col-md-6'],
+                ['key'=>'invdesc', 'type'=>'text', 'value'=>$this->invdesc, 'label'=>'Тайлбар', 'classname'=>'col-md-6']
             ];
 
             $sender_data =  $this->_append_datas($send_keys);
             $recieve_data = $this->_append_datas($rec_keys);
             $both_data = $this->_append_datas($both_keys);
 
+            
             echo '
-            <div class="container text-primary">
+            <div class="container text-primary ">
                 <form action="'.$this->action_uri.'" method="POST">
                     <div className="row">
                         <div class="form-row col-md-6 border-bottom border-danger">
                             <label>Илгээгч</label>
                             '.$sender_data.'
                         </div>
-                        <div class="form-row col-md-6">
-                            <label>Хүлээн авагч</label>
-                            '.$recieve_data.'
+                        <div class="form-row col-md-12 mt-4">
+                            <button type="button" onclick="clicked()" role="button">
+                                invoice
+                            </button>
                         </div>
                         <div class="form-row col-md-12 mt-4">
                             '.$both_data.'
                         </div>
-                        
+                        <input type="button" id="result" value="Send">
                         <button
                             type="submit"
                             class="btn btn btn-primary col-md-6 mt-4"
                         >
                         Хадгалах
-                    </button>
+                        </button>
                     </div>
                 </form>
             </div>';
         }
-        
     }
-    
 ?>
+<script>
+    function clicked() {
+        $.post('/button/open-modal',  
+        { datas: {"success": false}}, 
+        function(data, status, xhr) {
+            // $('p').append('status: ' + status + ', data: ' + data);
+        }).done(function(result) { $("#results").html(result).hide().fadeIn();})
+        .fail(function(jqxhr, settings, ex) { alert('failed, ' + ex); });
+    }
+
+</script>
