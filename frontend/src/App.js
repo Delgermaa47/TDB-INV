@@ -1,24 +1,12 @@
-// import './App.css';
-
-// function App() {
-//   return (
-//    <div>done</div>
-//   );
-// }
-
-// export default App;
-
-
 
 import React, {Component} from 'react'
 import {
   Routes, Route
 } from "react-router-dom";
 
-import { InvoiceList } from './components/invoice_list';
-import { InvoiceCreate } from './components/invoice_create';
-import { InvoiceHistory } from './components/invoice_history';
-
+import { InvoiceCreate } from './components/invoice_create/invoice_create';
+import { InvoiceHistory } from './components/invoice_history/invoice_history';
+import { InvoiceList } from './components/invoice_list/invoice_list';
 
 import './App.css';
 
