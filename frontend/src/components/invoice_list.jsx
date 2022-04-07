@@ -1,4 +1,4 @@
-import React, {Component, Fragment} from 'react'
+import React, {Component} from 'react'
 
 
 export class InvoiceList extends Component {
@@ -10,7 +10,6 @@ export class InvoiceList extends Component {
     }
 
     render() {
-        alert("done")
         return (
             <div className="row">
                <label>bla</label>
