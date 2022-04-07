@@ -7,7 +7,6 @@ export class InvoiceHistory extends Component {
         super(props)
         this.state={
         }
-        
     }
 
     componentDidMount() {
@@ -17,7 +16,6 @@ export class InvoiceHistory extends Component {
             icon_color: "warning",
             title: "title ",
         }
-        global.MODAL(modal)
     }
 
     render() {
