@@ -1,0 +1,55 @@
+.paginate-input {
+  border-color: #cad9e4 !important;
+  /* border-radius: 25px; */
+  font-family: "Roboto", "sans-serif" !important;
+  font-size: 13px;
+  width: 40px;
+  outline: 0;
+  border-radius: 0.2rem;
+  height: 23px !important;
+}
+
+.paginate{
+  position: relative;
+  border-color: #008cff!important;
+  /* background-color: #008cff; */
+  border-top-right-radius: 25px;
+  border-bottom-right-radius: 25px;
+}
+
+.paginate input::-webkit-outer-spin-button,
+.paginate input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.btn-group{
+  margin-top: 4px;
+}
+.f-size{
+  font-size: 15px;
+}
+.float-left{
+  margin-top: 4px;
+}
+.f-size{
+  color: #4B4E50;
+}
+.fa-chevron-right{
+  cursor: pointer;
+  font-size: 12px;
+}
+.dt-active{
+  /* background-color: #034EA3;  */
+  opacity: 0.5;
+}
+.cursor-pointer{
+  cursor: pointer;
+  -webkit-user-select: none;  
+  -moz-user-select: none;    
+  -ms-user-select: none;     
+  user-select: none; 
+}
+
+.cursor-center{
+  text-align: center;
+}
