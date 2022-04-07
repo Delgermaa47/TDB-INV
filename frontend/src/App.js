@@ -10,12 +10,13 @@
 
 
 
-import React, {Component, Fragment} from 'react'
+import React, {Component} from 'react'
 import {
   Routes, Route
 } from "react-router-dom";
 
 import { InvoiceList } from './components/invoice_list';
+import { InvoiceCreate } from './components/invoice_create';
 
 import './App.css';
 
@@ -31,6 +32,14 @@ import './App.css';
         return (
             <div className="container">
                <Routes>
+                   <Route 
+                        path="/"
+                        element={<InvoiceList/>}
+                    />
+                    <Route 
+                        path="/invoice-create/"
+                        element={<InvoiceCreate/>}
+                    />
                </Routes>
             </div>
         );
