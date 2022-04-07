@@ -28,7 +28,7 @@ body {
     background: rgb(167, 158, 158);
     border-radius: 5px;
     position: absolute;
-    width: 30%;
+    width: 35%;
     transition: all 5s ease-in-out;
     z-index: 1 !important;
     box-shadow: 0 2px 15px 0 black;
