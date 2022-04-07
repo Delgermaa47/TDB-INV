@@ -29,6 +29,10 @@
         'delete-invoice' => "/delete-invoice/(?'id'\d+)",
     );
 
+    $button_requests = array( 
+        'open-modal' => "/button/open-modal",
+    );
+
     $post_requests = array(
         'invoice-list' => "/api/invoice-list",
         'invoice-save' => "/api/invoice-save",
@@ -43,6 +47,11 @@
             require_once ROOT."\\inc\\components\\api_request.php";
             $req = new ApiList(); 
         }
+        elseif(strstr($uri, "button")) {
+            $request_rules = $button_requests;
+            require_once ROOT."\\inc\\components\\button_request.php";
+            $req = new ButtonList(); 
+        }
         else {
             $request_rules = $page_requests;
             require_once ROOT."\\inc\\components\\page_request.php";
@@ -54,7 +63,7 @@
                 $req->request_name = $action_name;
                 $req->params = $params;
                 $res = $req->request_res();
-                if (strstr($uri, "api")) {
+                if (strstr($uri, "api") || strstr($uri, "button")) {
                     header('Access-Control-Allow-Origin: *');
                     header('Content-Type: application/json');
                     echo $res;

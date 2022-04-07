@@ -1,3 +1,4 @@
+
 <?php
     require_once ROOT."\\inc\\components\\sub_components\\popup.php";
 
@@ -80,9 +81,7 @@
             $recieve_data = $this->_append_datas($rec_keys);
             $both_data = $this->_append_datas($both_keys);
 
-            $new_bla = new PopUP();
-            $new_bla->status = true;
-            // enableBlur
+            
             echo '
             <div class="container text-primary ">
                 <form action="'.$this->action_uri.'" method="POST">
@@ -92,12 +91,14 @@
                             '.$sender_data.'
                         </div>
                         <div class="form-row col-md-12 mt-4">
-                            <a type="button" action="">invoice</a>
+                            <button type="button" onclick="clicked()" role="button">
+                                invoice
+                            </button>
                         </div>
                         <div class="form-row col-md-12 mt-4">
                             '.$both_data.'
                         </div>
-                        
+                        <input type="button" id="result" value="Send">
                         <button
                             type="submit"
                             class="btn btn btn-primary col-md-6 mt-4"
@@ -108,7 +109,16 @@
                 </form>
             </div>';
         }
-        
     }
-    
 ?>
+<script>
+    function clicked() {
+        $.post('/button/open-modal',  
+        { datas: {"success": false}}, 
+        function(data, status, xhr) {
+            // $('p').append('status: ' + status + ', data: ' + data);
+        }).done(function(result) { $("#results").html(result).hide().fadeIn();})
+        .fail(function(jqxhr, settings, ex) { alert('failed, ' + ex); });
+    }
+
+</script>
