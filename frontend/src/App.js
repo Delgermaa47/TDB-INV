@@ -17,6 +17,8 @@ import {
 
 import { InvoiceList } from './components/invoice_list';
 import { InvoiceCreate } from './components/invoice_create';
+import { InvoiceHistory } from './components/invoice_history';
+
 
 import './App.css';
 
@@ -37,8 +39,12 @@ import './App.css';
                         element={<InvoiceList/>}
                     />
                     <Route 
-                        path="/invoice-create/"
+                        path="/invoice-save"
                         element={<InvoiceCreate/>}
+                    />
+                    <Route 
+                        path="/invoice-history"
+                        element={<InvoiceHistory/>}
                     />
                </Routes>
             </div>
