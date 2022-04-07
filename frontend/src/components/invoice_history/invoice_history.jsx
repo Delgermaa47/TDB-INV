@@ -16,7 +16,9 @@ export class InvoiceHistory extends Component {
             icon_color: "warning",
             title: "title ",
         }
+        console.log(MODAL)
     }
+
 
     render() {
         return (
