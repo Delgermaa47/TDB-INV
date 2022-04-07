@@ -7,6 +7,11 @@ export class InvoiceHistory extends Component {
         super(props)
         this.state={
         }
+        
+    }
+
+    componentDidMount() {
+        global
     }
 
     render() {

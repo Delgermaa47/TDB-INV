@@ -7,7 +7,8 @@ import {
 import { InvoiceCreate } from './components/invoice_create/invoice_create';
 import { InvoiceHistory } from './components/invoice_history/invoice_history';
 import { InvoiceList } from './components/invoice_list/invoice_list';
-
+import { DisplayNotif } from './inc/Notification';
+import DisplayModal from './inc/Modal/DisplayModal';
 import './App.css';
 
  export default class App extends Component {
@@ -16,11 +17,24 @@ import './App.css';
         super(props)
         this.state={
         }
+        this.getModalFunc = this.getModalFunc.bind(this)
+        this.getNotifFunc = this.getNotifFunc.bind(this)
+
+    }
+
+    getModalFunc(setModal) {
+        global.MODAL = setModal 
+    }
+
+    getNotifFunc(setNotif) {
+        global.NOTIF = setNotif
     }
 
     render() {
         return (
             <div className="container">
+                <DisplayModal getModalFunc={this.getModalFunc}/>
+                <DisplayNotif getNotifFunc={this.getNotifFunc}/>
                <Routes>
                    <Route 
                         path="/"
