@@ -11,7 +11,13 @@ export class InvoiceHistory extends Component {
     }
 
     componentDidMount() {
-        global
+        const modal = {
+            modal_status: 'open',
+            modal_icon: 'fa fa-info-circle',
+            icon_color: "warning",
+            title: "title ",
+        }
+        global.MODAL(modal)
     }
 
     render() {
