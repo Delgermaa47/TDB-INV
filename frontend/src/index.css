@@ -11,7 +11,7 @@ body {
     -moz-osx-font-smoothing: grayscale;
 }
 
-.inv-table td{
+/* .inv-table td{
     color:darkblue;
 }
 
@@ -50,4 +50,4 @@ body {
   
 .disableBlur {
 filter: blur(0);
-}
+} */
