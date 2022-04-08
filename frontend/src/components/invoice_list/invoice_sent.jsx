@@ -23,7 +23,7 @@ export default class InvoiceSend extends Component {
                 {
                     "title": 'Засах',
                     "text": '', "icon":
-                    'fa fa-pencil-square-o text-success',
+                    'fa fa-pencil text-success',
                     "action": (values) => this.go_link(values),
                 },
                 {

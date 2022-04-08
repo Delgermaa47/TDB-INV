@@ -56,7 +56,6 @@ export class PortalDataTable extends Component {
         return service
             .list(жагсаалтын_холбоос, page, per_page, query, sort_name, custom_query)
             .then(page => {
-                console.log("page", page)
                 this.setState({ items: page.items, items_length: page.items.length, уншиж_байгаа_эсэх: false, start_index: page.start_index, хувьсах_талбаруудын_өгөгдлүүд: page.items_evl, нэмэгдэл_өгөгдөл: page.added_datas })
                 return page
             })

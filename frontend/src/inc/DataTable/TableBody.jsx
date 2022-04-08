@@ -59,7 +59,7 @@ export class TableBody extends Component {
                                         ?
                                             item.text
                                         :
-                                            <i icon={item.icon} hover_color={'white'}></i>
+                                            <i className={item.icon}></i>
                                     }
                                 </a>
                         }
