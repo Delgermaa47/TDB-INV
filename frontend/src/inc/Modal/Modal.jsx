@@ -36,7 +36,7 @@ export default class Modal extends Component {
                     this.setState({ modal_status: 'initial' })
                 })
             }
-        // Modal default value function(Хэрэв has_button==false байвал ModalAlert горимоор ажиллана):
+        // Modal default value function(Хэрэв has_button===false байвал ModalAlert горимоор ажиллана):
             modalChange(modal_icon, modal_bg, icon_color, title, text, has_button, actionNameBack, actionNameDelete, modalAction, modalClose) {
                 this.setState(
                     {
@@ -71,13 +71,13 @@ export default class Modal extends Component {
     */
 
     componentDidMount() {
-        if (this.state.modal_status == 'initial') {
+        if (this.state.modal_status === 'initial') {
             this.handleOpen()
         }
     }
 
     componentDidUpdate(prevProps) {
-        if (this.props.modal_status != prevProps.modal_status) {
+        if (this.props.modal_status !== prevProps.modal_status) {
             if (['initial', 'open'].includes(this.props.modal_status)) {
                 this.handleOpen()
             }
@@ -110,7 +110,6 @@ export default class Modal extends Component {
     }
 
     modalClose() {
-        const { has_button } = this.props
         this.setState({ modal_status: 'closing' })
         setTimeout(() => {
             this.setState({ modal_status: 'closed' })
@@ -129,15 +128,15 @@ export default class Modal extends Component {
 
         const className =
             "modal fade" +
-            (modal_status == 'initial' ? ' d-block' : '') +
-            (modal_status == 'open' ? ' show d-block' : '') +
-            (modal_status == 'closing' ? ' d-block' : '') +
-            (modal_status == 'closed' ? ' d-none' : '')
+            (modal_status === 'initial' ? ' d-block' : '') +
+            (modal_status === 'open' ? ' show d-block' : '') +
+            (modal_status === 'closing' ? ' d-block' : '') +
+            (modal_status === 'closed' ? ' d-none' : '')
 
         const classNameBackdrop =
             "modal-backdrop fade" +
-            (modal_status == 'open' ? ' show' : '') +
-            (modal_status == 'closed' ? ' d-none' : '')
+            (modal_status === 'open' ? ' show' : '') +
+            (modal_status === 'closed' ? ' d-none' : '')
 
             return (
             <Fragment>
@@ -163,13 +162,13 @@ export default class Modal extends Component {
                             {
                                 this.props.text
                                 ?
-                                    <div className="modal-body text-wrap text-center ml-2 mr-2 ">
+                                    <div className="modal-body text-wrap text-center ml-2 mr-2 text-dark">
                                         {
-                                            typeof(this.props.text) == 'string'
+                                            typeof(this.props.text) === 'string'
                                             ?
                                                 <small className=''>{this.props.text}</small>
                                             :
-                                            typeof(this.props.text) == 'function'
+                                            typeof(this.props.text) === 'function'
                                             ?
                                                 <this.props.text/>
                                             :
@@ -198,7 +197,7 @@ export default class Modal extends Component {
                                 :
                                     this.props.text
                                     ?
-                                        typeof(this.props.text) == 'string'
+                                        typeof(this.props.text) === 'string'
                                         ?
                                             <div className="modal-body mt-3"></div>
                                         :

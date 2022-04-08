@@ -1,4 +1,5 @@
 import React, {Component} from 'react'
+import Modal from '../../inc/Modal/Modal'
 
 
 export class InvoiceCreate extends Component {
@@ -10,9 +11,22 @@ export class InvoiceCreate extends Component {
     }
 
     render() {
+        const modal_info = {
+            modal_status: 'open',
+            modal_icon: 'fa fa-info-circle',
+            icon_color: "warning",
+            title: "title ",
+            text: "bla ",
+        }
         return (
             <div className="row">
-               <label>created</label>
+               <Modal
+                    modal_status={'open'}
+                    modal_icon={modal_info.modal_icon}
+                    icon_color={modal_info.icon_color}
+                    title={modal_info.title}
+                    text={modal_info.text}
+                />
             </div>
         );
     }
