@@ -51,7 +51,12 @@
         }
 
         protected function inv_list() {
-            write_to_file(json_encode($_POST));
+            $page = get_or_null($_POST['page']);
+            $perpage = get_or_null($_POST['perpage']);
+            $sort_name = get_or_null($_POST['sort_name']);
+            $custom_query = get_or_null($_POST['custom_query']);
+            write_to_file($page, $sort_name);
+            
             // return _select($query, []);
             return json_encode([
                 "succes"=>true,
