@@ -107,7 +107,7 @@ export class PortalDataTable extends Component {
                         null
                     :
                         <div className="row">
-                            {
+                            {/* {
                                 хайлт === "open" && has_search_button
                                 ?
                                     <div className="search-bar">
@@ -137,28 +137,7 @@ export class PortalDataTable extends Component {
                                         />
                                         <a><i className="icon-magnifier"></i></a>
                                     </div>
-                            }
-                            {
-                                max_data === 'open'
-                                &&
-                                    <div className="col-xl-4 col-sm-4">
-                                        <div className="row text-right">
-                                            <div className="col">
-                                                <p className={`text-right mt-1 text-${color}`}>Өгөгдлийн хэмжээ:&nbsp;</p>
-                                            </div>
-                                            <div className="row">
-                                                <select className="form-control form-control-sm" value={per_page} onChange={(e) => this.setState({per_page: e.target.value})}>
-                                                    <option value="10">10</option>
-                                                    <option value="20">20</option>
-                                                    <option value="30">30</option>
-                                                    <option value="40">40</option>
-                                                    <option value="50">50</option>
-                                                    <option value="100">100</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-                            }
+                            } */}
                             {
                                 ( нэгдсэн_хүсэлт || нэмэх_товч )
                                 &&
