@@ -54,13 +54,14 @@ export class PortalDataTable extends Component {
 
     paginate (page, query, sort_name, per_page, custom_query) {
         const { жагсаалтын_холбоос } = this.state
-        this.setState({ уншиж_байгаа_эсэх: true })
-        return service
-            .list(жагсаалтын_холбоос, page, per_page, query, sort_name, custom_query)
-            .then(page => {
-                this.setState({ items: page.items, items_length: page.items.length, уншиж_байгаа_эсэх: false, start_index: page.start_index, хувьсах_талбаруудын_өгөгдлүүд: page.items_evl, нэмэгдэл_өгөгдөл: page.added_datas })
-                return page
-            })
+        console.log("жагсаалтын_холбоос",жагсаалтын_холбоос)
+        // this.setState({ уншиж_байгаа_эсэх: true })
+        // return service
+        //     .list(жагсаалтын_холбоос, page, per_page, query, sort_name, custom_query)
+        //     .then(page => {
+        //         this.setState({ items: page.items, items_length: page.items.length, уншиж_байгаа_эсэх: false, start_index: page.start_index, хувьсах_талбаруудын_өгөгдлүүд: page.items_evl, нэмэгдэл_өгөгдөл: page.added_datas })
+        //         return page
+        //     })
     }
 
     handleSearch(field, e) {
@@ -248,7 +249,7 @@ export class PortalDataTable extends Component {
                                 </tbody>
                             </table>
                         </div>
-                        <Pagination
+                        {/* <Pagination
                             refresh={this.state.refresh}
                             current_page={current_page}
                             custom_query={this.props.custom_query}
@@ -258,7 +259,7 @@ export class PortalDataTable extends Component {
                             per_page={per_page}
                             color={color}
                             урт_хуудаслалт={урт_хуудаслалт}
-                        />
+                        /> */}
                     </div>
                 </div>
            </div>

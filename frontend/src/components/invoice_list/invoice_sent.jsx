@@ -1,6 +1,7 @@
 import React, { Component } from "react"
 import {PortalDataTable} from '../../inc/DataTable'
 import Modal from "../../inc/Modal/Modal"
+import { service } from "../service"
 
 export default class InvoiceSend extends Component {
 
@@ -78,6 +79,7 @@ export default class InvoiceSend extends Component {
 
     render() {
         const { талбарууд, жагсаалтын_холбоос, хувьсах_талбарууд, нэмэлт_талбарууд, refresh, values, modal_status } = this.state
+        console.log("modal status", modal_status)
         return (
             <div className="row">
                 <div className="col-lg-12">
@@ -89,20 +91,25 @@ export default class InvoiceSend extends Component {
                                 уншиж_байх_үед_зурвас={"Уншиж байна"}
                                 хувьсах_талбарууд={хувьсах_талбарууд}
                                 нэмэлт_талбарууд={нэмэлт_талбарууд}
-                                нэмэх_товч={'/back/wms/үүсгэх/'}
+                                нэмэх_товч={'/invoice-save'}
                                 refresh={refresh}
                             />
                         </div>
                     </div>
                 </div>
-                <Modal
-                    text={`Та "${values.name}" нэртэй тохиргоог устгахдаа итгэлтэй байна уу?`}
-                    title={'Тохиргоог устгах'}
-                    model_type_icon={'success'}
-                    status={modal_status}
-                    modalClose={this.handleModalClose}
-                    modalAction={this.handleRemove}
-                />
+                {
+                    modal_status == 'open'
+                    &&
+                    <Modal
+                        text={`Та "${values.name}" нэртэй тохиргоог устгахдаа итгэлтэй байна уу?`}
+                        title={'Тохиргоог устгах'}
+                        model_type_icon={'success'}
+                        status={modal_status}
+                        modalClose={this.handleModalClose}
+                        modalAction={this.handleRemove}
+                    />
+                }
+                
             </div>
         )
     }
