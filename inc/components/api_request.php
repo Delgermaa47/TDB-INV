@@ -51,7 +51,7 @@
         }
 
         protected function inv_list() {
-            // write_to_file(json_encode($_POST));
+            write_to_file(json_encode($_POST));
             // return _select($query, []);
             return json_encode([
                 "succes"=>true,

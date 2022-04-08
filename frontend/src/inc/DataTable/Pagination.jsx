@@ -8,7 +8,7 @@ export class Pagination extends Component {
         super(props)
         this.state = {
             items:[],
-            page: props.current_page,
+            page: props.current_page || 1,
             total_page: props.total_page,
             is_loading: false,
             query: props.query,
@@ -30,7 +30,7 @@ export class Pagination extends Component {
         this.loadPage(current_page, this.state.query, this.state.sort_name, this.state.per_page, this.props.custom_query)
     }
 
-    componentDidMount() {3206
+    componentDidMount() {
         this.loadPage(this.state.page, this.state.query, this.state.sort_name, this.state.per_page, this.props.custom_query)
     }
 
@@ -107,7 +107,6 @@ export class Pagination extends Component {
 
     render() {
         const {page, total_page} = this.state
-        const pages = []
         const { color, урт_хуудаслалт } = this.props
         return (
             <div className="row">
