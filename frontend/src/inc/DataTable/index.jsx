@@ -3,8 +3,9 @@ import {service} from "./service"
 import {TableBody} from './TableBody'
 import { Pagination } from "./Pagination"
 import {NavLink} from "react-router-dom"
-import Loader from "@utils/Loader"
+// import Loader from "@utils/Loader"
 
+import Loader from '../Loader'
 
 export class PortalDataTable extends Component {
 

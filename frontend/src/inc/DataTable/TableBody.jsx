@@ -1,6 +1,4 @@
 import React, { Component } from "react"
-import {GPIcon} from "@utils/Tools"
-
 
 export class TableBody extends Component {
 
@@ -61,7 +59,7 @@ export class TableBody extends Component {
                                         ?
                                             item.text
                                         :
-                                            <GPIcon icon={item.icon} hover_color={'white'}></GPIcon>
+                                            <i icon={item.icon} hover_color={'white'}></i>
                                     }
                                 </a>
                         }

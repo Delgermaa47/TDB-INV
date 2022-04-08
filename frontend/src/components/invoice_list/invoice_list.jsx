@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-
+import InvoiceSend from './invoice_sent';
 
 export class InvoiceList extends Component {
 
@@ -12,7 +12,8 @@ export class InvoiceList extends Component {
     render() {
         return (
             <div className="row">
-               <label>bla</label>
+               <label>Илгээсэн</label>
+               <InvoiceSend />
             </div>
         );
     }

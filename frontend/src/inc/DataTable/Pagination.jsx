@@ -1,4 +1,3 @@
-import { set } from "ol/transform"
 import React, { Component } from "react"
 import './style.css'
 

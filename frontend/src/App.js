@@ -43,6 +43,10 @@ import { InvoiceList } from './components/invoice_list/invoice_list';
                         path="/invoice-save"
                         element={<InvoiceCreate/>}
                     />
+                     <Route 
+                        path="/invoice-edit/:id/"
+                        element={<InvoiceCreate/>}
+                    />
                     <Route 
                         path="/invoice-history"
                         element={<InvoiceHistory/>}
