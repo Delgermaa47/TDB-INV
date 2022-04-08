@@ -15,7 +15,7 @@
     }
     else {
         
-       $conn = oci_connect($db_user, $db_pass, $db_host.'/'.$db_name);
+       $conn = oci_connect($db_user, $db_pass, $db_host.'/'.$db_name, 'AL32UTF8');
 
        if (!$conn) {
            $e = oci_error();
