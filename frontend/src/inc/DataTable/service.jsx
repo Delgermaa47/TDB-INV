@@ -5,13 +5,11 @@ export const service = {
 }
 
 function list(жагсаалтын_холбоос, page, perpage, query, sort_name, custom_query){
+    var form_data = new FormData();  
+    form_data.append("name", "deegi")
     const requestOptions = {
         method: 'POST',
-        // headers: { 'Content-Type': 'application/json' },
-        // ...getPostOptions(),
-        // body: JSON.stringify({ page, perpage, query, sort_name, custom_query }),
-        // body: JSON.stringify({"bla": true}),
-        body: JSON.stringify({ title: 'React POST Request Example' })
+        body: form_data
     }
     return fetch(жагсаалтын_холбоос, requestOptions).then(handleResponse)
 }
