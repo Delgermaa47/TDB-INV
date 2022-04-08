@@ -52,8 +52,14 @@
         }
 
         protected function inv_list() {
-            $query = $_POST['query'];
-            return _select($query, []);
+            $query = get_or_null($_POST['query']);
+            write_to_file($query);
+            // return _select($query, []);
+            return [
+                "succes"=>true,
+                "page"=>1,
+                "items"=>[]
+            ];
         }
 
         protected function inv_detail() {

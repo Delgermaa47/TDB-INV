@@ -33,18 +33,12 @@ export function handleResponse(response) {
 export function getPostOptions() {
     return {
         method: 'POST',
-        headers: {
-            'X-Requested-With': 'XMLHttpRequest',
-            'X-CSRFToken': getCookie('csrftoken'),
-        },
+        headers: { 'Content-Type': 'application/json' }
     }
 }
 
 export function getGetOptions() {
     return {
         method: 'GET',
-        headers: {
-            'X-Requested-With': 'XMLHttpRequest',
-        },
     }
 }

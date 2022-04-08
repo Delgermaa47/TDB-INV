@@ -36,6 +36,7 @@
     );
     
     $request_method = $_SERVER['REQUEST_METHOD'];
+    write_to_file('yutai ch irsen'.$uri.$request_method);
     if (in_array($request_method, ['GET', 'POST'])) {
 
         if (strstr($uri, "api")) {
