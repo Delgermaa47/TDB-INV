@@ -10,10 +10,16 @@ export class InvoiceList extends Component {
     }
 
     render() {
-        return (
-            <div className="row">
-               <label>Илгээсэн</label>
-               <InvoiceSend />
+    return (
+            <div className='card'>
+                <div className="card-body">
+                    <div className="row">
+
+                    </div>
+                    <label className='text-dark text-uppercase font-weight-bold my-4'>Илгээсэн</label>
+                    <InvoiceSend /> 
+                </div>
+                
             </div>
         );
     }

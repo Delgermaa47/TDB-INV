@@ -79,7 +79,6 @@ export default class InvoiceSend extends Component {
 
     render() {
         const { талбарууд, жагсаалтын_холбоос, хувьсах_талбарууд, нэмэлт_талбарууд, refresh, values, modal_status } = this.state
-        console.log("modal status", modal_status)
         return (
             <div className="row">
                 <div className="col-lg-12">
@@ -91,7 +90,6 @@ export default class InvoiceSend extends Component {
                                 уншиж_байх_үед_зурвас={"Уншиж байна"}
                                 хувьсах_талбарууд={хувьсах_талбарууд}
                                 нэмэлт_талбарууд={нэмэлт_талбарууд}
-                                нэмэх_товч={'/invoice-save'}
                                 refresh={refresh}
                             />
                         </div>
