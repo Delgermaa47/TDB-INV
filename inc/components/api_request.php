@@ -55,14 +55,22 @@
             $perpage = get_or_null($_POST['perpage']);
             $sort_name = get_or_null($_POST['sort_name']);
             $custom_query = get_or_null($_POST['custom_query']);
-            write_to_file($page, $sort_name);
-            
-            // return _select($query, []);
+
+            // vbismiddle.invoicesent
+            $query = '
+                select 
+                    *
+                from 
+                gb.cust
+                FETCH NEXT 20 ROWS ONLY
+           
+            ';
+            $res = _select($query, []);
             return json_encode([
                 "succes"=>true,
                 "start_index"=>1,
                 "page"=>1,
-                "items"=>[]
+                "items"=>json_decode($res)
             ]);
         }
 
@@ -79,7 +87,8 @@
             
             $params['$id'] = $request_param_id;
             // $params['$custno'] = check_string('90400005635');
-            return json_decode(_select($query, $params), true);
+            // return json_decode(_select($query, $params), true);
+            return _select($query, $params);
         }
 
         protected function inv_sent_delete() {

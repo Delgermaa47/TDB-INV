@@ -12,11 +12,12 @@ export default class InvoiceSend extends Component {
             жагсаалтын_холбоос: 'http://172.26.153.11/api/invoice-list',
             талбарууд: [
                 {'field': 'invno', "title": '№'},
+                {'field': 'custno', "title": 'Хүлээн авагч'},
                 {'field': 'accntno', "title": 'Хүлээн авах данс'},
                 {'field': 'amount', "title": 'Нийт дүн'},
                 {'field': 'invstatus', "title": 'Төлөв'},
                 {'field': 'invdesc', "title": 'Тайлбар'},
-                {'field': 'created_at', "title": 'Хүлээн'},
+                {'field': 'created_at', "title": 'Огноо'},
             ],
             нэмэлт_талбарууд: [
                 {
