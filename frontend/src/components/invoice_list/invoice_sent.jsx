@@ -52,7 +52,7 @@ export default class InvoiceSend extends Component {
     }
 
     go_link(values){
-        this.props.history.push(`/invoice-edit/${values.id}/`)
+        this.props.history.push(`/invoice-edit/${values.invno}/`)
     }
 
     handleRemove() {
