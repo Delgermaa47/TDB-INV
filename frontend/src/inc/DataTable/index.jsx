@@ -3,8 +3,6 @@ import {service} from "./service"
 import {TableBody} from './TableBody'
 import { Pagination } from "./Pagination"
 import {NavLink} from "react-router-dom"
-// import Loader from "@utils/Loader"
-
 import Loader from '../Loader'
 
 export class PortalDataTable extends Component {
@@ -54,7 +52,6 @@ export class PortalDataTable extends Component {
 
     paginate (page, query, sort_name, per_page, custom_query) {
         const { жагсаалтын_холбоос } = this.state
-        console.log("жагсаалтын_холбоос",жагсаалтын_холбоос)
         this.setState({ уншиж_байгаа_эсэх: true })
         return service
             .list(жагсаалтын_холбоос, page, per_page, query, sort_name, custom_query)
@@ -105,13 +102,13 @@ export class PortalDataTable extends Component {
         return (
             <div>
                 {
-                    хайлт == "closed" && нэмэх_товч == '' && max_data == 'closed'
+                    хайлт === "closed" && нэмэх_товч === '' && max_data === 'closed'
                     ?
                         null
                     :
                         <div className="row">
                             {
-                                хайлт == "open" && has_search_button
+                                хайлт === "open" && has_search_button
                                 ?
                                     <div className="search-bar">
                                         <input
@@ -142,7 +139,7 @@ export class PortalDataTable extends Component {
                                     </div>
                             }
                             {
-                                max_data == 'open'
+                                max_data === 'open'
                                 &&
                                     <div className="col-xl-4 col-sm-4">
                                         <div className="row text-right">
@@ -249,7 +246,7 @@ export class PortalDataTable extends Component {
                                 </tbody>
                             </table>
                         </div>
-                        <Pagination
+                        {/* <Pagination
                             refresh={this.state.refresh}
                             current_page={current_page}
                             custom_query={this.props.custom_query}
@@ -259,7 +256,7 @@ export class PortalDataTable extends Component {
                             per_page={per_page}
                             color={color}
                             урт_хуудаслалт={урт_хуудаслалт}
-                        />
+                        /> */}
                     </div>
                 </div>
            </div>
