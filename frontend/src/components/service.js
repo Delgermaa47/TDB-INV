@@ -5,5 +5,5 @@ export const service = {
 
 function remove(invno) {
     const opts = {...getGetOptions()}
-    return fetch(`http://172.26.153.11/apidelete-sent-invoice/${invno}/`, opts).then(handleResponse)
+    return fetch(`http://172.26.153.11/api/delete-sent-invoice/${invno}/`, opts).then(handleResponse)
 }
