@@ -84,6 +84,7 @@
                             <label>Хүлээн авагч</label>
                             '.$recieve_data.'
                         </div>
+                        <button class="btn btn-primary" type="button" onclick="bla()">click</button>
                         <div class="form-row col-md-12 mt-4">
                             '.$both_data.'
                         </div>
@@ -102,3 +103,17 @@
     }
     
 ?>
+<script>
+    function bla() {
+        $url = "/api/invoice-list"
+
+        $.post($url,   // url
+       { myData: 'This is my data.' }, // data to be submit
+       function(data, status, jqXHR) {// success callback
+                $('p').append('status: ' + status + ', data: ' + data);
+        })
+
+    }
+
+
+</script>

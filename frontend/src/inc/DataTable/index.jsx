@@ -225,7 +225,7 @@ export class PortalDataTable extends Component {
                                 </tbody>
                             </table>
                         </div>
-                        {/* <Pagination
+                        <Pagination
                             refresh={this.state.refresh}
                             current_page={current_page}
                             custom_query={this.props.custom_query}
@@ -235,7 +235,7 @@ export class PortalDataTable extends Component {
                             per_page={per_page}
                             color={color}
                             урт_хуудаслалт={урт_хуудаслалт}
-                        /> */}
+                        />
                     </div>
                 </div>
            </div>

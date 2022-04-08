@@ -45,21 +45,20 @@
 
                 case 'insert-inv-status':
                     return $this->insert_invoice_status();
-                    
             }
 
             return [];
         }
 
         protected function inv_list() {
-            $query = get_or_null($_POST['query']);
-            write_to_file($query);
+            // write_to_file(json_encode($_POST));
             // return _select($query, []);
-            return [
+            return json_encode([
                 "succes"=>true,
+                "start_index"=>1,
                 "page"=>1,
                 "items"=>[]
-            ];
+            ]);
         }
 
         protected function inv_detail() {
