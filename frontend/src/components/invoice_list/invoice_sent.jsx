@@ -107,14 +107,9 @@ export default class InvoiceSend extends Component {
                         model_type_icon={'success'}
                         status={modal_status}
                         has_button={ true }
-                        // actionNameBack={ this.state.actionNameBack }
-                        // actionNameDelete={ this.state.actionNameDelete }
                         modalClose={this.handleModalClose}
                         modalAction={this.handleRemove}
                     />
-
-
-                
                 }
                 
             </div>
