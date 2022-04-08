@@ -56,13 +56,13 @@
             $sort_name = get_or_null($_POST['sort_name']);
             $custom_query = get_or_null($_POST['custom_query']);
 
-            // vbismiddle.invoicesent
+            
             $query = '
                 select 
                     *
                 from 
-                gb.cust
-                FETCH NEXT 20 ROWS ONLY
+                vbismiddle.invoicesent
+                fetch next 20 rows only
            
             ';
             $res = _select($query, []);
@@ -70,7 +70,7 @@
                 "succes"=>true,
                 "start_index"=>1,
                 "page"=>1,
-                "items"=>json_decode($res)
+                "items"=>json_decode($res, true)
             ]);
         }
 

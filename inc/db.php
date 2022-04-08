@@ -28,6 +28,7 @@
     function fetch_rows($stid) {
         $res = [];
         while (($row = oci_fetch_array($stid, OCI_ASSOC+OCI_RETURN_LOBS)) != false) {
+            $row = array_change_key_case($row, CASE_LOWER);
             array_push($res, $row);
         }
         return $res;
