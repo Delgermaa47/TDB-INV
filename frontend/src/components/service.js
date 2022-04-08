@@ -1,16 +1,9 @@
 import { handleResponse, getGetOptions } from "../inc/helpers/service"
 export const service = {
-    detail_list,
-    sub_detail_list
+    remove,
 }
 
-function detail_list(root_id, pk) {
+function remove(invno) {
     const opts = {...getGetOptions()}
-return fetch(`/api/${root_id}/detail_list/${pk}/`, opts).then(handleResponse)
-}
-
-function sub_detail_list(pk) {
-    const opts = {...getGetOptions()}
-return fetch(`/api/sub_detail_list/${pk}/`, opts).then(handleResponse)
-
+    return fetch(`http://172.26.153.11/apidelete-sent-invoice/${invno}/`, opts).then(handleResponse)
 }

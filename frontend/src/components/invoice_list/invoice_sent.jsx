@@ -22,8 +22,8 @@ export default class InvoiceSend extends Component {
             нэмэлт_талбарууд: [
                 {
                     "title": 'Засах',
-                    "text": '', "icon":
-                    'fa fa-pencil text-success',
+                    "text": '', 
+                    "icon": 'fa fa-pencil text-success',
                     "action": (values) => this.go_link(values),
                 },
                 {
@@ -57,7 +57,7 @@ export default class InvoiceSend extends Component {
 
     handleRemove() {
         const {values} = this.state
-        service.remove(values.id).then(({success}) => {
+        service.remove(values.invno).then(({success}) => {
             if (success) {
                 this.setState({refresh: !this.state.refresh})
                 this.handleModalClose()
@@ -101,13 +101,20 @@ export default class InvoiceSend extends Component {
                     modal_status == 'open'
                     &&
                     <Modal
-                        text={`Та "${values.name}" нэртэй тохиргоог устгахдаа итгэлтэй байна уу?`}
+                        text={`Та "${values.invno}" дугаартай нэхэмжлэлийг устгахдаа итгэлтэй байна уу?`}
                         title={'Тохиргоог устгах'}
+                        modal_icon={'text-warning fa fa-warning'}
                         model_type_icon={'success'}
                         status={modal_status}
+                        has_button={ true }
+                        // actionNameBack={ this.state.actionNameBack }
+                        // actionNameDelete={ this.state.actionNameDelete }
                         modalClose={this.handleModalClose}
                         modalAction={this.handleRemove}
                     />
+
+
+                
                 }
                 
             </div>

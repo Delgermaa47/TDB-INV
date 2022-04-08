@@ -92,15 +92,15 @@
         }
 
         protected function inv_sent_delete() {
-            // delete from vbismiddle.invoicerec where invno= $invno;
             $query = '
                 delete from vbismiddle.invoicesent where invno= $invno
             ';
             $params['$invno'] = $this->params['id'];
             write_to_file($query);
             sql_execute($query, $params);
-            redirect("/");
-            return json_encode('{"success": "true"}');
+            return json_encode([
+                "success"=>true,
+            ]);
         }
 
         protected function inv_rec_delete() {
