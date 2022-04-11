@@ -113,7 +113,7 @@
         protected function inv_save() {
             function _check_datas($arr, $_class) {
                 $_class->requested_arr = $arr; 
-                $required_fields = ["amount", "custno", "handphone", "handphone", "invdesc", "rec_datas", "fname"];
+                $required_fields = ["custno", "handphone", "amount", "account", "invdesc", "rec_datas", "fname"];
                 foreach ($required_fields as $key => $value) {
                     $_class->field_name = $value;
                     $_class->field_value = $arr[$value]; 
