@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import SetFeild from './Fields'
 import RecDataTable from './rec_data_table'
 import Modal from '../../inc/Modal/Modal'
+import Loader from '../../inc/Loader'
 import { CollectRecDatas } from './collect_invoice_datas'
 import { findIndexOfData } from '../../inc/helpers/service'
 import { service } from '../service'
@@ -68,7 +69,9 @@ export class InvoiceCreate extends Component {
                 "account", "handphone", "invdesc"
             ],
             rec_datas: [],
-            modal_status: 'closed'
+            modal_status: 'closed',
+            is_loading: false,
+            modal_title: ''
 
         }
         
@@ -79,8 +82,8 @@ export class InvoiceCreate extends Component {
         this.handleCollectDatas = this.handleCollectDatas.bind(this)
     }
 
-    openInvoiceCollector(datas) {
-        this.setState({modal_status: 'open', modal_text: this.handleCollectDatas})
+    openInvoiceCollector() {
+        this.setState({modal_status: 'open', modal_text: this.handleCollectDatas, modal_text: "Хүлээн авагчийн мэдээлэл цуглуулах"})
     }
 
     addInvoiceRec(datas) {
@@ -130,21 +133,23 @@ export class InvoiceCreate extends Component {
             "rec_datas": rec_datas
         }
         
+        this.setState({is_loading: true})
         service.save_invoice(values).then(({ success, info }) => {
-            this.setState({modal_status: 'open', "modal_text": info})
+            this.setState({modal_status: 'open', "modal_text": info, is_loading: false, modal_title: "Хүсэлт"})
         })
     }
 
     render() {
         const { 
             send_datas, rec_datas, rec_table_header,
-            modal_status, modal_text
+            modal_status, modal_text, is_loading, modal_title
         } = this.state
         return (
             <div className="row">
                 <div className='card'>
                     <div className='card-body'>
                     <div className="container text-primary">
+                        <Loader is_loading={is_loading}/>
                         <div className="row">
                             <div className="form-row col-md-6">
                                 <label className='col-md-12'>Илгээгч</label>
@@ -185,7 +190,7 @@ export class InvoiceCreate extends Component {
                         {
                             <Modal 
                                 modal_status={modal_status}
-                                title={'Хүлээн авагчийн мэдээлэл цуглуулах'}
+                                title={modal_title}
                                 text={modal_text}
                             />
                         }
