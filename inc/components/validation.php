@@ -103,15 +103,15 @@
                 custno=$custno';
             
             $params['$custno'] = $this->field_value;
-            $request_data = json_decode(_select($query, $params), true);
-            if (count($request_data)<1) {
+            $temp_data = json_decode(_select($query, $params), true);
+            if (count($temp_data)<1) {
                 return [
                     "success"=>false,
                     "info"=>'"'.$this->field_value.'" дугаартай харилцагч олдсонгүй',
                 ];
             }
 
-            $cust_phone = get_or_null($request_data[0]['handphone']);
+            $cust_phone = get_or_null($temp_data[0]['handphone']);
 
             if (!$cust_phone) {
                 return [
@@ -127,22 +127,21 @@
         }
 
         protected function check_account_data() {
-            
             $query = '
             select 
                 *
             FROM 
-                gb.cust
+                gb.dpacnt
             where 
                 custno=$custno
                 and
                 acntno=$acntno
             ';
             
-            $params['$acntno'] = $this->field_value;
-            $params['$custno'] = $this->requested_arr['custno'];
-            $request_data = json_decode(_select($query, $params), true);
-            if (count($request_data)<1) {
+            $params['$acntno'] = check_string($this->field_value);
+            $params['$custno'] = check_string($this->requested_arr['custno']);
+            $temp_data = json_decode(_select($query, $params), true);
+            if (count($temp_data)<1) {
                 return [
                     "success"=>false,
                     "info"=>'"'.$this->requested_arr['custno'].'" дугаартай харилцагч дээр "'.$this->field_value.'" дугаартай данс олсонгүй олдсонгүй',

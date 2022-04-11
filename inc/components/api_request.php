@@ -116,7 +116,7 @@
                 $required_fields = ["custno", "handphone", "amount", "account", "invdesc", "rec_datas", "fname"];
                 foreach ($required_fields as $key => $value) {
                     $_class->field_name = $value;
-                    $_class->field_value = $arr[$value]; 
+                    $_class->field_value = get_or_null($arr[$value]); 
                     $check_res = $_class->request_res();
                     if(!$check_res['success']) {
                         return [

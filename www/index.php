@@ -54,7 +54,6 @@
                 $req->request_name = $action_name;
                 $req->params = $params;
                 $res = $req->request_res();
-                // write_to_file("res".$res);
                 if (strstr($uri, "api")) {
                     header('Access-Control-Allow-Origin: *');
                     header('Content-Type: application/json');
