@@ -1,7 +1,8 @@
 import React, {Component} from 'react'
 import SetFeild from './Fields'
 import RecDataTable from './rec_data_table'
-
+import Modal from '../../inc/Modal/Modal'
+import { CollectRecDatas } from './collect_invoice_datas'
 
 export class InvoiceCreate extends Component {
 
@@ -57,14 +58,31 @@ export class InvoiceCreate extends Component {
                 "№", "custno", "fname","amount",
                 "account", "handphone", 
             ],
-              rec_datas: []
+            rec_datas: [],
+            modal_status: 'closed'
 
         }
         
         this.handleOnchange = this.handleOnchange.bind(this)
         this.handleSubmit = this.handleSubmit.bind(this)
+        this.addInvoiceRec = this.addInvoiceRec.bind(this)
+        this.openInvoiceCollector = this.openInvoiceCollector.bind(this)
+        this.handleCollectDatas = this.handleCollectDatas.bind(this)
     }
 
+    openInvoiceCollector(datas) {
+        this.setState({modal_status: 'open'})
+    }
+
+    addInvoiceRec(datas) {
+        var rec_datas = [...this.state.rec_datas]
+        rec_datas.push(datas)
+        this.setState({ rec_datas })
+    }
+
+    handleCollectDatas() {
+        return <CollectRecDatas handleSubmit={this.addInvoiceRec}/>
+    }
 
     handleOnchange(name, e) {
         var name = e.target.name
@@ -84,7 +102,10 @@ export class InvoiceCreate extends Component {
     }
 
     render() {
-        const { send_datas, rec_datas, rec_table_header } = this.state
+        const { 
+            send_datas, rec_datas, rec_table_header,
+            modal_status, 
+        } = this.state
         return (
             <div className="row">
                 <div className='card'>
@@ -107,22 +128,33 @@ export class InvoiceCreate extends Component {
                                 <label>Хүлээн авагч</label>
                                 {
                                     <RecDataTable
-                                        body_datas={rec_datas} 
+                                        body_data={rec_datas} 
                                         table_header={rec_table_header}
                                     />
                                 }
                                 <div className='col-md-12'>
-                                    <button className='btn btn-outline-warning text-dark'>Нэхэмжлэгч нэмэх</button>
+                                    <button
+                                        className='btn btn-outline-warning text-dark'
+                                        onClick={this.openInvoiceCollector}
+                                    >Нэхэмжлэгч нэмэх</button>
                                 </div>
                                 
                             </div>
                             <button
-                                type="submit"
+                                type="button"
                                 className="btn btn btn-primary col-md-6 mt-4"
                             >
                             Хадгалах
                         </button>
                         </div>
+                        {
+                            <Modal 
+                                modal_status={modal_status}
+                                title={'Хүлээн авагчийн мэдээлэл цуглуулах'}
+                                text={this.handleCollectDatas}
+                            />
+                        }
+                        
                     </div>
                     </div>
                 </div>
