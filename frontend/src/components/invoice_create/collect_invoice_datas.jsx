@@ -85,6 +85,7 @@ export class CollectRecDatas extends Component {
 
     handleSubmit() {
         var { send_datas } = this.state
+        var invno_index = findIndexOfData(send_datas, 'key', 'invno')
         var cust_index = findIndexOfData(send_datas, 'key', 'custno')
         var fname_index = findIndexOfData(send_datas, 'key', 'fname')
         var amount_index = findIndexOfData(send_datas, 'key', 'amount')
@@ -92,6 +93,7 @@ export class CollectRecDatas extends Component {
         var handphone_index = findIndexOfData(send_datas, 'key', 'handphone')
 
         var values = {
+            "invno": send_datas[invno_index]['value'], 
             "custno": send_datas[cust_index]['value'], 
             "fname": send_datas[fname_index]['value'],
             "amount": send_datas[amount_index]['value'],

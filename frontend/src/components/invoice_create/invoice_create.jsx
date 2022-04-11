@@ -4,6 +4,7 @@ import RecDataTable from './rec_data_table'
 import Modal from '../../inc/Modal/Modal'
 import { CollectRecDatas } from './collect_invoice_datas'
 import { findIndexOfData } from '../../inc/helpers/service'
+import { service } from '../service'
 
 export class InvoiceCreate extends Component {
 
@@ -79,7 +80,7 @@ export class InvoiceCreate extends Component {
     }
 
     openInvoiceCollector(datas) {
-        this.setState({modal_status: 'open'})
+        this.setState({modal_status: 'open', modal_text: this.handleCollectDatas})
     }
 
     addInvoiceRec(datas) {
@@ -111,6 +112,7 @@ export class InvoiceCreate extends Component {
             rec_datas
         } = this.state
         var cust_index = findIndexOfData(send_datas, 'key', 'custno')
+        var invno_index = findIndexOfData(send_datas, 'key', 'invno')
         var cust_index = findIndexOfData(send_datas, 'key', 'custno')
         var fname_index = findIndexOfData(send_datas, 'key', 'fname')
         var amount_index = findIndexOfData(send_datas, 'key', 'amount')
@@ -118,7 +120,7 @@ export class InvoiceCreate extends Component {
         var handphone_index = findIndexOfData(send_datas, 'key', 'handphone')
 
         var values = {
-            "inv_no": send_datas[cust_index]['value'], 
+            "inv_no": send_datas[invno_index]['value'], 
             "custno": send_datas[cust_index]['value'], 
             "fname": send_datas[fname_index]['value'],
             "amount": send_datas[amount_index]['value'],
@@ -126,13 +128,16 @@ export class InvoiceCreate extends Component {
             "handphone": send_datas[handphone_index]['value'],
             "rec_datas": rec_datas
         }
-        console.log("values", values)
+        
+        service.save_invoice(values).then(({success, info}) => {
+            // this.setState({modal_status: 'open', "modal_text": info})
+        })
     }
 
     render() {
         const { 
             send_datas, rec_datas, rec_table_header,
-            modal_status, 
+            modal_status, modal_text
         } = this.state
         return (
             <div className="row">
@@ -180,7 +185,7 @@ export class InvoiceCreate extends Component {
                             <Modal 
                                 modal_status={modal_status}
                                 title={'Хүлээн авагчийн мэдээлэл цуглуулах'}
-                                text={this.handleCollectDatas}
+                                text={modal_text}
                             />
                         }
                         

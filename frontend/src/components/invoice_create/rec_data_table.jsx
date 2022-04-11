@@ -10,7 +10,6 @@ export default class RecDataTable extends Component {
     
     render() {
         const { table_header, body_data } = this.props
-        console.log("table_header", table_header)
         return (
             <table className="table table_wrapper_table">
                 <thead className={`bg-primary text-primary`}>
@@ -27,9 +26,11 @@ export default class RecDataTable extends Component {
                     body_data.map((item, idx) =>
                     <tr className="tr-hover" key={idx}>
                          {
-                                table_header.map((head, idx) =>
-                                                                
-                                <td >{item[head] || ''}</td>
+                                table_header.map((head, idy) =>
+                                head === '№' ?
+                                <td key={idy}>{idy+1}</td>
+                                :                            
+                                <td key={idy}>{item[head] || ''}</td>
 
                                 )
                          }
