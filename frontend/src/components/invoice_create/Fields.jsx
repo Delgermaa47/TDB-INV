@@ -12,7 +12,7 @@ export default class SetFeild extends Component {
                     name={key}
                     className="form-control mx-2 border border-primary"
                     value={value || ''}
-                    onChange={(e)=>this.props.handleOnchange(name, e)}
+                    onChange={(e)=>this.props.handleOnchange(e)}
                 />
             </div>
         );

@@ -75,9 +75,10 @@ export class InvoiceCreate extends Component {
     }
 
     addInvoiceRec(datas) {
+        console.log("datas", datas)
         var rec_datas = [...this.state.rec_datas]
         rec_datas.push(datas)
-        this.setState({ rec_datas })
+        this.setState({ rec_datas, modal_status: 'closed' })
     }
 
     handleCollectDatas() {
