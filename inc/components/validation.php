@@ -13,6 +13,7 @@
         
         public function request_res() {
             $field_name = strtolower($this->field_name);
+            write_to_file("last field name".$field_name);
             $check_empty_data = $this->check_required_field_empty();
 
             if(!$check_empty_data['success']) {
