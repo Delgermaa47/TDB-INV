@@ -1,7 +1,11 @@
 import React, { Component } from "react"
+import { NavLink } from "react-router-dom";
 import {PortalDataTable} from '../../inc/DataTable'
 import Modal from "../../inc/Modal/Modal"
 import { service } from "../service"
+import Welcomebla from "./bla";
+
+
 
 export default class InvoiceSend extends Component {
 
@@ -24,7 +28,8 @@ export default class InvoiceSend extends Component {
                     "title": 'Засах',
                     "text": '', 
                     "icon": 'fa fa-pencil text-success',
-                    "action": (values) => this.go_link(values),
+                    // "action": (values) => Welcome(values),
+                    "component": Welcomebla,
                 },
                 {
                     "title": 'Устгах',

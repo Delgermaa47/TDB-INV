@@ -3,6 +3,8 @@ import {service} from './service'
 import { PortalDataTable } from "@utils/DataTable"
 import Modal from "../Modal"
 
+
+
 export class WmsList extends Component {
 
     constructor(props) {
