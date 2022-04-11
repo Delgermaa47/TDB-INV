@@ -3,6 +3,7 @@ import SetFeild from './Fields'
 import RecDataTable from './rec_data_table'
 import Modal from '../../inc/Modal/Modal'
 import { CollectRecDatas } from './collect_invoice_datas'
+import { findIndexOfData } from '../../inc/helpers/service'
 
 export class InvoiceCreate extends Component {
 
@@ -98,7 +99,25 @@ export class InvoiceCreate extends Component {
     }
 
     handleSubmit() {
-        
+        var {
+            send_datas,
+            rec_datas
+        } = this.state
+        var cust_index = findIndexOfData(send_datas, 'key', 'custno')
+        var fname_index = findIndexOfData(send_datas, 'key', 'fname')
+        var amount_index = findIndexOfData(send_datas, 'key', 'amount')
+        var account_index = findIndexOfData(send_datas, 'key', 'account')
+        var handphone_index = findIndexOfData(send_datas, 'key', 'handphone')
+
+        var values = {
+            "custno": send_datas[cust_index]['value'], 
+            "fname": send_datas[fname_index]['value'],
+            "amount": send_datas[amount_index]['value'],
+            "account": send_datas[account_index]['value'], 
+            "handphone": send_datas[handphone_index]['value'],
+            "rec_datas": rec_datas
+        }
+        console.log("values", values)
     }
 
     render() {
@@ -143,9 +162,10 @@ export class InvoiceCreate extends Component {
                             <button
                                 type="button"
                                 className="btn btn btn-primary col-md-6 mt-4"
+                                onClick={this.handleSubmit}
                             >
-                            Хадгалах
-                        </button>
+                                Хадгалах
+                            </button>
                         </div>
                         {
                             <Modal 
