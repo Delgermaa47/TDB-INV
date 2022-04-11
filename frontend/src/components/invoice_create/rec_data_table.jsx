@@ -25,8 +25,18 @@ export default class RecDataTable extends Component {
                 {
                     body_data.map((item, idx) =>
                     <tr className="tr-hover" key={idx}>
-                        <td >{item.value}</td>
+                         {
+                                table_header.map((head, idx) =>
+                                                                
+                                <td >{item[head] || ''}</td>
+
+                                )
+                         }
+                      
                     </tr>
+                    // <tr className="tr-hover" key={idx}>
+                    //     <td >{item}</td>
+                    // </tr>
                     )
                 
                 }

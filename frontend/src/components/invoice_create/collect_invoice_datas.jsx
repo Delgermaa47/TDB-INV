@@ -72,7 +72,6 @@ export class CollectRecDatas extends Component {
     }
 
     handleOnchange(e) {
-        console.log("sdfsfds", e.target.name)
         var name = e.target.name
         var value = e.target.value
         var choice_datas = [...this.state.send_datas]
