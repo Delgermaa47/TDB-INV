@@ -131,8 +131,7 @@ export class InvoiceCreate extends Component {
         }
         
         service.save_invoice(values).then(({ success, info }) => {
-            console.log("successs", success, info)
-            // this.setState({modal_status: 'open', "modal_text": info})
+            this.setState({modal_status: 'open', "modal_text": info})
         })
     }
 
