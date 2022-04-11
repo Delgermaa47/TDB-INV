@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
 import SetFeild from './Fields'
+import RecDataTable from './rec_data_table'
 
 
 export class InvoiceCreate extends Component {
@@ -52,6 +53,11 @@ export class InvoiceCreate extends Component {
                 }
               ],
 
+            rec_table_header: [
+                "№", "custno", "fname","amount",
+                "account", "handphone", 
+            ],
+              rec_datas: []
 
         }
         
@@ -78,7 +84,7 @@ export class InvoiceCreate extends Component {
     }
 
     render() {
-        const { send_datas } = this.state
+        const { send_datas, rec_datas, rec_table_header } = this.state
         return (
             <div className="row">
                 <div className='card'>
@@ -90,15 +96,25 @@ export class InvoiceCreate extends Component {
                                 {
                                     send_datas.map((datas, idx) =>
                                     <SetFeild
-                                        key={idx}
-                                        values={datas}
-                                        handleOnchange={this.handleOnchange}
-                                    />
-                                )
+                                            key={idx}
+                                            values={datas}
+                                            handleOnchange={this.handleOnchange}
+                                        />
+                                    )
                                 }
                             </div>
                             <div className="form-row col-md-6">
                                 <label>Хүлээн авагч</label>
+                                {
+                                    <RecDataTable
+                                        body_datas={rec_datas} 
+                                        table_header={rec_table_header}
+                                    />
+                                }
+                                <div className='col-md-12'>
+                                    <button className='btn btn-outline-warning text-dark'>Нэхэмжлэгч нэмэх</button>
+                                </div>
+                                
                             </div>
                             <button
                                 type="submit"
