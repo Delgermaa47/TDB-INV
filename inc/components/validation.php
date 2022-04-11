@@ -48,12 +48,13 @@
                 "custno"=>"Харилцагчийн сип дугаар хоосон байна",
                 "invdesc"=>"Нэхэмжлэлийн утга хоосон байна",
                 "fname"=>"Харилцагчийн нэр хоосон байна",
-                "rec_datas"=>"Нэхэмжлэлийг хоёроос дээш хүн уруу илгээнэ !!!"
+                "rec_datas"=>"Нэхэмжлэлийг хоёроос дээш хүн уруу илгээнэ !!!",
+                "account"=>"Дансны дугаар хоосон байна !!!",
             );
             
             $field_data = get_or_null($_POST[$field_name]);            
 
-            if(!$field_data) {
+            if(!$field_data || $field_data === 'null') {
                 return [
                     "success"=>false,
                     "info"=>get_or_null($check_datas[$field_name]) ? get_or_null($check_datas[$field_name]) : "Шаарлагатай талбар бууруу байна. Системийн админд хандана уу !!!",

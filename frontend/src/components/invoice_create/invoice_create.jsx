@@ -71,7 +71,8 @@ export class InvoiceCreate extends Component {
             rec_datas: [],
             modal_status: 'closed',
             is_loading: false,
-            modal_title: ''
+            modal_title: '',
+            modal_text: ''
 
         }
         
@@ -80,6 +81,11 @@ export class InvoiceCreate extends Component {
         this.addInvoiceRec = this.addInvoiceRec.bind(this)
         this.openInvoiceCollector = this.openInvoiceCollector.bind(this)
         this.handleCollectDatas = this.handleCollectDatas.bind(this)
+        this.handleClose = this.handleClose.bind(this)
+    }
+
+    handleClose() {
+        this.setState({modal_status: "closed"})
     }
 
     openInvoiceCollector() {
@@ -134,8 +140,10 @@ export class InvoiceCreate extends Component {
         }
         
         this.setState({is_loading: true})
+        console.log(values)
         service.save_invoice(values).then(({ success, info }) => {
-            this.setState({modal_status: 'open', "modal_text": info, is_loading: false, modal_title: "Хүсэлт"})
+            console.log("inf",  success, info)
+            this.setState({modal_status: 'open', modal_text: info, is_loading: false, modal_title: "Хүсэлт"})
         })
     }
 
@@ -192,6 +200,7 @@ export class InvoiceCreate extends Component {
                                 modal_status={modal_status}
                                 title={modal_title}
                                 text={modal_text}
+                                modalClose={this.handleClose}
                             />
                         }
                         
