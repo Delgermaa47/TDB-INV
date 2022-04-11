@@ -55,7 +55,6 @@ export class CollectRecDatas extends Component {
                 "№", "custno", "fname","amount",
                 "account", "handphone", 
             ],
-            rec_datas: [],
             modal_status: 'closed'
 
         }
@@ -98,6 +97,13 @@ export class CollectRecDatas extends Component {
             "handphone": send_datas[handphone_index]['value'] 
         }
         this.props.handleSubmit(values)
+
+        var temp_arr = [...send_datas]
+        temp_arr.forEach(element => {
+            element['value'] = ''
+        });
+
+        this.setState({ send_datas: temp_arr })
     }
 
     render() {
