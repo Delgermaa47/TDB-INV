@@ -11,6 +11,7 @@ export class InvoiceCreate extends Component {
     }
 
     render() {
+        const { id } = this.props
         const modal_info = {
             modal_status: 'open',
             modal_icon: 'fa fa-info-circle',
@@ -18,9 +19,12 @@ export class InvoiceCreate extends Component {
             title: "title ",
             text: "bla ",
         }
+        console.log("this", this.props)
         return (
             <div className="row">
-                <div>done</div>
+                <div>
+
+                </div>
             </div>
         );
     }

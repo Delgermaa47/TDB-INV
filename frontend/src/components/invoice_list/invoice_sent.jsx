@@ -3,7 +3,7 @@ import { NavLink } from "react-router-dom";
 import {PortalDataTable} from '../../inc/DataTable'
 import Modal from "../../inc/Modal/Modal"
 import { service } from "../service"
-import Welcomebla from "./bla";
+import RedirectCom from "./redi";
 
 
 
@@ -29,7 +29,7 @@ export default class InvoiceSend extends Component {
                     "text": '', 
                     "icon": 'fa fa-pencil text-success',
                     // "action": (values) => Welcome(values),
-                    "component": Welcomebla,
+                    "component": RedirectCom,
                 },
                 {
                     "title": 'Устгах',
