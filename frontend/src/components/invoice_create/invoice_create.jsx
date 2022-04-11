@@ -111,7 +111,6 @@ export class InvoiceCreate extends Component {
             send_datas,
             rec_datas
         } = this.state
-        var cust_index = findIndexOfData(send_datas, 'key', 'custno')
         var invno_index = findIndexOfData(send_datas, 'key', 'invno')
         var cust_index = findIndexOfData(send_datas, 'key', 'custno')
         var fname_index = findIndexOfData(send_datas, 'key', 'fname')

@@ -102,14 +102,12 @@ export default class InvoiceSend extends Component {
                     </div>
                 </div>
                 {
-                    modal_status == 'open'
-                    &&
                     <Modal
                         text={`Та "${values.invno}" дугаартай нэхэмжлэлийг устгахдаа итгэлтэй байна уу?`}
                         title={'Тохиргоог устгах'}
                         modal_icon={'text-warning fa fa-warning'}
                         model_type_icon={'success'}
-                        status={modal_status}
+                        modal_status={modal_status}
                         has_button={ true }
                         modalClose={this.handleModalClose}
                         modalAction={this.handleRemove}
