@@ -71,7 +71,8 @@
             $sender_data =  $this->_append_datas($send_keys);
             $recieve_data = $this->_append_datas($rec_keys);
             $both_data = $this->_append_datas($both_keys);
-
+            
+            echo json_encode($both_keys);
             echo '
             <div class="container text-primary">
                 <form action="'.$this->action_uri.'" method="POST">
