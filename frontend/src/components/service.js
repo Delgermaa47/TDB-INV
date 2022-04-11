@@ -21,7 +21,6 @@ function save_invoice(invoice_data) {
     form_data.append("rec_datas", JSON.stringify(invoice_data['rec_datas']))
     const requestOptions = {
         method: 'POST',
-        mode: "no-cors",
         body: form_data
     }
     return fetch(`http://172.26.153.11/api/invoice-save`, requestOptions).then(handleResponse)
