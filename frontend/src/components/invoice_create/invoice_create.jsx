@@ -52,7 +52,7 @@ export class InvoiceCreate extends Component {
                   "key": "handphone",
                   "type": "text",
                   "value": null,
-                  "label": "Хүлээн авагчийн дугаар",
+                  "label": "Хүлээн авагчийн утасны дугаар",
                   "classname": "col-md-6"
                 },
                 {
