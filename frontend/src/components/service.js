@@ -11,7 +11,14 @@ function remove(invno) {
 
 function save_invoice(invoice_data) {
     var form_data = new FormData();  
-    form_data.append("body_data", invoice_data || [])
+    form_data.append("invno", invoice_data['invno'] || null)
+    form_data.append("custno", invoice_data['custno'] || null)
+    form_data.append("fname", invoice_data['fname'] || null)
+    form_data.append("amount", invoice_data['amount'] || null)
+    form_data.append("account", invoice_data['account'] || null)
+    form_data.append("handphone", invoice_data['handphone'] || null)
+    form_data.append("rec_datas", JSON.stringify(invoice_data['rec_datas']))
+    
     const requestOptions = {
         method: 'POST',
         body: form_data

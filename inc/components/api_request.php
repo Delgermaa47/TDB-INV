@@ -112,7 +112,7 @@
 
         protected function inv_save() {
             $number_values = ['all_amount', 'current_amount', 'invstatus'];
-            write_to_file($_POST);
+            write_to_file("bla".json_encode($_POST));
             foreach ($_POST as $key => $value) {
                 if (in_array($key, $number_values) && !empty($value)) {
                     $_POST[$key] = floatval($value);
