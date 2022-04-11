@@ -158,7 +158,7 @@ export class InvoiceCreate extends Component {
                                     )
                                 }
                             </div>
-                            <div className="form-row col-md-6">
+                            <div className="form-row col-md-6 px-0">
                                 <label>Хүлээн авагч</label>
                                 {
                                     <RecDataTable
@@ -166,7 +166,7 @@ export class InvoiceCreate extends Component {
                                         table_header={rec_table_header}
                                     />
                                 }
-                                <div className='col-md-12'>
+                                <div className='col-md-12 px-0'>
                                     <button
                                         className='btn btn-outline-warning text-dark'
                                         onClick={this.openInvoiceCollector}

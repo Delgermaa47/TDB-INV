@@ -11,7 +11,7 @@ export default class RecDataTable extends Component {
     render() {
         const { table_header, body_data } = this.props
         return (
-            <table className="table table_wrapper_table">
+            <table className="table table-responsive">
                 <thead className={`bg-primary text-primary`}>
                     <tr>
                         {
@@ -36,9 +36,6 @@ export default class RecDataTable extends Component {
                          }
                       
                     </tr>
-                    // <tr className="tr-hover" key={idx}>
-                    //     <td >{item}</td>
-                    // </tr>
                     )
                 
                 }
