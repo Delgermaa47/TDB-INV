@@ -1,6 +1,5 @@
 import React, { Component } from "react"
 import Modal from '../../inc/Modal/Modal'
-// import {service} from './service'
 
 export class InvoiceRec extends Component {
 

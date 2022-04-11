@@ -3,7 +3,7 @@ import React, { Component } from "react"
 export default class SetFeild extends Component {
     
     render() {
-        const { main_class, label, key, name, classname, value, type } = this.props.values;
+        const { main_class, label, key, value, type } = this.props.values;
         return (
             <div className={`mx-2 ${main_class}`} key={key}>
                 <label htmlFor="">{label}</label>
