@@ -9,6 +9,13 @@ export class CollectRecDatas extends Component {
         this.state={
             send_datas: [
                 {
+                    "key": "invno",
+                    "type": "number",
+                    "value": null,
+                    "label": "Invoice Дугаар",
+                    "classname": "col-md-6"
+                },
+                {
                   "key": "custno",
                   "type": "text",
                   "value": null,
@@ -53,7 +60,7 @@ export class CollectRecDatas extends Component {
               ],
 
             rec_table_header: [
-                "№", "custno", "fname","amount",
+                "№", "invno", "custno", "fname","amount",
                 "account", "handphone", 
             ],
             modal_status: 'closed'

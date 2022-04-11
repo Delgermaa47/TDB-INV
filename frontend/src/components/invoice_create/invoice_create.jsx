@@ -12,6 +12,13 @@ export class InvoiceCreate extends Component {
         this.state={
             send_datas: [
                 {
+                    "key": "invno",
+                    "type": "number",
+                    "value": null,
+                    "label": "Invoice Дугаар",
+                    "classname": "col-md-6"
+                  },
+                {
                   "key": "custno",
                   "type": "text",
                   "value": null,
@@ -56,7 +63,7 @@ export class InvoiceCreate extends Component {
               ],
 
             rec_table_header: [
-                "№", "custno", "fname","amount",
+                "№", "invno", "custno", "fname","amount",
                 "account", "handphone", 
             ],
             rec_datas: [],
@@ -104,12 +111,14 @@ export class InvoiceCreate extends Component {
             rec_datas
         } = this.state
         var cust_index = findIndexOfData(send_datas, 'key', 'custno')
+        var cust_index = findIndexOfData(send_datas, 'key', 'custno')
         var fname_index = findIndexOfData(send_datas, 'key', 'fname')
         var amount_index = findIndexOfData(send_datas, 'key', 'amount')
         var account_index = findIndexOfData(send_datas, 'key', 'account')
         var handphone_index = findIndexOfData(send_datas, 'key', 'handphone')
 
         var values = {
+            "inv_no": send_datas[cust_index]['value'], 
             "custno": send_datas[cust_index]['value'], 
             "fname": send_datas[fname_index]['value'],
             "amount": send_datas[amount_index]['value'],

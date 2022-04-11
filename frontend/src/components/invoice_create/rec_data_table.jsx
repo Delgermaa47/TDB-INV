@@ -10,6 +10,7 @@ export default class RecDataTable extends Component {
     
     render() {
         const { table_header, body_data } = this.props
+        console.log("table_header", table_header)
         return (
             <table className="table table_wrapper_table">
                 <thead className={`bg-primary text-primary`}>
