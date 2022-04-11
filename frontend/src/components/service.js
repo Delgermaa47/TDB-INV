@@ -17,6 +17,7 @@ function save_invoice(invoice_data) {
     form_data.append("amount", invoice_data['amount'] || null)
     form_data.append("account", invoice_data['account'] || null)
     form_data.append("handphone", invoice_data['handphone'] || null)
+    form_data.append("invdesc", invoice_data['invdesc'] || null)
     form_data.append("rec_datas", JSON.stringify(invoice_data['rec_datas']))
     
     const requestOptions = {

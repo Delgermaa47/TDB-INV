@@ -109,20 +109,63 @@
             redirect("/");
             // return json_encode('{"success": "true"}');
         }
+        
+        protected function check_required_field_empty($field_name) {
+            $field_name = strtolower($field_name);
+
+            $check_datas = array(
+                "amount"=>"Үнийн дүн хоосон байна",
+                "handphone"=>"Утасны дугаар хоосон байна",
+                "custno"=>"Харилцагчийн сип дугаар хоосон байна",
+                "invdesc"=>"Нэхэмжлэлийн утга хоосон байна",
+                "fname"=>"Харилцагчийн нэр хоосон байна",
+                "rec_datas"=>"Нэхэмжлэлийг хоёроос дээш хүн уруу илгээнэ !!!"
+            );
+            
+            $field_data = get_or_null($_POST[$field_name]);
+            
+            if(!$field_data) {
+                return [
+                    "success"=>false,
+                    "info"=>get_or_null($check_datas[$field_name]) ? get_or_null($check_datas[$field_name]) : "Шаарлагатай талбар бууруу байна. Системийн админд хандана уу !!!",
+                ];
+            }
+           
+            return [
+                "success"=>true,
+                "info"=>'',
+            ];
+        }
 
         protected function inv_save() {
-            $number_values = ['all_amount', 'current_amount', 'invstatus'];
-            write_to_file("bla".json_encode($_POST));
-            foreach ($_POST as $key => $value) {
-                if (in_array($key, $number_values) && !empty($value)) {
-                    $_POST[$key] = floatval($value);
+            $number_values = ['amount'];
+
+            // foreach ($_POST as $key => $value) {
+            //     if (in_array($key, $number_values) && !empty($value)) {
+            //         $_POST[$key] = floatval($value);
+            //     }
+            // }
+            
+            $required_fields = ["amount", "custno", "handphone", "handphone", "invdesc", "rec_datas", "fname"];
+            
+            foreach ($required_fields as $key => $value) {
+                $res_data = $this->check_required_field_empty($key);
+                if(!$res_data['success']) {
+                    return json_encode([
+                        "success"=>false,
+                        "info"=>$res_data['info']
+                    ]);
                 }
             }
 
+            
             extract($_POST);
+            $invno = get_or_null($_POST['invno']);
+
             $sent_values = [
-                $all_amount, $fromcustno, $fromaccntno, 
-                $invstatus, $invdesc
+                $amount, $custno, $fname, 
+                $invstatus, $invdesc, $account,
+                $handphone, $invdesc
             ];
             
             $sent_query = 'insert into vbismiddle.invoicesent(

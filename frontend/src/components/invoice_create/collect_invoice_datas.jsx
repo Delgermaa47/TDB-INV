@@ -61,7 +61,7 @@ export class CollectRecDatas extends Component {
 
             rec_table_header: [
                 "№", "invno", "custno", "fname","amount",
-                "account", "handphone", 
+                "account", "handphone", "invdesc"
             ],
             modal_status: 'closed'
 
@@ -91,6 +91,8 @@ export class CollectRecDatas extends Component {
         var amount_index = findIndexOfData(send_datas, 'key', 'amount')
         var account_index = findIndexOfData(send_datas, 'key', 'account')
         var handphone_index = findIndexOfData(send_datas, 'key', 'handphone')
+        var invdesc_index = findIndexOfData(send_datas, 'key', 'invdesc')
+        
 
         var values = {
             "invno": send_datas[invno_index]['value'], 
@@ -98,7 +100,8 @@ export class CollectRecDatas extends Component {
             "fname": send_datas[fname_index]['value'],
             "amount": send_datas[amount_index]['value'],
             "account": send_datas[account_index]['value'], 
-            "handphone": send_datas[handphone_index]['value'] 
+            "handphone": send_datas[handphone_index]['value'], 
+            "invdesc": send_datas[invdesc_index]['value'] 
         }
         this.props.handleSubmit(values)
 

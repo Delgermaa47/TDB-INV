@@ -65,7 +65,7 @@ export class InvoiceCreate extends Component {
 
             rec_table_header: [
                 "№", "invno", "custno", "fname","amount",
-                "account", "handphone", 
+                "account", "handphone", "invdesc"
             ],
             rec_datas: [],
             modal_status: 'closed'
@@ -117,6 +117,7 @@ export class InvoiceCreate extends Component {
         var amount_index = findIndexOfData(send_datas, 'key', 'amount')
         var account_index = findIndexOfData(send_datas, 'key', 'account')
         var handphone_index = findIndexOfData(send_datas, 'key', 'handphone')
+        var invdesc_index = findIndexOfData(send_datas, 'key', 'invdesc')
 
         var values = {
             "inv_no": send_datas[invno_index]['value'], 
@@ -125,6 +126,7 @@ export class InvoiceCreate extends Component {
             "amount": send_datas[amount_index]['value'],
             "account": send_datas[account_index]['value'], 
             "handphone": send_datas[handphone_index]['value'],
+            "invdesc": send_datas[invdesc_index]['value'],
             "rec_datas": rec_datas
         }
         
