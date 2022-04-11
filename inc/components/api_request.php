@@ -1,4 +1,6 @@
 <?php
+
+    require_once ROOT."\\inc\\components\\validation.php";
     class ApiList
     {
         public $request_name;
@@ -56,7 +58,6 @@
             $sort_name = get_or_null($_POST['sort_name']);
             $custom_query = get_or_null($_POST['custom_query']);
 
-            
             $query = '
                 select 
                     *
@@ -86,8 +87,6 @@
                 id=$id';
             
             $params['$id'] = $request_param_id;
-            // $params['$custno'] = check_string('90400005635');
-            // return json_decode(_select($query, $params), true);
             return _select($query, $params);
         }
 
@@ -109,59 +108,57 @@
             redirect("/");
             // return json_encode('{"success": "true"}');
         }
-        
-        protected function check_required_field_empty($field_name) {
-            $field_name = strtolower($field_name);
 
-            $check_datas = array(
-                "amount"=>"Үнийн дүн хоосон байна",
-                "handphone"=>"Утасны дугаар хоосон байна",
-                "custno"=>"Харилцагчийн сип дугаар хоосон байна",
-                "invdesc"=>"Нэхэмжлэлийн утга хоосон байна",
-                "fname"=>"Харилцагчийн нэр хоосон байна",
-                "rec_datas"=>"Нэхэмжлэлийг хоёроос дээш хүн уруу илгээнэ !!!"
-            );
-            
-            $field_data = get_or_null($_POST[$field_name]);
-            
-            if(!$field_data) {
-                return [
-                    "success"=>false,
-                    "info"=>get_or_null($check_datas[$field_name]) ? get_or_null($check_datas[$field_name]) : "Шаарлагатай талбар бууруу байна. Системийн админд хандана уу !!!",
-                ];
-            }
-           
-            return [
-                "success"=>true,
-                "info"=>'',
-            ];
-        }
 
         protected function inv_save() {
-            $number_values = ['amount'];
 
+            function _check_datas($arr, $_class) {
+                $_class->field_value = $arr; 
+                foreach ($arr as $key => $value) {
+                    $_class->field_name = $key;
+                    $_class->field_value = $value; 
+                    $check_res = $_class->request_res();
+    
+                    if(!$check_res['success']) {
+                        return json_encode([
+                            "success"=>false,
+                            "info"=>$check_res['info']
+                        ]);
+                    }
+                }
+                return json_encode([
+                    "success"=>false,
+                    "info"=>$check_res['info']
+                ]);
+            }
             // foreach ($_POST as $key => $value) {
             //     if (in_array($key, $number_values) && !empty($value)) {
             //         $_POST[$key] = floatval($value);
             //     }
             // }
-            
+
             $required_fields = ["amount", "custno", "handphone", "handphone", "invdesc", "rec_datas", "fname"];
             
-            foreach ($required_fields as $key => $value) {
-                $res_data = $this->check_required_field_empty($key);
-                if(!$res_data['success']) {
-                    return json_encode([
-                        "success"=>false,
-                        "info"=>$res_data['info']
-                    ]);
-                }
+            $validation = new Validation();
+            $check_field = _check_datas($_POST, $validation);
+            if(!$check_field['success']) {
+                return json_encode([
+                    "success"=>false,
+                    "info"=>$check_field['info']
+                ]);
             }
 
-            
             extract($_POST);
-            $invno = get_or_null($_POST['invno']);
+            $validation->requested_arr = $rec_datas; 
+            $check_field = _check_datas($_POST, $validation);
+            if(!$check_field['success']) {
+                return json_encode([
+                    "success"=>false,
+                    "info"=>$check_field['info']
+                ]);
+            }
 
+            $invstatus = 1;
             $sent_values = [
                 $amount, $custno, $fname, 
                 $invstatus, $invdesc, $account,
@@ -172,18 +169,30 @@
             amount, custno, accntno, invstatus, invdesc
             ) values';
 
-            $rec_query = 'insert into vbismiddle.invoiceRec(
-                invno, amount, custno, accntno, invstatus, handphone
-                ) values';
-
             $last_id = bulk_insert($sent_query, $sent_values);
-            $recieve_datas = [
-                $last_id, $current_amount, $tocustno, $toaccntno, 
-                $invstatus, $tophone
-            ];
-            bulk_insert($rec_query, $recieve_datas);
-            // redirect("/");
-            return json_encode('{"success": "true"}');
+            
+            foreach ($rec_datas as $key => $value) {
+                $amount = $value['amount'];
+                $custno = $value['custno'];
+                $accntno = $value['accntno'];
+                $invstatus = $value['invstatus'];
+                $handphone = $value['handphone'];
+                $rec_query = 'insert into vbismiddle.invoiceRec(
+                    invno, amount, custno, accntno, invstatus, handphone
+                    ) values';
+    
+    
+                $recieve_datas = [
+                    $last_id, $amount, $custno, $accntno, 
+                    $invstatus, $handphone
+                ];
+                bulk_insert($rec_query, $recieve_datas);
+            }
+         
+            return json_encode([
+                "success"=>true,
+                "info"=>$check_res['info']
+            ]);;
         }
 
         protected function inv_edit() {
