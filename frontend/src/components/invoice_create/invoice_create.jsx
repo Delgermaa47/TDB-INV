@@ -52,6 +52,7 @@ export class InvoiceCreate extends Component {
                 }
               ],
 
+
         }
         
         this.handleOnchange = this.handleOnchange.bind(this)
@@ -60,9 +61,16 @@ export class InvoiceCreate extends Component {
 
 
     handleOnchange(name, e) {
-        console.log("name", e.target.name)
-        console.log(name, e.target.value)
-
+        var name = e.target.name
+        var value = e.target.value
+        
+        var choice_datas = [...this.state.send_datas]
+        var value_ind = obj => obj.key == name
+        var index_of = choice_datas.findIndex(value_ind)
+        if (index_of > -1) {
+            choice_datas[index_of]['value'] = value
+            this.setState({send_datas: choice_datas})
+        }
     }
 
     handleSubmit() {
