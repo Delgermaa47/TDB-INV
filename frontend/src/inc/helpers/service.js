@@ -42,3 +42,10 @@ export function getGetOptions() {
         method: 'GET',
     }
 }
+
+
+export  function findIndexOfData(arr_datas, key, value) {
+    var value_of_data = obj => obj[key] === value
+    var index_of = arr_datas.findIndex(value_of_data)
+    return index_of
+}

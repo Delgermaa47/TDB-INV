@@ -1,4 +1,5 @@
 import React, {Component} from 'react'
+import { findIndexOfData } from '../../inc/helpers/service'
 import SetFeild from './Fields'
 
 export class CollectRecDatas extends Component {
@@ -61,20 +62,14 @@ export class CollectRecDatas extends Component {
         
         this.handleOnchange = this.handleOnchange.bind(this)
         this.handleSubmit = this.handleSubmit.bind(this)
-        this.findIndexOfData = this.findIndexOfData.bind(this)
-    }
-
-    findIndexOfData(arr_datas, key, value) {
-        var value_of_data = obj => obj[key] === value
-        var index_of = arr_datas.findIndex(value_of_data)
-        return index_of
+    
     }
 
     handleOnchange(e) {
         var name = e.target.name
         var value = e.target.value
         var choice_datas = [...this.state.send_datas]
-        var index_of = this.findIndexOfData(choice_datas, 'key', name)
+        var index_of = findIndexOfData(choice_datas, 'key', name)
         if (index_of > -1) {
             choice_datas[index_of]['value'] = value
             this.setState({send_datas: choice_datas})
@@ -83,11 +78,11 @@ export class CollectRecDatas extends Component {
 
     handleSubmit() {
         var { send_datas } = this.state
-        var cust_index = this.findIndexOfData(send_datas, 'key', 'custno')
-        var fname_index = this.findIndexOfData(send_datas, 'key', 'fname')
-        var amount_index = this.findIndexOfData(send_datas, 'key', 'amount')
-        var account_index = this.findIndexOfData(send_datas, 'key', 'account')
-        var handphone_index = this.findIndexOfData(send_datas, 'key', 'handphone')
+        var cust_index = findIndexOfData(send_datas, 'key', 'custno')
+        var fname_index = findIndexOfData(send_datas, 'key', 'fname')
+        var amount_index = findIndexOfData(send_datas, 'key', 'amount')
+        var account_index = findIndexOfData(send_datas, 'key', 'account')
+        var handphone_index = findIndexOfData(send_datas, 'key', 'handphone')
 
         var values = {
             "custno": send_datas[cust_index]['value'], 
