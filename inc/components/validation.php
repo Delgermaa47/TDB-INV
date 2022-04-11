@@ -16,10 +16,10 @@
             $check_empty_data = $this->check_required_field_empty();
 
             if(!$check_empty_data['success']) {
-                return json_encode([
+                return [
                     "success"=>false,
                     "info"=>$check_empty_data['info']
-                ]);
+                ];
             }
             
             switch ($field_name) {

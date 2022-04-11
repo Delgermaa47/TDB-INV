@@ -96,7 +96,7 @@ export class InvoiceCreate extends Component {
     handleOnchange(e) {
         var name = e.target.name
         var value = e.target.value
-        
+
         var choice_datas = [...this.state.send_datas]
         var value_ind = obj => obj.key === name
         var index_of = choice_datas.findIndex(value_ind)
@@ -130,7 +130,8 @@ export class InvoiceCreate extends Component {
             "rec_datas": rec_datas
         }
         
-        service.save_invoice(values).then(({success, info}) => {
+        service.save_invoice(values).then(({ success, info }) => {
+            console.log("successs", success, info)
             // this.setState({modal_status: 'open', "modal_text": info})
         })
     }

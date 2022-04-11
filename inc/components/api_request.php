@@ -111,34 +111,30 @@
 
 
         protected function inv_save() {
-
             function _check_datas($arr, $_class) {
                 $_class->field_value = $arr; 
-                foreach ($arr as $key => $value) {
+                $required_fields = ["amount", "custno", "handphone", "handphone", "invdesc", "rec_datas", "fname"];
+                foreach ($required_fields as $key => $value) {
                     $_class->field_name = $key;
                     $_class->field_value = $value; 
                     $check_res = $_class->request_res();
-    
                     if(!$check_res['success']) {
-                        return json_encode([
+                        return [
                             "success"=>false,
                             "info"=>$check_res['info']
-                        ]);
+                        ];
                     }
                 }
-                return json_encode([
-                    "success"=>false,
+                return [
+                    "success"=>true,
                     "info"=>$check_res['info']
-                ]);
+                ];
             }
             // foreach ($_POST as $key => $value) {
             //     if (in_array($key, $number_values) && !empty($value)) {
             //         $_POST[$key] = floatval($value);
             //     }
             // }
-
-            $required_fields = ["amount", "custno", "handphone", "handphone", "invdesc", "rec_datas", "fname"];
-            
             $validation = new Validation();
             $check_field = _check_datas($_POST, $validation);
             if(!$check_field['success']) {

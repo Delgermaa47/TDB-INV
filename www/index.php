@@ -16,7 +16,7 @@
         'delete-sent-invoice' => "/api/delete-sent-invoice/(?'id'\d+)",
         'delete-rec-invoice' => "/api/delete-recieve-invoice/(?'id'\d+)",
         'create-inv-tables' => '/api/create-inv-tables',
-        'insert-inv-status' => '/api/insert-inv-status',
+        'insert-inv-status' => '/api/insert-inv-status'        
     );
 
     $page_requests = array( 
