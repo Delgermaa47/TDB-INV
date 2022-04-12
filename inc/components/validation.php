@@ -125,7 +125,7 @@
             where 
                 custno=$custno';
             
-            $params['$custno'] = $this->field_value;
+            $params['$custno'] = check_string($this->field_value);
             $temp_data = _select($query, $params);
             if (count($temp_data)<1) {
                 return [
@@ -167,7 +167,7 @@
             if (count($temp_data)<1) {
                 return [
                     "success"=>false,
-                    "info"=>'"'.$this->requested_arr['custno'].'" дугаартай харилцагч дээр "'.$this->field_value.'" дугаартай данс олсонгүй олдсонгүй',
+                    "info"=>'"'.$this->requested_arr['custno'].'" дугаартай харилцагч дээр "'.$this->field_value.'" дугаартай данс олдсонгүй',
                 ];
             }
 

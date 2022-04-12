@@ -136,51 +136,52 @@
             // return json_encode('{"success": "true"}');
         }
 
+        protected function check_valid_data($arr, $_class, $required_fields, $reciever=False) {
+            $_class->requested_arr = $arr; 
+            $_class->is_reciever = $reciever; 
+            foreach ($required_fields as $key => $value) {
+                $_class->field_name = $value;
+                $_class->field_value = get_or_null($arr[$value]); 
+                $check_res = $_class->request_res();
+                if(!$check_res['success']) {
+                    return [
+                        "success"=>false,
+                        "info"=>$check_res['info']
+                    ];
+                }
+            }
+            return [
+                "success"=>true,
+                "info"=>'sdfsdfds',
+            ];
+        }
+
+        protected function get_response_status($res) {
+            if(!$res['success']) {
+                return json_encode([
+                    "success"=>false,
+                    "info"=>$res['info']
+                ]);
+            }
+            return False;
+        }
 
         protected function inv_save() {
 
-            function _check_datas($arr, $_class, $required_fields, $reciever=False) {
-                $_class->requested_arr = $arr; 
-                $_class->is_reciever = $reciever; 
-                foreach ($required_fields as $key => $value) {
-                    $_class->field_name = $value;
-                    $_class->field_value = get_or_null($arr[$value]); 
-                    $check_res = $_class->request_res();
-                    if(!$check_res['success']) {
-                        return [
-                            "success"=>false,
-                            "info"=>$check_res['info']
-                        ];
-                    }
-                }
-                return [
-                    "success"=>true,
-                    "info"=>'sdfsdfds',
-                ];
-            }
-
             $validation = new Validation();
             $required_fields = ["custno", "handphone", "amount", "account", "invdesc", "rec_datas"];
-            $check_field = _check_datas($_POST, $validation, $required_fields);
-            if(!$check_field['success']) {
-                return json_encode([
-                    "success"=>false,
-                    "info"=>$check_field['info']
-                ]);
-            }
+            $res = $this->get_response_status($this->check_valid_data($_POST, $validation, $required_fields));
+            if($res) {
+                write_to_file($res);
+                return $res;
+            };
 
             extract($_POST);
             $rec_datas = json_decode($rec_datas, true); 
             $required_fields = ["custno", "handphone", "amount", "account"];
             foreach ($rec_datas as $key => $rec_arr) {
-                $check_field = _check_datas($rec_arr, $validation, $required_fields,true);
-    
-                if(!$check_field['success']) {
-                    return json_encode([
-                        "success"=>false,
-                        "info"=>$check_field['info']
-                    ]);
-                }
+                $res = $this->get_response_status($this->check_valid_data($rec_arr, $validation, $required_fields,true));
+                if($res) return $res;
             }
 
             $invstatus = 1;
@@ -194,7 +195,6 @@
             ) values';
 
             $last_id = bulk_insert($sent_query, $sent_values);
-            // write_to_file("last".strval($last_id));
             foreach ($rec_datas as $key => $value) {
                 $amount = $value['amount'];
                 $custno = $value['custno'];
