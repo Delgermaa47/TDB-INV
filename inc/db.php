@@ -49,13 +49,14 @@
 
     function bulk_insert($query, $datas ) {
         
-        $idNumber = '';
+        $lastInvNo = "";
         $bla = $query.'('.join(", ", array_map("check_string", $datas)).')';
-        $bla = $bla.' RETURNING invno INTO :invno1';
-
+        $bla = $bla.' RETURNING invno INTO :invno';
+        
         $parsed = oci_parse(PG_Conn, $bla);
-        oci_bind_by_name($parsed, ":invno1", $idNumber);
+        oci_bind_by_name($parsed, ":invno", $lastInvNo,32);
         oci_execute($parsed);
-        return  intval($idNumber);
+        
+        return  intval($lastInvNo);
     }
 ?>

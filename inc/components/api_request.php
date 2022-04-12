@@ -158,11 +158,7 @@
                     "info"=>'sdfsdfds',
                 ];
             }
-            // foreach ($_POST as $key => $value) {
-            //     if (in_array($key, $number_values) && !empty($value)) {
-            //         $_POST[$key] = floatval($value);
-            //     }
-            // }
+
             $validation = new Validation();
             $required_fields = ["custno", "handphone", "amount", "account", "invdesc", "rec_datas"];
             $check_field = _check_datas($_POST, $validation, $required_fields);
@@ -198,6 +194,7 @@
             ) values';
 
             $last_id = bulk_insert($sent_query, $sent_values);
+            // write_to_file("last".strval($last_id));
             foreach ($rec_datas as $key => $value) {
                 $amount = $value['amount'];
                 $custno = $value['custno'];
