@@ -97,27 +97,19 @@
 
 
         protected function check_rec_data() {
-            try {
-                $field_data = json_decode($this->field_value, true);
-                if (count($field_data)<3) {
-                    return [
-                        "success"=>false,
-                        "info"=>'Нэхэмжлэлийг хоёроос дээш хүн уруу илгээнэ !!!',
-                    ]; 
-                }
-    
+            $field_data = json_decode($this->field_value, true);
+                // if (count($field_data)<3) {
+            if (count($field_data)<1) {
                 return [
-                    "success"=>True,
-                    "info"=>""
-                ];
+                    "success"=>false,
+                    "info"=>'Нэхэмжлэлийг хоёроос дээш хүн уруу илгээнэ !!!',
+                ]; 
             }
-           catch(Exception $e) {
-               
-                return [
-                    "success"=>False,
-                    "info"=>"Талбарын төрөл алдаатай байна"
-                ];
-           }
+
+            return [
+                "success"=>True,
+                "info"=>""
+            ];
 
         }
 

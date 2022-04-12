@@ -111,9 +111,9 @@
 
 
         protected function inv_save() {
-            function _check_datas($arr, $_class) {
+
+            function _check_datas($arr, $_class, $required_fields) {
                 $_class->requested_arr = $arr; 
-                $required_fields = ["custno", "handphone", "amount", "account", "invdesc", "rec_datas", "fname"];
                 foreach ($required_fields as $key => $value) {
                     $_class->field_name = $value;
                     $_class->field_value = get_or_null($arr[$value]); 
@@ -127,7 +127,7 @@
                 }
                 return [
                     "success"=>true,
-                    "info"=>$check_res['info']
+                    "info"=>'sdfsdfds',
                 ];
             }
             // foreach ($_POST as $key => $value) {
@@ -136,7 +136,8 @@
             //     }
             // }
             $validation = new Validation();
-            $check_field = _check_datas($_POST, $validation);
+            $required_fields = ["custno", "handphone", "amount", "account", "invdesc", "rec_datas"];
+            $check_field = _check_datas($_POST, $validation, $required_fields);
             if(!$check_field['success']) {
                 return json_encode([
                     "success"=>false,
@@ -145,13 +146,17 @@
             }
 
             extract($_POST);
-            $validation->requested_arr = $rec_datas; 
-            $check_field = _check_datas($_POST, $validation);
-            if(!$check_field['success']) {
-                return json_encode([
-                    "success"=>false,
-                    "info"=>$check_field['info']
-                ]);
+            $rec_datas = json_decode($rec_datas, true); 
+            $required_fields = ["custno", "handphone", "amount", "account"];
+            foreach ($rec_datas as $key => $rec_arr) {
+                $check_field = _check_datas($rec_arr, $validation, $required_fields);
+    
+                if(!$check_field['success']) {
+                    return json_encode([
+                        "success"=>false,
+                        "info"=>$check_field['info']
+                    ]);
+                }
             }
 
             $invstatus = 1;
@@ -168,8 +173,7 @@
             foreach ($rec_datas as $key => $value) {
                 $amount = $value['amount'];
                 $custno = $value['custno'];
-                $accntno = $value['accntno'];
-                $invstatus = $value['invstatus'];
+                $accntno = $value['account'];
                 $handphone = $value['handphone'];
                 $rec_query = 'insert into vbismiddle.invoiceRec(
                     invno, amount, custno, accntno, invstatus, handphone
