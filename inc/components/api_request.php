@@ -101,7 +101,9 @@
                 invno=$id';
 
             $rec_datas = _select($rec_query, $params);
-            $invoice_datas[0]['recieve_datas'] = $rec_datas;
+            
+            if (count($invoice_datas)>0) $invoice_datas[0]['recieve_datas'] = $rec_datas;
+            
             return json_encode([
                 "success"=>true,
                 "detail_datas"=>$invoice_datas,
@@ -109,10 +111,17 @@
         }
 
         protected function inv_sent_delete() {
+            $params['$invno'] = $this->params['id'];
+            
+            $query = '
+                delete from vbismiddle.invoicerec where invno= $invno
+            ';
+
+            sql_execute($query, $params);
             $query = '
                 delete from vbismiddle.invoicesent where invno= $invno
             ';
-            $params['$invno'] = $this->params['id'];
+
             sql_execute($query, $params);
             return json_encode([
                 "success"=>true,
