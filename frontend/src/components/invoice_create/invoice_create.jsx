@@ -89,7 +89,7 @@ export class InvoiceCreate extends Component {
     }
 
     openInvoiceCollector() {
-        this.setState({modal_status: 'open', modal_text: this.handleCollectDatas, modal_text: "Хүлээн авагчийн мэдээлэл цуглуулах"})
+        this.setState({modal_status: 'open', modal_text: this.handleCollectDatas})
     }
 
     addInvoiceRec(datas) {
@@ -142,7 +142,6 @@ export class InvoiceCreate extends Component {
         this.setState({is_loading: true})
         console.log(values)
         service.save_invoice(values).then(({ success, info }) => {
-            console.log("inf",  success, info)
             this.setState({modal_status: 'open', modal_text: info, is_loading: false, modal_title: "Хүсэлт"})
         })
     }
