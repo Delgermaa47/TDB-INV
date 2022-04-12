@@ -168,11 +168,8 @@
 
         protected function check_invoice_arr($datas, $required_fields, $is_recieve_field=False) {
             $validation = new Validation();
-            if (gettype($datas) === 'string') {
-                $rec_datas = json_decode($datas, true);
-            }
-            $rec_datas = $datas;
-            foreach ($rec_datas as $key => $rec_arr) {
+            
+            foreach ($datas as $key => $rec_arr) {
                 $res = $this->get_response_status($this->check_valid_data($rec_arr, $validation, $required_fields, $is_recieve_field));
                 if($res) return $res;
             }
@@ -190,6 +187,7 @@
 
             extract($_POST);
             $rec_datas = json_decode($rec_datas, true); 
+            
             $required_fields = ["custno", "handphone", "amount", "account"];
             $res = $this->check_invoice_arr($rec_datas, $required_fields, true);
 
@@ -232,23 +230,27 @@
         }
 
         protected function inv_edit() {
-            extract($_POST);
 
-            $params['$id'] = $this->params['id'];;
-            $params['$fromcustno'] = $fromcustno;
-            $params['$fromaccntno'] = $fromaccntno;
-            $params['$tocustno'] = $tocustno;
-            $params['$toaccntno'] = $toaccntno;
-            $params['$invstatus'] = $invstatus;
-            $params['$invdesc'] = $invdesc;
-            $params['$tophone'] = $tophone;
-            $params['$all_amount'] = $all_amount;
-            $params['$current_amount'] = $current_amount;
-            $params['$updated_at'] = now();
+            $params['$invno'] = $this->params['invno'];
+
+            $required_fields = ["custno", "handphone", "amount", "account", "invdesc", "rec_datas"];
+            $res = $this->check_invoice_arr([$_POST], $required_fields);
+            if($res) {
+                return $res;
+            };
+
+            extract($_POST);
+            $required_fields = ["custno", "handphone", "amount", "account"];
+            $res = $this->check_invoice_arr($rec_datas, $required_fields, true);
+
+            if($res) {
+                return $res;
+            };
+
 
             $query = '
                 update
-                    vbismiddle.invoice 
+                    vbismiddle.invioesent 
                 SET 
                     amount=$amount, fromcustno=$fromcustno, 
                     fromaccntno=$fromaccntno, 

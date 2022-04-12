@@ -31,7 +31,7 @@
 
     $post_requests = array(
         'invoice-save' => "/api/invoice-save",
-        'invoice-edit' => "/api/invoice-edit/(?'id'\d+)",
+        'invoice-edit' => "/api/invoice-edit/(?'invno'\d+)",
         'invoice-list' => "/api/invoice-list",
     );
     
