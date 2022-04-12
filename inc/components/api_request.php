@@ -156,9 +156,8 @@
 
             $invstatus = 1;
             $sent_values = [
-                $amount, $custno, $fname, 
-                $invstatus, $invdesc, $account,
-                $handphone, $invdesc
+                $amount, $custno,$account,
+                $invstatus, $invdesc, 
             ];
             
             $sent_query = 'insert into vbismiddle.invoicesent(
@@ -166,7 +165,6 @@
             ) values';
 
             $last_id = bulk_insert($sent_query, $sent_values);
-            
             foreach ($rec_datas as $key => $value) {
                 $amount = $value['amount'];
                 $custno = $value['custno'];
@@ -187,7 +185,7 @@
          
             return json_encode([
                 "success"=>true,
-                "info"=>$check_res['info']
+                "info"=>''
             ]);;
         }
 

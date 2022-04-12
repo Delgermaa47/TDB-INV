@@ -31,6 +31,9 @@
 
                 case 'account':
                     return $this->check_account_data();
+                
+                case 'rec_datas':
+                    return $this->check_rec_data();
             }
 
             return [
@@ -90,6 +93,32 @@
                 "success"=>true,
                 "info"=>'',
             ];
+        }
+
+
+        protected function check_rec_data() {
+            try {
+                $field_data = json_decode($this->field_value, true);
+                if (count($field_data)<3) {
+                    return [
+                        "success"=>false,
+                        "info"=>'Нэхэмжлэлийг хоёроос дээш хүн уруу илгээнэ !!!',
+                    ]; 
+                }
+    
+                return [
+                    "success"=>True,
+                    "info"=>""
+                ];
+            }
+           catch(Exception $e) {
+               
+                return [
+                    "success"=>False,
+                    "info"=>"Талбарын төрөл алдаатай байна"
+                ];
+           }
+
         }
 
         protected function check_custno_data() {
