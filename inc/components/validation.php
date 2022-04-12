@@ -126,7 +126,7 @@
                 custno=$custno';
             
             $params['$custno'] = $this->field_value;
-            $temp_data = json_decode(_select($query, $params), true);
+            $temp_data = _select($query, $params);
             if (count($temp_data)<1) {
                 return [
                     "success"=>false,
@@ -163,7 +163,7 @@
             
             $params['$acntno'] = check_string($this->field_value);
             $params['$custno'] = check_string($this->requested_arr['custno']);
-            $temp_data = json_decode(_select($query, $params), true);
+            $temp_data = _select($query, $params);
             if (count($temp_data)<1) {
                 return [
                     "success"=>false,
