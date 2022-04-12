@@ -73,7 +73,7 @@
                 "succes"=>true,
                 "start_index"=>1,
                 "page"=>1,
-                "items"=>json_decode($res, true)
+                "items"=>$res
             ]);
         }
 
@@ -82,14 +82,30 @@
             
             $query = '
             select 
-                custno, id1, email, handphone 
+                * 
             FROM 
-                vbismiddle.invoice
+                vbismiddle.invoicesent
             where 
-                id=$id';
+                invno=$id';
             
             $params['$id'] = $request_param_id;
-            return _select($query, $params);
+
+            $invoice_datas = _select($query, $params);
+
+            $rec_query = '
+            select 
+                * 
+            FROM 
+                vbismiddle.invoicerec
+            where 
+                invno=$id';
+
+            $rec_datas = _select($rec_query, $params);
+            $invoice_datas[0]['recieve_datas'] = $rec_datas;
+            return json_encode([
+                "success"=>true,
+                "detail_datas"=>$invoice_datas,
+            ]);
         }
 
         protected function inv_sent_delete() {

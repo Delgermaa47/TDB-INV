@@ -44,7 +44,7 @@
 
     function _select($query, $params) {
         $stid = sql_execute($query, $params);
-        return json_encode(fetch_rows($stid), true);
+        return fetch_rows($stid);
     }
 
     function bulk_insert($query, $datas ) {
