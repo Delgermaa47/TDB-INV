@@ -63,7 +63,9 @@
                     *
                 from 
                 vbismiddle.invoicesent
+                order by invno desc
                 fetch next 20 rows only
+
            
             ';
             $res = _select($query, []);
