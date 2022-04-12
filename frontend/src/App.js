@@ -29,7 +29,7 @@ export default class App extends Component {
                         element={<InvoiceCreate/>}
                     />
                      <Route 
-                        path="/invoice-edit/:id/"
+                        path="/invoice-save/:id/"
                         element={<InvoiceCreate/>}
                     />
                     <Route 

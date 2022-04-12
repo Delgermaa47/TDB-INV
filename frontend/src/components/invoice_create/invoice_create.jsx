@@ -75,6 +75,7 @@ export class InvoiceCreate extends Component {
             modal_text: ''
 
         }
+        this.invoiceDetail = this.invoiceDetail.bind(this)
         
         this.handleOnchange = this.handleOnchange.bind(this)
         this.handleSubmit = this.handleSubmit.bind(this)
@@ -82,6 +83,13 @@ export class InvoiceCreate extends Component {
         this.openInvoiceCollector = this.openInvoiceCollector.bind(this)
         this.handleCollectDatas = this.handleCollectDatas.bind(this)
         this.handleClose = this.handleClose.bind(this)
+    }
+
+    componentDidMount() {
+        console.log("id", this.props)
+    }
+    
+    invoiceDetail() {
     }
 
     handleClose() {
@@ -150,6 +158,7 @@ export class InvoiceCreate extends Component {
             send_datas, rec_datas, rec_table_header,
             modal_status, modal_text, is_loading, modal_title
         } = this.state
+        console.log("id", this.props.match.params.id)
         return (
             <div className="row">
                 <div className='card'>
