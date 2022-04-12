@@ -166,23 +166,36 @@
             return False;
         }
 
+        protected function check_invoice_arr($datas, $required_fields, $is_recieve_field=False) {
+            $validation = new Validation();
+            if (gettype($datas) === 'string') {
+                $rec_datas = json_decode($datas, true);
+            }
+            $rec_datas = $datas;
+            foreach ($rec_datas as $key => $rec_arr) {
+                $res = $this->get_response_status($this->check_valid_data($rec_arr, $validation, $required_fields, $is_recieve_field));
+                if($res) return $res;
+            }
+            return False;
+        }
+
         protected function inv_save() {
 
-            $validation = new Validation();
+            
             $required_fields = ["custno", "handphone", "amount", "account", "invdesc", "rec_datas"];
-            $res = $this->get_response_status($this->check_valid_data($_POST, $validation, $required_fields));
+            $res = $this->check_invoice_arr([$_POST], $required_fields);
             if($res) {
-                write_to_file($res);
                 return $res;
             };
 
             extract($_POST);
             $rec_datas = json_decode($rec_datas, true); 
             $required_fields = ["custno", "handphone", "amount", "account"];
-            foreach ($rec_datas as $key => $rec_arr) {
-                $res = $this->get_response_status($this->check_valid_data($rec_arr, $validation, $required_fields,true));
-                if($res) return $res;
-            }
+            $res = $this->check_invoice_arr($rec_datas, $required_fields, true);
+
+            if($res) {
+                return $res;
+            };
 
             $invstatus = 1;
             $sent_values = [
