@@ -102,7 +102,7 @@
 
             $rec_datas = _select($rec_query, $params);
             
-            if (count($invoice_datas)>0) $invoice_datas[0]['recieve_datas'] = $rec_datas;
+            if (count($invoice_datas)>0) $invoice_datas[0]['rec_datas'] = $rec_datas;
             
             return json_encode([
                 "success"=>true,
@@ -132,8 +132,9 @@
             $query = 'delete from vbismiddle.invoiceRec where id= $id';
             $params['$id'] = $this->params['id'];
             sql_execute($query, $params);
-            redirect("/");
-            // return json_encode('{"success": "true"}');
+            return json_encode([
+                "success"=>true,
+            ]);
         }
 
         protected function check_valid_data($arr, $_class, $required_fields, $reciever=False) {
@@ -179,16 +180,16 @@
         protected function inv_save() {
 
             
-            $required_fields = ["custno", "handphone", "amount", "account", "invdesc", "rec_datas"];
+            $required_fields = ["custno", "handphone", "amount", "accntno", "invdesc", "rec_datas"];
             $res = $this->check_invoice_arr([$_POST], $required_fields);
             if($res) {
                 return $res;
             };
 
             extract($_POST);
-            $rec_datas = json_decode($rec_datas, true); 
-            
-            $required_fields = ["custno", "handphone", "amount", "account"];
+
+            $rec_datas = gettype($rec_datas) === 'string'? json_decode($rec_datas, true): $rec_datas; 
+            $required_fields = ["custno", "handphone", "amount", "accntno"];
             $res = $this->check_invoice_arr($rec_datas, $required_fields, true);
 
             if($res) {
@@ -197,7 +198,7 @@
 
             $invstatus = 1;
             $sent_values = [
-                $amount, $custno,$account,
+                $amount, $custno, $accntno,
                 $invstatus, $invdesc, 
             ];
             
@@ -209,7 +210,7 @@
             foreach ($rec_datas as $key => $value) {
                 $amount = $value['amount'];
                 $custno = $value['custno'];
-                $accntno = $value['account'];
+                $accntno = $value['accntno'];
                 $handphone = $value['handphone'];
                 $rec_query = 'insert into vbismiddle.invoiceRec(
                     invno, amount, custno, accntno, invstatus, handphone
@@ -226,42 +227,78 @@
             return json_encode([
                 "success"=>true,
                 "info"=>'Aмжилттай хадгалагдлаа'
-            ]);;
+            ]);
         }
 
         protected function inv_edit() {
 
             $params['$invno'] = $this->params['invno'];
 
-            $required_fields = ["custno", "handphone", "amount", "account", "invdesc", "rec_datas"];
+            $required_fields = ["amount", "accntno", "invdesc"];
             $res = $this->check_invoice_arr([$_POST], $required_fields);
+
             if($res) {
                 return $res;
             };
 
             extract($_POST);
-            $required_fields = ["custno", "handphone", "amount", "account"];
-            $res = $this->check_invoice_arr($rec_datas, $required_fields, true);
-
-            if($res) {
-                return $res;
-            };
-
+            $params['$amount'] = $amount;
+            $params['$accntno'] = check_string($accntno);
+            $params['$invdesc'] = check_string($invdesc);
 
             $query = '
                 update
-                    vbismiddle.invioesent 
+                    vbismiddle.invoicesent 
                 SET 
-                    amount=$amount, fromcustno=$fromcustno, 
-                    fromaccntno=$fromaccntno, 
-                    tocustno=$tocustno, toaccntno=$toaccntno, 
-                    invstatus=$invstatus, 
-                    invdesc=$invdesc, created_at=$created_at,
-                    tophone=$tophone
-                 WHERE id=$id';
+                    amount=$amount,
+                    invdesc=$invdesc
+                 WHERE invno=$invno';
+
             sql_execute($query, $params);
-            redirect("/");
-            // return json_encode('{"success": "true"}');
+
+            $add_param = "";
+            if ($rec_datas) {
+                
+                $required_fields = ["amount", "accntno"];
+                
+                $rec_datas = gettype($rec_datas) === 'string'? json_decode($rec_datas, true): $rec_datas; 
+                $res = $this->check_invoice_arr($rec_datas, $required_fields, true);
+    
+                if($res) {
+                    return $res;
+                };
+                
+                $recids = [];
+                foreach ($rec_datas as $value) {
+                    
+                    $params['$recno'] = $value['recno'];
+                    $params['$amount'] = $value['amount'];
+                    $params['$accntno'] =$value['accntno'];
+                    $query = '
+                        update
+                            vbismiddle.invoicerec
+                        SET 
+                            amount=$amount,
+                            accntno=$accntno
+    
+                        WHERE recno=$recno';
+                    sql_execute($query, $params);
+
+                    array_push($recids, $value['recno']);
+                }
+                $add_param = 'and recno not in('.join(", " , $recids).")";
+            }
+
+
+            $query = '
+                delete from vbismiddle.invoicerec where invno=$invno '.$add_param;
+
+            sql_execute($query, $params);
+
+            return json_encode([
+                "success"=>true,
+                "info"=>'Aмжилттай хадгалагдлаа'
+            ]);
         }
         
         protected function insert_invoice_status() {
