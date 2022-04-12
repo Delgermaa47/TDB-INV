@@ -114,8 +114,9 @@
 
         protected function inv_save() {
 
-            function _check_datas($arr, $_class, $required_fields) {
+            function _check_datas($arr, $_class, $required_fields, $reciever=False) {
                 $_class->requested_arr = $arr; 
+                $_class->is_reciever = $reciever; 
                 foreach ($required_fields as $key => $value) {
                     $_class->field_name = $value;
                     $_class->field_value = get_or_null($arr[$value]); 
@@ -151,7 +152,7 @@
             $rec_datas = json_decode($rec_datas, true); 
             $required_fields = ["custno", "handphone", "amount", "account"];
             foreach ($rec_datas as $key => $rec_arr) {
-                $check_field = _check_datas($rec_arr, $validation, $required_fields);
+                $check_field = _check_datas($rec_arr, $validation, $required_fields,true);
     
                 if(!$check_field['success']) {
                     return json_encode([
@@ -191,7 +192,7 @@
          
             return json_encode([
                 "success"=>true,
-                "info"=>''
+                "info"=>'Aмжилттай хадгалагдлаа'
             ]);;
         }
 

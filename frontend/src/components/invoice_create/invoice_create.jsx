@@ -140,7 +140,6 @@ export class InvoiceCreate extends Component {
         }
         
         this.setState({is_loading: true})
-        console.log(values)
         service.save_invoice(values).then(({ success, info }) => {
             this.setState({modal_status: 'open', modal_text: info, is_loading: false, modal_title: "Хүсэлт"})
         })

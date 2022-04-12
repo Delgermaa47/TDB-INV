@@ -4,6 +4,8 @@
         public $field_name;
         public $field_value;
         public $requested_arr;
+        public $is_reciever;
+        
         
         function __set($propName, $propValue)
         {
@@ -82,7 +84,7 @@
                 ];
             }
 
-            if ($request_data['amount'] <= 5000) {
+            if ($request_data['amount'] <= 5000 && !$this->is_reciever) {
                 return [
                     "success"=>false,
                     "info"=> "Илгээх үнийн дүн 5000 дээш утгатай байх ёстой. ",
