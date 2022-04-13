@@ -138,7 +138,7 @@
             if ($req_perpage) {
                 $total_page = $this->get_total_page($req_perpage, $table_name);
                 $params['$perpage'] = $req_perpage;
-                $query = $query.' fetch next $perpage rows only ';
+                $query = $query.'fetch next $perpage rows only ';
             }
             return [
                 "query"=>$query,
@@ -148,7 +148,26 @@
         }
 
         protected function get_fname() {
+            $handphone = $this->params['handphone'];
+            $params['$handphone'] = check_string($handphone);
 
+            $query = '
+                select 
+                    first_name, last_name
+                from 
+                    vbismiddle.app_users
+                where 
+                    mobile=$handphone
+                fetch first 1 rows only
+            ';
+
+            $res = _select($query, $params);
+            return json_encode(
+                [
+                    "success"=>true,
+                    "items"=>$res
+                ]
+            );
         }
 
         protected function inv_list() {
