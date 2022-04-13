@@ -330,7 +330,7 @@
             
             return json_encode([
                 "success"=>true,
-                "detail_datas"=>$invoice_datas,
+                "detail_datas"=>count($invoice_datas) >0 ? $invoice_datas[0]: $invoice_datas,
             ]);
         }
 
