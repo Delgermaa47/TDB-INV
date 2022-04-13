@@ -58,7 +58,6 @@
                 case 'invoice-recieve-paid':
                     return $this->inv_rec_paid();
 
-
                 case 'invoice-history':
                     return $this->inv_list();
                 
@@ -158,7 +157,7 @@
                 select * from 
                     vbismiddle.invoicesent
                 where
-                    invno=(select invno from vbismiddle.invoicesent where recno=$recno)
+                    invno=$invno
                         and 
                     invstatus=$invstatus';
             $res = _select($query, $params);
@@ -171,7 +170,7 @@
                     set
                         invstatus=$invstatus
                     where
-                        invno=(select invno from vbismiddle.invoicesent where recno=$recno)';
+                        invno=$invno';
     
                 sql_execute($query, $params);
             }
@@ -180,6 +179,11 @@
         protected function inv_rec_paid() {
             $params['$recno'] = $this->params['recno'];
             $params['$invstatus'] = check_string($this->invoice_status['paid']);
+
+            $add_sql = 'recno=$recno';
+            $req_arr = $this->inv_rec_info($add_sql, $params);
+            $params['$invno'] = count($req_arr) >0 ? $req_arr[0]['invno']: "";
+
             $query = '
             update
                 vbismiddle.invoicerec
@@ -188,6 +192,7 @@
             where
                 recno = $recno';
             sql_execute($query, $params);
+
             $this->check_invoice_status($params);
             return json_encode(["success"=>true]);
         }
@@ -204,7 +209,9 @@
 
         protected function approve_rec_delete() {
             $params['$recno'] = $this->params['recno'];
-  
+            $add_sql = 'recno=$recno';
+            $req_arr = $this->inv_rec_info($add_sql, $params);
+            $params['$invno'] = count($req_arr) >0 ? $req_arr[0]['invno']: "";
             $query = '
             delete from 
                 vbismiddle.invoiceRec
@@ -354,7 +361,7 @@
 
         protected function inv_rec_delete() {
             $params['$recno'] = $this->params['recno'];
-            $params['$invstatus'] = $this->invoice_status['revoked'];
+            $params['$invstatus'] = check_string($this->invoice_status['revoked']);
 
             $query = '
                 update
@@ -559,7 +566,7 @@
                     custno character varying(16) NOT NULL,
                     fname character varying(100) NOT NULL,
                     accntno character varying(16) NOT NULL,
-                    invstatus character varying(16) NOT NULL,
+                    invstatus character varying(50) NOT NULL,
                     invdesc character varying(100) NOT NULL,
                     created_at timestamp DEFAULT CURRENT_TIMESTAMP
                 )';
@@ -572,7 +579,7 @@
                     custno character varying(16) NOT NULL,
                     accntno character varying(16) NOT NULL,
                     handphone character varying(16) NOT NULL,
-                    invstatus character varying(16) NOT NULL,
+                    invstatus character varying(50) NOT NULL,
                     created_at timestamp DEFAULT CURRENT_TIMESTAMP
                 )';
             sql_execute($invoice_sql);
