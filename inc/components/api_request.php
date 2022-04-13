@@ -9,10 +9,10 @@
         public $request_name;
         public $request_params;
         protected $invoice_status = [
-            "new"=>"шинэ",
             "paid"=>"төлөгдсөн",
             "revoked"=>"буцаагдсан",
-            "approved"=>"баталгаажсан",
+            "approved"=>"шийдвэрлэгдсэн",
+            "pending"=>"хүлээгдэж буй"
         ];
         
         function __set($propName, $propValue)
@@ -26,9 +26,6 @@
             switch ($request_name) {
                 case 'invoice-list':
                     return $this->inv_list();
-                    
-                case 'invoice-recieve-list':
-                    return $this->inv_recieve_list();
                 
                 case 'invoice-save':
                     return $this->inv_save();
@@ -41,12 +38,18 @@
                             
                 case 'delete-sent-invoice':
                     return $this->inv_sent_delete();
+                
+                case 'approve-rec-invoice':
+                    return $this->approve_rec_delete();
                     
                 case 'get-fname':
                     return $this->get_fname();
                     
-                
-                case 'delete-rec-invoice':
+
+                case 'invoice-recieve-list':
+                    return $this->inv_recieve_list();              
+
+                case 'revoke-rec-invoice':
                     return $this->inv_rec_delete();
 
                 case 'invoice-history':
@@ -54,15 +57,10 @@
                 
                 case 'invoice-history-detail':
                     return $this->inv_list();
-                
-                case 'invoice-reffresh':
-                    return $this->inv_list();
+
                 
                 case 'create-inv-tables':
                     return $this->create_tables();
-
-                case 'insert-inv-status':
-                    return $this->insert_invoice_status();
             }
 
             return [];
@@ -145,6 +143,45 @@
                 "params"=>$params,
                 "total_page"=>$total_page
             ];
+        }
+
+        protected function approve_rec_delete() {
+            $params['$invno'] = $this->params['invno'];
+            $params['$recno'] = $this->params['recno'];
+  
+            $query = '
+            delete from 
+                vbismiddle.invoiceRec
+            where
+                recno= $recno';
+            sql_execute($query, $params);
+            
+            $params['$invstatus'] = check_string($this->invoice_status['pending']);
+            $query = '
+                select * from 
+                    vbismiddle.invoicesent
+                where
+                    invno=$invno 
+                        and 
+                    invstatus=$invstatus';
+            $res = _select($query, $params);
+
+            if(count($res)<1) {
+                $params['$invstatus'] = check_string($this->invoice_status['approved']);
+                $query = '
+                    update
+                        vbismiddle.invoicesent
+                    set
+                        invstatus=$invstatus
+                    where
+                        invno=$invno';
+    
+                sql_execute($query, $params);
+            }
+
+            return json_encode([
+                "success"=>true,
+            ]);
         }
 
         protected function get_fname() {
@@ -262,7 +299,7 @@
         }
 
         protected function inv_sent_delete() {
-            $params['$invno'] = $this->params['id'];
+            $params['$invno'] = $this->params['invno'];
             
             $query = '
                 delete from vbismiddle.invoicerec where invno= $invno
@@ -280,8 +317,17 @@
         }
 
         protected function inv_rec_delete() {
-            $query = 'delete from vbismiddle.invoiceRec where id= $id';
-            $params['$id'] = $this->params['id'];
+            $params['$recno'] = $this->params['recno'];
+            $params['$invstatus'] = $this->invoice_status['revoked'];
+
+            $query = '
+                update
+                    vbismiddle.invoiceRec
+
+                set invstatus=$invstatus
+                where
+                    recno= $recno';
+
             sql_execute($query, $params);
             return json_encode([
                 "success"=>true,
@@ -346,8 +392,8 @@
             if($res) {
                 return $res;
             };
-
-            $invstatus = $this->invoice_status['new'];
+            
+            $invstatus = $this->invoice_status['pending'];
             $sent_values = [
                 $amount, $custno, $accntno,
                 $invstatus, $invdesc, $fname
@@ -423,21 +469,23 @@
                 
                 $recids = [];
                 foreach ($rec_datas as $value) {
-                    
-                    $params['$recno'] = $value['recno'];
-                    $params['$amount'] = $value['amount'];
-                    $params['$accntno'] =$value['accntno'];
-                    $query = '
-                        update
-                            vbismiddle.invoicerec
-                        SET 
-                            amount=$amount,
-                            accntno=$accntno
+                    $recno = get_or_null($value['recno']);
+                    if ($value['recno']) {
+                        $params['$amount'] = $value['amount'];
+                        $params['$accntno'] =$value['accntno'];
+                        $query = '
+                            update
+                                vbismiddle.invoicerec
+                            SET 
+                                amount=$amount,
+                                accntno=$accntno
+        
+                            WHERE recno=$recno';
+                        sql_execute($query, $params);
     
-                        WHERE recno=$recno';
-                    sql_execute($query, $params);
-
-                    array_push($recids, $value['recno']);
+                        array_push($recids, $recno);
+                    }
+                  
                 }
                 $add_param = 'and recno not in('.join(", " , $recids).")";
             }
