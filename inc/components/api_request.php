@@ -9,10 +9,10 @@
         public $request_name;
         public $request_params;
         protected $invoice_status = [
-            "new"=>"шинэ",
             "paid"=>"төлөгдсөн",
             "revoked"=>"буцаагдсан",
-            "approved"=>"баталгаажсан",
+            "approved"=>"шийдвэрлэгдсэн",
+            "pending"=>"хүлээгдэж буй"
         ];
         
         function __set($propName, $propValue)
@@ -26,9 +26,6 @@
             switch ($request_name) {
                 case 'invoice-list':
                     return $this->inv_list();
-                    
-                case 'invoice-recieve-list':
-                    return $this->inv_recieve_list();
                 
                 case 'invoice-save':
                     return $this->inv_save();
@@ -41,28 +38,35 @@
                             
                 case 'delete-sent-invoice':
                     return $this->inv_sent_delete();
+                
+                case 'approve-rec-invoice':
+                    return $this->approve_rec_delete();
                     
                 case 'get-fname':
                     return $this->get_fname();
                     
-                
-                case 'delete-rec-invoice':
+
+                case 'invoice-recieve-list':
+                    return $this->inv_recieve_list();              
+
+                case 'revoke-rec-invoice':
                     return $this->inv_rec_delete();
+                
+                case 'invoice-rec-detail':
+                    return $this->inv_rec_detail();
+
+                case 'invoice-rec-paid':
+                    return $this->inv_rec_paid();
 
                 case 'invoice-history':
                     return $this->inv_list();
                 
                 case 'invoice-history-detail':
                     return $this->inv_list();
-                
-                case 'invoice-reffresh':
-                    return $this->inv_list();
+
                 
                 case 'create-inv-tables':
                     return $this->create_tables();
-
-                case 'insert-inv-status':
-                    return $this->insert_invoice_status();
             }
 
             return [];
@@ -147,6 +151,78 @@
             ];
         }
 
+        protected function check_invoice_status($params) {
+            $params['$invstatus'] = check_string($this->invoice_status['pending']);
+            $query = '
+                select * from 
+                    vbismiddle.invoicesent
+                where
+                    invno=$invno
+                        and 
+                    invstatus=$invstatus';
+            $res = _select($query, $params);
+
+            if(count($res)<1) {
+                $params['$invstatus'] = check_string($this->invoice_status['approved']);
+                $query = '
+                    update
+                        vbismiddle.invoicesent
+                    set
+                        invstatus=$invstatus
+                    where
+                        invno=$invno';
+    
+                sql_execute($query, $params);
+            }
+        }
+
+        protected function inv_rec_paid() {
+            $params['$recno'] = $this->params['recno'];
+            $params['$invstatus'] = check_string($this->invoice_status['paid']);
+
+            $add_sql = 'recno=$recno';
+            $req_arr = $this->inv_rec_info($add_sql, $params);
+            $params['$invno'] = count($req_arr) >0 ? $req_arr[0]['invno']: "";
+
+            $query = '
+            update
+                vbismiddle.invoicerec
+            set 
+                invstatus=$invstatus
+            where
+                recno = $recno';
+            sql_execute($query, $params);
+
+            $this->check_invoice_status($params);
+            return json_encode(["success"=>true]);
+        }
+
+        protected function inv_rec_detail() {
+            $params['$recno'] = $this->params['recno'];
+            $add_sql = 'recno=$recno';
+            $rec_datas = $this->inv_rec_info($add_sql, $params);
+            return json_encode([
+                "success"=>true, 
+                "items"=>count($rec_datas)>0 ? $rec_datas[0] : $rec_datas
+            ]);
+        }
+
+        protected function approve_rec_delete() {
+            $params['$recno'] = $this->params['recno'];
+            $add_sql = 'recno=$recno';
+            $req_arr = $this->inv_rec_info($add_sql, $params);
+            $params['$invno'] = count($req_arr) >0 ? $req_arr[0]['invno']: "";
+            $query = '
+            delete from 
+                vbismiddle.invoiceRec
+            where
+                recno = $recno';
+            sql_execute($query, $params);
+            $this->check_invoice_status($params);
+
+            return json_encode(["success"=>true]);
+        }
+
         protected function get_fname() {
             $handphone = $this->params['handphone'];
             $params['$handphone'] = check_string($handphone);
@@ -228,41 +304,45 @@
             return json_encode($res_arr);
         }
 
+        protected function inv_rec_info($add_sql, $params) {
+            $rec_query = '
+                select 
+                    * 
+                FROM 
+                    vbismiddle.invoicerec
+                where 
+                '.$add_sql;
+
+            return _select($rec_query, $params);
+        }
+
         protected function inv_detail() {
             $request_param_id = $this->params['id'];
             
             $query = '
-            select 
-                * 
-            FROM 
-                vbismiddle.invoicesent
-            where 
-                invno=$id';
+                select 
+                    * 
+                FROM 
+                    vbismiddle.invoicesent
+                where 
+                    invno=$id';
             
             $params['$id'] = $request_param_id;
 
             $invoice_datas = _select($query, $params);
+            $add_sql = 'invno=$id';
+            $rec_datas = $this->inv_rec_info($add_sql, $params);
 
-            $rec_query = '
-            select 
-                * 
-            FROM 
-                vbismiddle.invoicerec
-            where 
-                invno=$id';
-
-            $rec_datas = _select($rec_query, $params);
-            
             if (count($invoice_datas)>0) $invoice_datas[0]['rec_datas'] = $rec_datas;
             
             return json_encode([
                 "success"=>true,
-                "detail_datas"=>$invoice_datas,
+                "items"=>count($invoice_datas) >0 ? $invoice_datas[0]: $invoice_datas,
             ]);
         }
 
         protected function inv_sent_delete() {
-            $params['$invno'] = $this->params['id'];
+            $params['$invno'] = $this->params['invno'];
             
             $query = '
                 delete from vbismiddle.invoicerec where invno= $invno
@@ -280,8 +360,17 @@
         }
 
         protected function inv_rec_delete() {
-            $query = 'delete from vbismiddle.invoiceRec where id= $id';
-            $params['$id'] = $this->params['id'];
+            $params['$recno'] = $this->params['recno'];
+            $params['$invstatus'] = check_string($this->invoice_status['revoked']);
+
+            $query = '
+                update
+                    vbismiddle.invoiceRec
+
+                set invstatus=$invstatus
+                where
+                    recno= $recno';
+
             sql_execute($query, $params);
             return json_encode([
                 "success"=>true,
@@ -346,8 +435,8 @@
             if($res) {
                 return $res;
             };
-
-            $invstatus = $this->invoice_status['new'];
+            
+            $invstatus = $this->invoice_status['pending'];
             $sent_values = [
                 $amount, $custno, $accntno,
                 $invstatus, $invdesc, $fname
@@ -423,21 +512,23 @@
                 
                 $recids = [];
                 foreach ($rec_datas as $value) {
-                    
-                    $params['$recno'] = $value['recno'];
-                    $params['$amount'] = $value['amount'];
-                    $params['$accntno'] =$value['accntno'];
-                    $query = '
-                        update
-                            vbismiddle.invoicerec
-                        SET 
-                            amount=$amount,
-                            accntno=$accntno
+                    $recno = get_or_null($value['recno']);
+                    if ($value['recno']) {
+                        $params['$amount'] = $value['amount'];
+                        $params['$accntno'] =$value['accntno'];
+                        $query = '
+                            update
+                                vbismiddle.invoicerec
+                            SET 
+                                amount=$amount,
+                                accntno=$accntno
+        
+                            WHERE recno=$recno';
+                        sql_execute($query, $params);
     
-                        WHERE recno=$recno';
-                    sql_execute($query, $params);
-
-                    array_push($recids, $value['recno']);
+                        array_push($recids, $recno);
+                    }
+                  
                 }
                 $add_param = 'and recno not in('.join(", " , $recids).")";
             }
@@ -475,7 +566,7 @@
                     custno character varying(16) NOT NULL,
                     fname character varying(100) NOT NULL,
                     accntno character varying(16) NOT NULL,
-                    invstatus character varying(16) NOT NULL,
+                    invstatus character varying(50) NOT NULL,
                     invdesc character varying(100) NOT NULL,
                     created_at timestamp DEFAULT CURRENT_TIMESTAMP
                 )';
@@ -488,7 +579,7 @@
                     custno character varying(16) NOT NULL,
                     accntno character varying(16) NOT NULL,
                     handphone character varying(16) NOT NULL,
-                    invstatus character varying(16) NOT NULL,
+                    invstatus character varying(50) NOT NULL,
                     created_at timestamp DEFAULT CURRENT_TIMESTAMP
                 )';
             sql_execute($invoice_sql);
