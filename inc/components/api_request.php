@@ -55,32 +55,84 @@
             return [];
         }
 
-        protected function get_req_params($query, $sort_name) {
+        protected function count_of_table($table_name){
+            $query = '
+                select 
+                    count(*) as count
+                from 
+                   $table_name
+            ';
+            $params['$table_name'] = $table_name;
+
+            $res = _select($query, $params);
+            return $res[0]['count'];
+        }
+
+        public function get_total_page($perpage, $table_name) {
+            $total_page = 1;
+            $total_items = $this->count_of_table($table_name);
+
+            if($perpage<=$total_items) {
+                $total_page = $total_items/$perpage;
+                $result_float = $total_items%$perpage;
+                if ($result_float>0) {
+                    $total_page += 1;
+                }
+            }
+            return $total_page;
+        }
+
+        protected function get_req_params($query, $sort_name, $str_stnames, $table_name, $primary_key) {
             $sort_type = "desc";
-            
-            $req_page = get_or_null($_POST['page']);
+            $total_page = 1;
+
+            $last_id = get_or_null($_POST['last_id']);
+            $is_prev_page = get_or_null($_POST['is_prev_page']);
             $req_perpage = get_or_null($_POST['perpage']);
             $req_sort_name = get_or_null($_POST['sort_name']);
             $req_sort_type = get_or_null($_POST['sort_type']);
             $req_custom_query = get_or_null($_POST['custom_query']);
-          
-            if ($req_sort_name) {
+            
+            write_to_file(gettype($is_prev_page), "is_prev_page");
+            if ($req_sort_name) 
+            {
                 $sort_name = $req_sort_name;
+                if (count($str_stnames)>0 && in_array($req_sort_name, $str_stnames)) {
+                    $sort_name = check_string($sort_name);
+                }
             }
 
             if ($req_sort_type) {
                 $sort_type = $req_sort_type;
             }
+          
+            
+            if ($last_id) {
+                $params['$last_id'] = $last_id;
+                $params['$primary_key'] = $primary_key;
+                $is_prev = strtolower(strval($is_prev_page)); 
+                if ($is_prev === 'true') {
+                    $query = $query.' and $primary_key<$last_id ';
+                }
+                else {
+                    $query = $query.' and $last_id<$primary_key ';
+                }
+            }
             
             $params['$sort_name'] = $sort_name;
             $params['$sort_type'] = $sort_type;
-            $query = $query.'order by $sort_name $sort_type';
+            $query = $query.' order by $sort_name $sort_type ';
 
+            if ($req_perpage) {
+                $total_page = $this->get_total_page($req_perpage, $table_name);
+                $params['$perpage'] = $req_perpage;
+                $query = $query.' fetch next $perpage rows only ';
+            }
             return [
                 "query"=>$query,
-                "params"=>$params
+                "params"=>$params,
+                "total_page"=>$total_page
             ];
-
         }
 
         protected function inv_list() {
@@ -98,7 +150,7 @@
             where
                 invoice.custno=$custno
             ';
-            $req = $this->get_req_params($query, 'invno');
+            $req = $this->get_req_params($query, 'invno', [], "vbismiddle.invoicesent", "invno");
             $query = $req['query'];
             $params += $req['params'];
             $res = _select($query, $params);
@@ -106,6 +158,7 @@
                 "succes"=>true,
                 "start_index"=>1,
                 "page"=>1,
+                "total_page"=>1,
                 "items"=>$res
             ]);
         }
