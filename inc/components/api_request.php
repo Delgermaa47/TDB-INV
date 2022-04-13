@@ -24,7 +24,7 @@
             $request_name = strtolower($this->request_name);
 
             switch ($request_name) {
-                case 'invoice-sent-list':
+                case 'invoice-list':
                     return $this->inv_list();
                     
                 case 'invoice-recieve-list':
@@ -41,6 +41,10 @@
                             
                 case 'delete-sent-invoice':
                     return $this->inv_sent_delete();
+                    
+                case 'get-fname':
+                    return $this->get_fname();
+                    
                 
                 case 'delete-rec-invoice':
                     return $this->inv_rec_delete();
@@ -143,20 +147,21 @@
             ];
         }
 
+        protected function get_fname() {
+
+        }
+
         protected function inv_list() {
             global $custno;
-            $params['$custno'] = $custno;
+            $params['$custno'] = check_string($custno);
 
             $query = '
             select 
-                invoice.*,
-                customer.CUSTNAME as fname
+                *
             from 
-                vbismiddle.invoicesent invoice
-            inner join gb.cust customer
-                on invoice.custno=customer.custno
+                vbismiddle.invoicesent 
             where
-                invoice.custno=$custno
+                custno=$custno
             ';
             $req = $this->get_req_params($query, 'invno', [], "vbismiddle.invoicesent", "invno");
             $query = $req['query'];
@@ -181,14 +186,11 @@
 
             $query = '
             select 
-                invoice.*,
-                customer.CUSTNAME as fname
+                *
             from 
-                vbismiddle.invoicerec invoice
-            inner join gb.cust customer
-                on invoice.custno=customer.custno
+                vbismiddle.invoicerec
             where
-                invoice.custno=$custno
+                custno=$custno
             ';
             $req = $this->get_req_params($query, 'invno', [], "vbismiddle.invoicesent", "invno");
             $query = $req['query'];

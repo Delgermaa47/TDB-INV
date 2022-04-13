@@ -11,6 +11,7 @@
     $get_requests = array( 
         'invoice-history' => "/api/invoice-history",
         'invoice-detail' => "/api/invoice-detail/(?'id'\d+)",
+        'get-fname' => "/api/get-fname/(?'handphone'\d+)",
         'invoice-cancel' => "/api/invoice-cancel/(?'id'\d+)" ,
         'invoice-history-detail' => "/api/invoice-history-detail/(?'id'\d+)",
         'delete-sent-invoice' => "/api/delete-sent-invoice/(?'id'\d+)",
