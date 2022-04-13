@@ -55,7 +55,7 @@
                 case 'invoice-rec-detail':
                     return $this->inv_rec_detail();
 
-                case 'invoice-recieve-paid':
+                case 'invoice-rec-paid':
                     return $this->inv_rec_paid();
 
                 case 'invoice-history':
