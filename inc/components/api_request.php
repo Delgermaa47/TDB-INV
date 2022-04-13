@@ -8,6 +8,9 @@
     {
         public $request_name;
         public $request_params;
+        protected $invoice_status = [
+            
+        ];
         
         function __set($propName, $propValue)
         {
@@ -358,7 +361,8 @@
 
             $params['$invno'] = $this->params['invno'];
 
-            $required_fields = ["amount", "accntno", "invdesc"];
+            // "accntno"
+            $required_fields = ["amount", "invdesc"];
             $res = $this->check_invoice_arr([$_POST], $required_fields);
 
             if($res) {
@@ -440,35 +444,28 @@
 
         protected  function create_tables() {
 
-            $invoice_status_sql = 'create table '.DB_SCHEMA.'invoiceStatus(
-                    id integer generated always as identity,
-                    status_name varchar(40),
-                    code varchar(40)
-                )';
-            
             $invoice_sql = 'create table '.DB_SCHEMA.'InvoiceSent(
                     invno integer generated always as identity,
                     amount integer,
                     custno character varying(16) NOT NULL,
+                    fname character varying(16) NOT NULL,
                     accntno character varying(16) NOT NULL,
                     invstatus integer NOT NULL,
                     invdesc character varying(100) NOT NULL,
-                    created_at timestamp DEFAULT CURRENT_TIMESTAMP,
-                    updated_at timestamp DEFAULT CURRENT_TIMESTAMP,
+                    created_at timestamp DEFAULT CURRENT_TIMESTAMP
                 )';
             
             $invoice_rec_sql = 'create table '.DB_SCHEMA.'InvoiceRec(
                     recno integer generated always as identity,
                     invno integer,
                     amount integer,
+                    fname character varying(16) NOT NULL,
                     custno character varying(16) NOT NULL,
                     accntno character varying(16) NOT NULL,
                     handphone character varying(16) NOT NULL,
                     invstatus integer NOT NULL,
-                    created_at timestamp DEFAULT CURRENT_TIMESTAMP,
-                    updated_at timestamp DEFAULT CURRENT_TIMESTAMP
+                    created_at timestamp DEFAULT CURRENT_TIMESTAMP
                 )';
-            sql_execute($invoice_status_sql);
             sql_execute($invoice_sql);
             sql_execute($invoice_rec_sql);
             echo "done";
