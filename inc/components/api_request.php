@@ -1,6 +1,9 @@
 <?php
 
     require_once ROOT."\\inc\\components\\validation.php";
+
+    $custno = '90400005627';
+    
     class ApiList
     {
         public $request_name;
@@ -52,23 +55,50 @@
             return [];
         }
 
+        protected function get_req_params($query, $sort_name) {
+            $sort_type = "desc";
+            
+            $req_page = get_or_null($_POST['page']);
+            $req_perpage = get_or_null($_POST['perpage']);
+            $req_sort_name = get_or_null($_POST['sort_name']);
+            $req_sort_type = get_or_null($_POST['sort_type']);
+            $req_custom_query = get_or_null($_POST['custom_query']);
+          
+            if ($req_sort_name) {
+                $sort_name = $req_sort_name;
+            }
+
+
+            if ($req_sort_type) {
+                $sort_type = $req_sort_type;
+            }
+            
+            $query = $query.'order by '.$sort_name.' '.$sort_type;
+
+            // order by invno desc
+            // fetch next 20 rows only
+
+        }
+
         protected function inv_list() {
-            $page = get_or_null($_POST['page']);
-            $perpage = get_or_null($_POST['perpage']);
-            $sort_name = get_or_null($_POST['sort_name']);
-            $custom_query = get_or_null($_POST['custom_query']);
+            global $custno;
+
+
+            $params['$custno'] = $custno;
 
             $query = '
-                select 
-                    *
-                from 
-                vbismiddle.invoicesent
-                order by invno desc
-                fetch next 20 rows only
-
-           
+            select 
+                invoice.*,
+                customer.CUSTNAME as fname
+            from 
+                vbismiddle.invoicesent invoice
+            inner join gb.cust customer
+                on invoice.custno=customer.custno
+            where
+                invoice.custno=$custno
             ';
-            $res = _select($query, []);
+
+            $res = _select($query, $params);
             return json_encode([
                 "succes"=>true,
                 "start_index"=>1,

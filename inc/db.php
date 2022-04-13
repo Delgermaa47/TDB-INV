@@ -37,6 +37,7 @@
     
     function sql_execute($sql, $params=[]) {
         $query = strtr($sql, $params);
+        write_to_file($query);
         $stid = oci_parse(PG_Conn, $query);
         oci_execute($stid);
         return $stid;
