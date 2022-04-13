@@ -198,7 +198,7 @@
             $rec_datas = $this->inv_rec_info($add_sql, $params);
             return json_encode([
                 "success"=>true, 
-                "items"=>$rec_datas, 
+                "items"=>count($rec_datas)>0 ? $rec_datas[0] : $rec_datas
             ]);
         }
 
@@ -330,7 +330,7 @@
             
             return json_encode([
                 "success"=>true,
-                "detail_datas"=>count($invoice_datas) >0 ? $invoice_datas[0]: $invoice_datas,
+                "items"=>count($invoice_datas) >0 ? $invoice_datas[0]: $invoice_datas,
             ]);
         }
 
