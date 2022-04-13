@@ -9,7 +9,10 @@
         public $request_name;
         public $request_params;
         protected $invoice_status = [
-            
+            "new"=>"шинэ",
+            "paid"=>"төлөгдсөн",
+            "revoked"=>"буцаагдсан",
+            "approved"=>"баталгаажсан",
         ];
         
         function __set($propName, $propValue)
@@ -307,7 +310,7 @@
         protected function inv_save() {
 
             
-            $required_fields = ["custno", "handphone", "amount", "accntno", "invdesc", "rec_datas"];
+            $required_fields = ["custno", "handphone", "amount", "accntno", "invdesc", "rec_datas", "fname"];
             $res = $this->check_invoice_arr([$_POST], $required_fields);
             if($res) {
                 return $res;
@@ -316,21 +319,21 @@
             extract($_POST);
 
             $rec_datas = gettype($rec_datas) === 'string'? json_decode($rec_datas, true): $rec_datas; 
-            $required_fields = ["custno", "handphone", "amount", "accntno"];
+            $required_fields = ["custno", "handphone", "amount", "accntno", "fname"];
             $res = $this->check_invoice_arr($rec_datas, $required_fields, true);
 
             if($res) {
                 return $res;
             };
 
-            $invstatus = 1;
+            $invstatus = $this->invoice_status['new'];
             $sent_values = [
                 $amount, $custno, $accntno,
-                $invstatus, $invdesc, 
+                $invstatus, $invdesc, $fname
             ];
             
             $sent_query = 'insert into vbismiddle.invoicesent(
-            amount, custno, accntno, invstatus, invdesc
+            amount, custno, accntno, invstatus, invdesc, fname
             ) values';
 
             $last_id = bulk_insert($sent_query, $sent_values);
@@ -339,14 +342,15 @@
                 $custno = $value['custno'];
                 $accntno = $value['accntno'];
                 $handphone = $value['handphone'];
+                $fname = $value['fname'];
                 $rec_query = 'insert into vbismiddle.invoiceRec(
-                    invno, amount, custno, accntno, invstatus, handphone
+                    invno, amount, custno, accntno, invstatus, handphone, fname
                     ) values';
     
     
                 $recieve_datas = [
                     $last_id, $amount, $custno, $accntno, 
-                    $invstatus, $handphone
+                    $invstatus, $handphone, $fname
                 ];
                 bulk_insert($rec_query, $recieve_datas);
             }
@@ -448,9 +452,9 @@
                     invno integer generated always as identity,
                     amount integer,
                     custno character varying(16) NOT NULL,
-                    fname character varying(16) NOT NULL,
+                    fname character varying(100) NOT NULL,
                     accntno character varying(16) NOT NULL,
-                    invstatus integer NOT NULL,
+                    invstatus character varying(16) NOT NULL,
                     invdesc character varying(100) NOT NULL,
                     created_at timestamp DEFAULT CURRENT_TIMESTAMP
                 )';
@@ -459,11 +463,11 @@
                     recno integer generated always as identity,
                     invno integer,
                     amount integer,
-                    fname character varying(16) NOT NULL,
+                    fname character varying(100) NOT NULL,
                     custno character varying(16) NOT NULL,
                     accntno character varying(16) NOT NULL,
                     handphone character varying(16) NOT NULL,
-                    invstatus integer NOT NULL,
+                    invstatus character varying(16) NOT NULL,
                     created_at timestamp DEFAULT CURRENT_TIMESTAMP
                 )';
             sql_execute($invoice_sql);
