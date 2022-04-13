@@ -154,13 +154,17 @@
             $query = $req['query'];
             $params += $req['params'];
             $res = _select($query, $params);
-            return json_encode([
-                "succes"=>true,
-                "start_index"=>1,
-                "page"=>1,
-                "total_page"=>1,
+
+            $res_arr = [
+                "success"=>true,
                 "items"=>$res
-            ]);
+            ];
+            
+            $req_perpage = get_or_null($_POST['perpage']);
+            if ($req_perpage) {
+                $res_arr['total_page'] = $req['total_page'];
+            }
+            return json_encode($res_arr);
         }
 
         protected function inv_detail() {
