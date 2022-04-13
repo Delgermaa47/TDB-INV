@@ -68,22 +68,23 @@
                 $sort_name = $req_sort_name;
             }
 
-
             if ($req_sort_type) {
                 $sort_type = $req_sort_type;
             }
             
-            $query = $query.'order by '.$sort_name.' '.$sort_type;
+            $params['$sort_name'] = $sort_name;
+            $params['$sort_type'] = $sort_type;
+            $query = $query.'order by $sort_name $sort_type';
 
-            // order by invno desc
-            // fetch next 20 rows only
+            return [
+                "query"=>$query,
+                "params"=>$params
+            ];
 
         }
 
         protected function inv_list() {
             global $custno;
-
-
             $params['$custno'] = $custno;
 
             $query = '
@@ -97,7 +98,9 @@
             where
                 invoice.custno=$custno
             ';
-
+            $req = $this->get_req_params($query, 'invno');
+            $query = $req['query'];
+            $params += $req['params'];
             $res = _select($query, $params);
             return json_encode([
                 "succes"=>true,
