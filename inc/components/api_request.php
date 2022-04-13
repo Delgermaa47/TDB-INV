@@ -18,8 +18,11 @@
             $request_name = strtolower($this->request_name);
 
             switch ($request_name) {
-                case 'invoice-list':
+                case 'invoice-sent-list':
                     return $this->inv_list();
+                    
+                case 'invoice-recieve-list':
+                    return $this->inv_recieve_list();
                 
                 case 'invoice-save':
                     return $this->inv_save();
@@ -144,6 +147,38 @@
                 customer.CUSTNAME as fname
             from 
                 vbismiddle.invoicesent invoice
+            inner join gb.cust customer
+                on invoice.custno=customer.custno
+            where
+                invoice.custno=$custno
+            ';
+            $req = $this->get_req_params($query, 'invno', [], "vbismiddle.invoicesent", "invno");
+            $query = $req['query'];
+            $params += $req['params'];
+            $res = _select($query, $params);
+
+            $res_arr = [
+                "success"=>true,
+                "items"=>$res
+            ];
+            
+            $req_perpage = get_or_null($_POST['perpage']);
+            if ($req_perpage) {
+                $res_arr['total_page'] = $req['total_page'];
+            }
+            return json_encode($res_arr);
+        }
+
+        protected function inv_recieve_list() {
+            global $custno;
+            $params['$custno'] = $custno;
+
+            $query = '
+            select 
+                invoice.*,
+                customer.CUSTNAME as fname
+            from 
+                vbismiddle.invoicerec invoice
             inner join gb.cust customer
                 on invoice.custno=customer.custno
             where

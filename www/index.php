@@ -32,7 +32,8 @@
     $post_requests = array(
         'invoice-save' => "/api/invoice-save",
         'invoice-edit' => "/api/invoice-edit/(?'invno'\d+)",
-        'invoice-list' => "/api/invoice-list",
+        'invoice-list' => "/api/invoice-sent-list",
+        'invoice-recieve-list' => "/api/invoice-recieve-list",
     );
     
     $request_method = $_SERVER['REQUEST_METHOD'];
