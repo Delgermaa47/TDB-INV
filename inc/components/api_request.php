@@ -92,8 +92,7 @@
             $req_sort_name = get_or_null($_POST['sort_name']);
             $req_sort_type = get_or_null($_POST['sort_type']);
             $req_custom_query = get_or_null($_POST['custom_query']);
-            
-            write_to_file(gettype($is_prev_page), "is_prev_page");
+
             if ($req_sort_name) 
             {
                 $sort_name = $req_sort_name;
