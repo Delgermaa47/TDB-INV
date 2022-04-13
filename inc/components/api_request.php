@@ -51,6 +51,13 @@
 
                 case 'revoke-rec-invoice':
                     return $this->inv_rec_delete();
+                
+                case 'invoice-rec-detail':
+                    return $this->inv_rec_detail();
+
+                case 'invoice-recieve-paid':
+                    return $this->inv_rec_paid();
+
 
                 case 'invoice-history':
                     return $this->inv_list();
@@ -145,23 +152,13 @@
             ];
         }
 
-        protected function approve_rec_delete() {
-            $params['$invno'] = $this->params['invno'];
-            $params['$recno'] = $this->params['recno'];
-  
-            $query = '
-            delete from 
-                vbismiddle.invoiceRec
-            where
-                recno= $recno';
-            sql_execute($query, $params);
-            
+        protected function check_invoice_status($params) {
             $params['$invstatus'] = check_string($this->invoice_status['pending']);
             $query = '
                 select * from 
                     vbismiddle.invoicesent
                 where
-                    invno=$invno 
+                    invno=(select invno from vbismiddle.invoicesent where recno=$recno)
                         and 
                     invstatus=$invstatus';
             $res = _select($query, $params);
@@ -174,14 +171,49 @@
                     set
                         invstatus=$invstatus
                     where
-                        invno=$invno';
+                        invno=(select invno from vbismiddle.invoicesent where recno=$recno)';
     
                 sql_execute($query, $params);
             }
+        }
 
+        protected function inv_rec_paid() {
+            $params['$recno'] = $this->params['recno'];
+            $params['$invstatus'] = check_string($this->invoice_status['paid']);
+            $query = '
+            update
+                vbismiddle.invoicerec
+            set 
+                invstatus=$invstatus
+            where
+                recno = $recno';
+            sql_execute($query, $params);
+            $this->check_invoice_status($params);
+            return json_encode(["success"=>true]);
+        }
+
+        protected function inv_rec_detail() {
+            $params['$recno'] = $this->params['recno'];
+            $add_sql = 'recno=$recno';
+            $rec_datas = $this->inv_rec_info($add_sql, $params);
             return json_encode([
-                "success"=>true,
+                "success"=>true, 
+                "items"=>$rec_datas, 
             ]);
+        }
+
+        protected function approve_rec_delete() {
+            $params['$recno'] = $this->params['recno'];
+  
+            $query = '
+            delete from 
+                vbismiddle.invoiceRec
+            where
+                recno = $recno';
+            sql_execute($query, $params);
+            $this->check_invoice_status($params);
+
+            return json_encode(["success"=>true]);
         }
 
         protected function get_fname() {
@@ -265,31 +297,35 @@
             return json_encode($res_arr);
         }
 
+        protected function inv_rec_info($add_sql, $params) {
+            $rec_query = '
+                select 
+                    * 
+                FROM 
+                    vbismiddle.invoicerec
+                where 
+                '.$add_sql;
+
+            return _select($rec_query, $params);
+        }
+
         protected function inv_detail() {
             $request_param_id = $this->params['id'];
             
             $query = '
-            select 
-                * 
-            FROM 
-                vbismiddle.invoicesent
-            where 
-                invno=$id';
+                select 
+                    * 
+                FROM 
+                    vbismiddle.invoicesent
+                where 
+                    invno=$id';
             
             $params['$id'] = $request_param_id;
 
             $invoice_datas = _select($query, $params);
+            $add_sql = 'invno=$id';
+            $rec_datas = $this->inv_rec_info($add_sql, $params);
 
-            $rec_query = '
-            select 
-                * 
-            FROM 
-                vbismiddle.invoicerec
-            where 
-                invno=$id';
-
-            $rec_datas = _select($rec_query, $params);
-            
             if (count($invoice_datas)>0) $invoice_datas[0]['rec_datas'] = $rec_datas;
             
             return json_encode([

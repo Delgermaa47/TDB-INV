@@ -11,11 +11,12 @@
     $get_requests = array( 
         'invoice-detail' => "/api/invoice-detail/(?'id'\d+)",
         'delete-sent-invoice' => "/api/delete-sent-invoice/(?'invno'\d+)",
-        'approve-rec-invoice' => "/api/approve-rec-invoice/(?'invno'\d+)/(?'recno'\d+)",
         
         'get-fname' => "/api/get-fname/(?'handphone'\d+)",
         
         'invoice-rec-detail' => "/api/invoice-rec-detail/(?'recno'\d+)",
+        'approve-rec-invoice' => "/api/approve-rec-invoice/(?'recno'\d+)",
+        'invoice-rec-paid' => "/api/invoice-recieve-paid/(?'recno'\d+)",
         'revoke-rec-invoice' => "/api/delete-recieve-invoice/(?'recno'\d+)",
         
         'invoice-history' => "/api/invoice-history",
