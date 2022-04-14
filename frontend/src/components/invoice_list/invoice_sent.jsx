@@ -12,7 +12,7 @@ export default class InvoiceSend extends Component {
 
         super(props)
         this.state = {
-            жагсаалтын_холбоос: 'http://172.26.153.11/api/invoice-list',
+            жагсаалтын_холбоос: 'http://172.26.153.11/api/invoice-sent-list',
             талбарууд: [
                 {'field': 'invno', "title": 'Invoice дугаар'},
                 {'field': 'custno', "title": 'Хүлээн авагч'},

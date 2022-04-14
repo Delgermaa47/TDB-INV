@@ -6,10 +6,9 @@ export const service = {
 
 function list(жагсаалтын_холбоос, page, perpage, query, sort_name, custom_query){
     var form_data = new FormData();  
-    form_data.append("page", page || 1)
     form_data.append("perpage", perpage)
-    form_data.append("query", query || '')
-    form_data.append("sort_name", custom_query || '')
+    form_data.append("last_id", "")
+    form_data.append("is_prev_page", true)
     const requestOptions = {
         method: 'POST',
         body: form_data

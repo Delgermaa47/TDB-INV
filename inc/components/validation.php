@@ -57,7 +57,7 @@
                 "account"=>"Дансны дугаар хоосон байна !!!",
             );
             
-            $field_data = get_or_null($_POST[$field_name]);            
+            $field_data = get_or_null($this->requested_arr[$field_name]);            
 
             if(!$field_data || $field_data === 'null') {
                 return [

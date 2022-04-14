@@ -45,7 +45,6 @@
                 case 'get-fname':
                     return $this->get_fname();
                     
-
                 case 'invoice-recieve-list':
                     return $this->inv_recieve_list();              
 
@@ -123,7 +122,7 @@
             }
           
             
-            if ($last_id) {
+            if (!empty($last_id)) {
                 $params['$last_id'] = $last_id;
                 $params['$primary_key'] = $primary_key;
                 $is_prev = strtolower(strval($is_prev_page)); 
