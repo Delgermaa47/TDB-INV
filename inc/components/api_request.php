@@ -465,7 +465,7 @@
             
             $sent_query = 'insert into vbismiddle.invoicesent(
             amount, custno, accntno, invstatus, invdesc, fname,
-            invtype
+            invtype, 
             ) values';
 
             $last_id = bulk_insert($sent_query, $sent_values);
@@ -476,13 +476,14 @@
                 $handphone = $value['handphone'];
                 $fname = $value['fname'];
                 $rec_query = 'insert into vbismiddle.invoiceRec(
-                    invno, amount, custno, accntno, invstatus, handphone, fname
+                    invno, amount, custno, accntno, invstatus, handphone, fname,
+                    invdesc
                     ) values';
     
     
                 $recieve_datas = [
                     $last_id, $amount, $custno, $accntno, 
-                    $invstatus, $handphone, $fname
+                    $invstatus, $handphone, $fname, $invdesc
                 ];
                 bulk_insert($rec_query, $recieve_datas);
             }
@@ -537,13 +538,15 @@
                     $recno = get_or_null($value['recno']);
                     if ($value['recno']) {
                         $params['$amount'] = $value['amount'];
-                        $params['$accntno'] =$value['accntno'];
+                        $params['$accntno'] = $value['accntno'];
+                        $params['$invdesc'] = check_string($invdesc);
                         $query = '
                             update
                                 vbismiddle.invoicerec
                             SET 
                                 amount=$amount,
-                                accntno=$accntno
+                                accntno=$accntno,
+                                invdesc=$invdesc
         
                             WHERE recno=$recno';
                         sql_execute($query, $params);
