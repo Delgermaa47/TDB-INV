@@ -43,13 +43,13 @@
         'invsent-history' => "/api/invsent-history",
         'invrec-history' => "/api/invrec-history",
         'invtemplate-list' => "/api/invtemplate-list",
+        'invoice-recieve-list' => "/api/invoice-recieve-list",
 
         'invoice-save' => "/api/invoice-save",
-        'invoice-edit' => "/api/invoice-edit/(?'invno'\d+)",
-        
         'invoice-template' => "/api/invoice-template-save",
 
-        'invoice-recieve-list' => "/api/invoice-recieve-list",
+        'invoice-edit' => "/api/invoice-edit/(?'invno'\d+)",
+
     );
     
     $request_method = $_SERVER['REQUEST_METHOD'];
