@@ -19,7 +19,11 @@
         'invoice-rec-paid' => "/api/invoice-recieve-paid/(?'recno'\d+)",
         'revoke-rec-invoice' => "/api/delete-recieve-invoice/(?'recno'\d+)",
         
-        'invoice-history' => "/api/invoice-history",
+        'invsent-history' => "/api/invsent-history",
+        'invrec-history' => "/api/invrec-history",
+        'invsent-history-detail' => "/api/invsent-history-detail/(?'invno'\d+)",
+        'invrec-history-detail' => "/api/invrec-history-detail/(?'recno'\d+)",
+
         'create-inv-tables' => '/api/create-inv-tables',
         'invoice-history-detail' => "/api/invoice-history-detail/(?'id'\d+)",
     );
