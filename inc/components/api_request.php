@@ -441,7 +441,6 @@
 
         protected function inv_save($invtype) {
 
-            
             $required_fields = ["custno", "handphone", "amount", "accntno", "invdesc", "rec_datas", "fname"];
             $res = $this->check_invoice_arr([$_POST], $required_fields);
             if($res) {
@@ -461,7 +460,7 @@
             $invstatus = $this->invoice_status['pending'];
             $sent_values = [
                 $amount, $custno, $accntno,
-                $invstatus, $invdesc, $fname, check_string($invtype)
+                $invstatus, $invdesc, $fname, $invtype
             ];
             
             $sent_query = 'insert into vbismiddle.invoicesent(

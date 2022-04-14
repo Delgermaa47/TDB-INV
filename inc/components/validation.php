@@ -11,7 +11,6 @@
         {
             $this->$propName = $propValue;
         }
-
         
         public function request_res() {
             $field_name = strtolower($this->field_name);
