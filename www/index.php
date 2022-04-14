@@ -9,7 +9,7 @@
     $uri = urldecode( $uri );
 
     $get_requests = array( 
-        'invoice-detail' => "/api/invoice-detail/(?'id'\d+)",
+        'invoice-detail' => "/api/invoice-detail/(?'invno'\d+)",
         'delete-sent-invoice' => "/api/delete-sent-invoice/(?'invno'\d+)",
         
         'get-fname' => "/api/get-fname/(?'handphone'\d+)",
@@ -18,8 +18,13 @@
         'approve-rec-invoice' => "/api/approve-rec-invoice/(?'recno'\d+)",
         'invoice-rec-paid' => "/api/invoice-recieve-paid/(?'recno'\d+)",
         'revoke-rec-invoice' => "/api/delete-recieve-invoice/(?'recno'\d+)",
-        
-        'invoice-history' => "/api/invoice-history",
+    
+        'invsent-history-detail' => "/api/invsent-history-detail/(?'invno'\d+)",
+        'invrec-history-detail' => "/api/invrec-history-detail/(?'recno'\d+)",
+
+        'invtemplate-detail' => "/api/invtemplate-detail/(?'invno'\d+)",
+        'invtemplate-apply' => "/api/invtemplate-apply/(?'invno'\d+)",
+
         'create-inv-tables' => '/api/create-inv-tables',
         'invoice-history-detail' => "/api/invoice-history-detail/(?'id'\d+)",
     );
@@ -36,10 +41,16 @@
 
     $post_requests = array(
         'invoice-list' => "/api/invoice-sent-list",
+        'invsent-history' => "/api/invsent-history",
+        'invrec-history' => "/api/invrec-history",
+        'invtemplate-list' => "/api/invtemplate-list",
+        'invoice-recieve-list' => "/api/invoice-recieve-list",
+
         'invoice-save' => "/api/invoice-save",
+        'invoice-template' => "/api/invoice-template-save",
+
         'invoice-edit' => "/api/invoice-edit/(?'invno'\d+)",
 
-        'invoice-recieve-list' => "/api/invoice-recieve-list",
     );
     
     $request_method = $_SERVER['REQUEST_METHOD'];

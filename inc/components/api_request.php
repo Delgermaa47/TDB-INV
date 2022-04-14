@@ -25,10 +25,10 @@
 
             switch ($request_name) {
                 case 'invoice-list':
-                    return $this->inv_list();
+                    return $this->inv_list("main");
                 
                 case 'invoice-save':
-                    return $this->inv_save();
+                    return $this->inv_save('main');
                 
                 case 'invoice-detail':
                         return $this->inv_detail();
@@ -46,7 +46,7 @@
                     return $this->get_fname();
                     
                 case 'invoice-recieve-list':
-                    return $this->inv_recieve_list();              
+                    return $this->inv_recieve_list('main');              
 
                 case 'revoke-rec-invoice':
                     return $this->inv_rec_delete();
@@ -57,13 +57,31 @@
                 case 'invoice-rec-paid':
                     return $this->inv_rec_paid();
 
-                case 'invoice-history':
-                    return $this->inv_list();
                 
-                case 'invoice-history-detail':
-                    return $this->inv_list();
+                case 'invsent-history':
+                    return $this->inv_list("history");
+                                    
+                case 'invrec-history':
+                    return $this->inv_recieve_list("history");
+                
+                // case 'invsent-history-detail':
+                //     return $this->inv_detail();
+                
+                // case 'invrec-history-detail':
+                //     return $this->inv_rec_detail();
+                
+                case 'invoice-template':
+                    return $this->inv_save("template");
 
+                case 'invtemplate-list':
+                    return $this->inv_list("template");
+
+                // case 'invtemplate-detail':
+                //     return $this->inv_detail();
                 
+                case 'invtemplate-apply':
+                    return $this->inv_apply();
+
                 case 'create-inv-tables':
                     return $this->create_tables();
             }
@@ -152,6 +170,7 @@
 
         protected function check_invoice_status($params) {
             $params['$invstatus'] = check_string($this->invoice_status['pending']);
+            $params['$invtype'] = check_string('history');
             $query = '
                 select * from 
                     vbismiddle.invoicesent
@@ -167,7 +186,8 @@
                     update
                         vbismiddle.invoicesent
                     set
-                        invstatus=$invstatus
+                        invstatus=$invstatus,
+                        invtype=$invtype
                     where
                         invno=$invno';
     
@@ -178,20 +198,23 @@
         protected function inv_rec_paid() {
             $params['$recno'] = $this->params['recno'];
             $params['$invstatus'] = check_string($this->invoice_status['paid']);
-
+            
             $add_sql = 'recno=$recno';
             $req_arr = $this->inv_rec_info($add_sql, $params);
             $params['$invno'] = count($req_arr) >0 ? $req_arr[0]['invno']: "";
-
+            
+            $params['$rectype'] = check_string('template');
             $query = '
             update
-                vbismiddle.invoicerec
+            vbismiddle.invoicerec
             set 
-                invstatus=$invstatus
+            invstatus=$invstatus,
+            rectype=$rectype,
             where
-                recno = $recno';
+            recno = $recno and rectype != $rectype';
             sql_execute($query, $params);
-
+            
+            $params['$rectype'] = check_string('history');
             $this->check_invoice_status($params);
             return json_encode(["success"=>true]);
         }
@@ -245,10 +268,10 @@
             );
         }
 
-        protected function inv_list() {
+        protected function inv_list($invtype) {
             global $custno;
             $params['$custno'] = check_string($custno);
-            $params['$invtype'] = check_string('main');
+            $params['$invtype'] = check_string($invtype);
 
             $query = '
             select 
@@ -260,7 +283,7 @@
                 and
                 invtype=$invtype
             ';
-            $req = $this->get_req_params($query, 'invno', [], "vbismiddle.invoicesent", "invno");
+            $req = $this->get_req_params($query, 'invno', ["created_at"], "vbismiddle.invoicesent", "invno");
             $query = $req['query'];
             $params += $req['params'];
             $res = _select($query, $params);
@@ -277,10 +300,10 @@
             return json_encode($res_arr);
         }
 
-        protected function inv_recieve_list() {
+        protected function inv_recieve_list($rectype) {
             global $custno;
             $params['$custno'] = $custno;
-            $params['$rectype'] = check_string('main');
+            $params['$rectype'] = check_string($rectype);
 
             $query = '
             select 
@@ -292,7 +315,7 @@
                 and 
                 rectype=$rectype
             ';
-            $req = $this->get_req_params($query, 'invno', [], "vbismiddle.invoicesent", "invno");
+            $req = $this->get_req_params($query, 'invno', ['created_at'], "vbismiddle.invoicesent", "invno");
             $query = $req['query'];
             $params += $req['params'];
             $res = _select($query, $params);
@@ -322,7 +345,7 @@
         }
 
         protected function inv_detail() {
-            $request_param_id = $this->params['id'];
+            $request_param_id = $this->params['invno'];
             
             $query = '
                 select 
@@ -366,6 +389,7 @@
 
         protected function inv_rec_delete() {
             $params['$recno'] = $this->params['recno'];
+            $params['$rectype'] = check_string('template');
             $params['$invstatus'] = check_string($this->invoice_status['revoked']);
 
             $query = '
@@ -374,7 +398,7 @@
 
                 set invstatus=$invstatus
                 where
-                    recno= $recno';
+                    recno= $recno and rectype != $rectype';
 
             sql_execute($query, $params);
             return json_encode([
@@ -422,9 +446,8 @@
             return False;
         }
 
-        protected function inv_save() {
+        protected function inv_save($invtype) {
 
-            
             $required_fields = ["custno", "handphone", "amount", "accntno", "invdesc", "rec_datas", "fname"];
             $res = $this->check_invoice_arr([$_POST], $required_fields);
             if($res) {
@@ -444,11 +467,12 @@
             $invstatus = $this->invoice_status['pending'];
             $sent_values = [
                 $amount, $custno, $accntno,
-                $invstatus, $invdesc, $fname
+                $invstatus, $invdesc, $fname, $invtype
             ];
             
             $sent_query = 'insert into vbismiddle.invoicesent(
-            amount, custno, accntno, invstatus, invdesc, fname
+            amount, custno, accntno, invstatus, invdesc, fname,
+            invtype
             ) values';
 
             $last_id = bulk_insert($sent_query, $sent_values);
@@ -459,13 +483,15 @@
                 $handphone = $value['handphone'];
                 $fname = $value['fname'];
                 $rec_query = 'insert into vbismiddle.invoiceRec(
-                    invno, amount, custno, accntno, invstatus, handphone, fname
+                    invno, amount, custno, accntno, invstatus, handphone, fname,
+                    invdesc, rectype
                     ) values';
     
     
                 $recieve_datas = [
                     $last_id, $amount, $custno, $accntno, 
-                    $invstatus, $handphone, $fname
+                    $invstatus, $handphone, $fname, $invdesc,
+                    $invtype
                 ];
                 bulk_insert($rec_query, $recieve_datas);
             }
@@ -520,13 +546,15 @@
                     $recno = get_or_null($value['recno']);
                     if ($value['recno']) {
                         $params['$amount'] = $value['amount'];
-                        $params['$accntno'] =$value['accntno'];
+                        $params['$accntno'] = $value['accntno'];
+                        $params['$invdesc'] = check_string($invdesc);
                         $query = '
                             update
                                 vbismiddle.invoicerec
                             SET 
                                 amount=$amount,
-                                accntno=$accntno
+                                accntno=$accntno,
+                                invdesc=$invdesc
         
                             WHERE recno=$recno';
                         sql_execute($query, $params);
@@ -548,6 +576,10 @@
                 "success"=>true,
                 "info"=>'Aмжилттай хадгалагдлаа'
             ]);
+        }
+
+        protected function inv_apply() {
+
         }
         
         protected function insert_invoice_status() {
