@@ -64,9 +64,11 @@
                 case 'invrec-history':
                     return $this->inv_recieve_list("history");
                 
-                case 'invsent-history-detail':
-                    return $this->inv_detail();
-
+                // case 'invsent-history-detail':
+                //     return $this->inv_detail();
+                
+                // case 'invrec-history-detail':
+                //     return $this->inv_rec_detail();
                 
                 case 'invoice-template':
                     return $this->inv_save("template");
@@ -74,8 +76,11 @@
                 case 'invtemplate-list':
                     return $this->inv_list("template");
 
-                case 'invtemplate-detail':
-                    return $this->inv_detail();
+                // case 'invtemplate-detail':
+                //     return $this->inv_detail();
+                
+                case 'invtemplate-apply':
+                    return $this->inv_apply();
 
                 case 'create-inv-tables':
                     return $this->create_tables();
@@ -193,22 +198,23 @@
         protected function inv_rec_paid() {
             $params['$recno'] = $this->params['recno'];
             $params['$invstatus'] = check_string($this->invoice_status['paid']);
-            $params['$rectype'] = check_string('history');
-
+            
             $add_sql = 'recno=$recno';
             $req_arr = $this->inv_rec_info($add_sql, $params);
             $params['$invno'] = count($req_arr) >0 ? $req_arr[0]['invno']: "";
-
+            
+            $params['$rectype'] = check_string('template');
             $query = '
             update
-                vbismiddle.invoicerec
+            vbismiddle.invoicerec
             set 
-                invstatus=$invstatus,
-                rectype=$rectype,
+            invstatus=$invstatus,
+            rectype=$rectype,
             where
-                recno = $recno';
+            recno = $recno and rectype != $rectype';
             sql_execute($query, $params);
-
+            
+            $params['$rectype'] = check_string('history');
             $this->check_invoice_status($params);
             return json_encode(["success"=>true]);
         }
@@ -339,7 +345,7 @@
         }
 
         protected function inv_detail() {
-            $request_param_id = $this->params['id'];
+            $request_param_id = $this->params['invno'];
             
             $query = '
                 select 
@@ -383,6 +389,7 @@
 
         protected function inv_rec_delete() {
             $params['$recno'] = $this->params['recno'];
+            $params['$rectype'] = check_string('template');
             $params['$invstatus'] = check_string($this->invoice_status['revoked']);
 
             $query = '
@@ -391,7 +398,7 @@
 
                 set invstatus=$invstatus
                 where
-                    recno= $recno';
+                    recno= $recno and rectype != $rectype';
 
             sql_execute($query, $params);
             return json_encode([
@@ -569,6 +576,10 @@
                 "success"=>true,
                 "info"=>'Aмжилттай хадгалагдлаа'
             ]);
+        }
+
+        protected function inv_apply() {
+
         }
         
         protected function insert_invoice_status() {

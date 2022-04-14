@@ -9,7 +9,7 @@
     $uri = urldecode( $uri );
 
     $get_requests = array( 
-        'invoice-detail' => "/api/invoice-detail/(?'id'\d+)",
+        'invoice-detail' => "/api/invoice-detail/(?'invno'\d+)",
         'delete-sent-invoice' => "/api/delete-sent-invoice/(?'invno'\d+)",
         
         'get-fname' => "/api/get-fname/(?'handphone'\d+)",
@@ -23,6 +23,7 @@
         'invrec-history-detail' => "/api/invrec-history-detail/(?'recno'\d+)",
 
         'invtemplate-detail' => "/api/invtemplate-detail/(?'invno'\d+)",
+        'invtemplate-apply' => "/api/invtemplate-apply/(?'invno'\d+)",
 
         'create-inv-tables' => '/api/create-inv-tables',
         'invoice-history-detail' => "/api/invoice-history-detail/(?'id'\d+)",
