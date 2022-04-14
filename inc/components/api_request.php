@@ -465,7 +465,7 @@
             
             $sent_query = 'insert into vbismiddle.invoicesent(
             amount, custno, accntno, invstatus, invdesc, fname,
-            invtype, 
+            invtype
             ) values';
 
             $last_id = bulk_insert($sent_query, $sent_values);
@@ -477,13 +477,14 @@
                 $fname = $value['fname'];
                 $rec_query = 'insert into vbismiddle.invoiceRec(
                     invno, amount, custno, accntno, invstatus, handphone, fname,
-                    invdesc
+                    invdesc, rectype
                     ) values';
     
     
                 $recieve_datas = [
                     $last_id, $amount, $custno, $accntno, 
-                    $invstatus, $handphone, $fname, $invdesc
+                    $invstatus, $handphone, $fname, $invdesc,
+                    $invtype
                 ];
                 bulk_insert($rec_query, $recieve_datas);
             }
