@@ -1,7 +1,7 @@
 
 import React, {Component} from 'react'
 import {
-  Routes, Route
+  Switch, Route
 } from "react-router-dom";
 
 import { InvoiceCreate } from './components/invoice_create/invoice_create';
@@ -19,7 +19,7 @@ export default class App extends Component {
     render() {
         return (
             <div className="container">
-               <Routes>
+               <Switch>
                    <Route 
                         path="/"
                         element={<InvoiceList/>}
@@ -36,7 +36,7 @@ export default class App extends Component {
                         path="/invoice-history"
                         element={<InvoiceHistory/>}
                     />
-               </Routes>
+               </Switch>
             </div>
         );
     }

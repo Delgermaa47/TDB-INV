@@ -11,6 +11,7 @@ export class InvoiceList extends Component {
     }
 
     render() {
+        alert("done")
     return (
             <div className='card'>
                 <div className="card-body">
