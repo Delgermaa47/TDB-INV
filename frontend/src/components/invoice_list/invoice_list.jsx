@@ -15,7 +15,7 @@ export class InvoiceList extends Component {
             <div className='card'>
                 <div className="card-body">
                     <label className='text-dark text-uppercase font-weight-bold my-4'>Илгээсэн</label>
-                    <InvoiceSend /> 
+                    <InvoiceSend bla={"hoho"}/> 
                 </div>
                 <div className="card-body">
                     <label className='text-dark text-uppercase font-weight-bold my-4'>Хүлээн авсан</label>
