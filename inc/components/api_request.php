@@ -563,6 +563,7 @@
                     invno integer generated always as identity,
                     amount integer,
                     custno character varying(16) NOT NULL,
+                    invtype character varying(16) DEFAULT "main",
                     fname character varying(100) NOT NULL,
                     accntno character varying(16) NOT NULL,
                     invstatus character varying(50) NOT NULL,
@@ -575,10 +576,12 @@
                     invno integer,
                     amount integer,
                     fname character varying(100) NOT NULL,
+                    rectype character varying(16) DEFAULT "main",
                     custno character varying(16) NOT NULL,
                     accntno character varying(16) NOT NULL,
                     handphone character varying(16) NOT NULL,
                     invstatus character varying(50) NOT NULL,
+                    invdesc character varying(100) NOT NULL,
                     created_at timestamp DEFAULT CURRENT_TIMESTAMP
                 )';
             sql_execute($invoice_sql);
