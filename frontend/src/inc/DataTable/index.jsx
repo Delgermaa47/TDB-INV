@@ -210,7 +210,7 @@ export class PortalDataTable extends Component {
                                                     <TableBody
                                                         талбарууд={талбарууд}
                                                         key={idx}
-                                                        idx={start_index + idx}
+                                                        idx={idx+1}
                                                         values={login}
                                                         хувьсах_талбаруудын_өгөгдлүүд={хувьсах_талбаруудын_өгөгдлүүд}
                                                         хувьсах_талбарууд={хувьсах_талбарууд}

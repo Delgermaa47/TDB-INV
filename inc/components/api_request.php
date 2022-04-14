@@ -248,6 +248,7 @@
         protected function inv_list() {
             global $custno;
             $params['$custno'] = check_string($custno);
+            $params['$invtype'] = check_string('main');
 
             $query = '
             select 
@@ -256,6 +257,8 @@
                 vbismiddle.invoicesent 
             where
                 custno=$custno
+                and
+                invtype=$invtype
             ';
             $req = $this->get_req_params($query, 'invno', [], "vbismiddle.invoicesent", "invno");
             $query = $req['query'];
@@ -277,6 +280,7 @@
         protected function inv_recieve_list() {
             global $custno;
             $params['$custno'] = $custno;
+            $params['$rectype'] = check_string('main');
 
             $query = '
             select 
@@ -285,6 +289,8 @@
                 vbismiddle.invoicerec
             where
                 custno=$custno
+                and 
+                rectype=$rectype
             ';
             $req = $this->get_req_params($query, 'invno', [], "vbismiddle.invoicesent", "invno");
             $query = $req['query'];

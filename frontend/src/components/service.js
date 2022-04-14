@@ -1,12 +1,18 @@
 import { handleResponse, getGetOptions } from "../inc/helpers/service"
 export const service = {
     remove,
-    save_invoice
+    save_invoice,
+    rec_rekove
 }
 
 function remove(invno) {
     const opts = {...getGetOptions()}
     return fetch(`http://172.26.153.11/api/delete-sent-invoice/${invno}/`, opts).then(handleResponse)
+}
+
+function rec_rekove(recno) {
+    const opts = {...getGetOptions()}
+    return fetch(`http://172.26.153.11/api/delete-recieve-invoice/${recno}`, opts).then(handleResponse)
 }
 
 function save_invoice(invoice_data) {

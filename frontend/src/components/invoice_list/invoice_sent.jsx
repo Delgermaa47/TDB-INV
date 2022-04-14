@@ -96,7 +96,7 @@ export default class InvoiceSend extends Component {
                                 хувьсах_талбарууд={хувьсах_талбарууд}
                                 нэмэлт_талбарууд={нэмэлт_талбарууд}
                                 refresh={refresh}
-                                per_page={1}
+                                per_page={20}
                             />
                         </div>
                     </div>

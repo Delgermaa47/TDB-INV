@@ -1,33 +1,34 @@
 import React, { Component } from "react"
-import Modal from '../../inc/Modal/Modal'
+import {PortalDataTable} from '../../inc/DataTable'
+import Modal from "../../inc/Modal/Modal"
+import { service } from "../service"
+import RedirectCom from "./redi";
 
-export class InvoiceRec extends Component {
+
+
+export default class InvoiceRec extends Component {
 
     constructor(props) {
 
         super(props)
         this.state = {
-            жагсаалтын_холбоос: '/back/wms/paginatedList/',
+            жагсаалтын_холбоос: 'http://172.26.153.11/api/invoice-recieve-list',
             талбарууд: [
-                {'field': 'name', "title": 'Нэр'},
-                {'field': 'url', "title": 'url',},
+                {'field': 'recno', "title": 'id'},
+                {'field': 'invno', "title": 'Игээгчийн дугаар'},
+                {'field': 'custno', "title": 'Хүлээн авагч'},
+                {'field': 'accntno', "title": 'Хүлээн авах данс'},
+                {'field': 'amount', "title": 'Нийт дүн'},
+                {'field': 'invstatus', "title": 'Төлөв'},
+                {'field': 'invdesc', "title": 'Тайлбар'},
                 {'field': 'created_at', "title": 'Огноо'},
-                {'field': 'is_active', "title": 'ИДЭВХТЭЙ ЭСЭХ', 'has_action': true}
-            ],
-            хувьсах_талбарууд: [
-                {
-                    "field": "is_active",
-                    "text": "",
-                    "action": this.set_active_color,
-                    "action_type": true,
-                },
             ],
             нэмэлт_талбарууд: [
                 {
                     "title": 'Засах',
-                    "text": '', "icon":
-                    'fa fa-pencil-square-o text-success',
-                    "action": (values) => this.go_link(values),
+                    "text": '', 
+                    "icon": 'fa fa-pencil text-success',
+                    "component": RedirectCom,
                 },
                 {
                     "title": 'Устгах',
@@ -55,12 +56,12 @@ export class InvoiceRec extends Component {
     }
 
     go_link(values){
-        this.props.history.push(`/back/wms/${values.id}/засах/`)
+        this.props.history.push(`/invoice-edit/${values.invno}/`)
     }
 
     handleRemove() {
         const {values} = this.state
-        service.remove(values.id).then(({success}) => {
+        service.rec_rekove(values.recno).then(({success}) => {
             if (success) {
                 this.setState({refresh: !this.state.refresh})
                 this.handleModalClose()
@@ -94,20 +95,25 @@ export class InvoiceRec extends Component {
                                 уншиж_байх_үед_зурвас={"Уншиж байна"}
                                 хувьсах_талбарууд={хувьсах_талбарууд}
                                 нэмэлт_талбарууд={нэмэлт_талбарууд}
-                                нэмэх_товч={'/back/wms/үүсгэх/'}
                                 refresh={refresh}
+                                per_page={20}
                             />
                         </div>
                     </div>
                 </div>
-                <Modal
-                    text={`Та "${values.name}" нэртэй тохиргоог устгахдаа итгэлтэй байна уу?`}
-                    title={'Тохиргоог устгах'}
-                    model_type_icon={'success'}
-                    status={modal_status}
-                    modalClose={this.handleModalClose}
-                    modalAction={this.handleRemove}
-                />
+                {
+                    <Modal
+                        text={`Та "${values.invno}" дугаартай нэхэмжлэлийг устгахдаа итгэлтэй байна уу?`}
+                        title={'Тохиргоог устгах'}
+                        modal_icon={'text-warning fa fa-warning'}
+                        model_type_icon={'success'}
+                        modal_status={modal_status}
+                        has_button={ true }
+                        modalClose={this.handleModalClose}
+                        modalAction={this.handleRemove}
+                    />
+                }
+                
             </div>
         )
     }
