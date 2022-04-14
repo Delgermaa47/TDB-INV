@@ -18,11 +18,11 @@
         'approve-rec-invoice' => "/api/approve-rec-invoice/(?'recno'\d+)",
         'invoice-rec-paid' => "/api/invoice-recieve-paid/(?'recno'\d+)",
         'revoke-rec-invoice' => "/api/delete-recieve-invoice/(?'recno'\d+)",
-        
-        'invsent-history' => "/api/invsent-history",
-        'invrec-history' => "/api/invrec-history",
+    
         'invsent-history-detail' => "/api/invsent-history-detail/(?'invno'\d+)",
         'invrec-history-detail' => "/api/invrec-history-detail/(?'recno'\d+)",
+
+        'invtemplate-detail' => "/api/invtemplate-detail/(?'invno'\d+)",
 
         'create-inv-tables' => '/api/create-inv-tables',
         'invoice-history-detail' => "/api/invoice-history-detail/(?'id'\d+)",
@@ -40,8 +40,14 @@
 
     $post_requests = array(
         'invoice-list' => "/api/invoice-sent-list",
+        'invsent-history' => "/api/invsent-history",
+        'invrec-history' => "/api/invrec-history",
+        'invtemplate-list' => "/api/invtemplate-list",
+
         'invoice-save' => "/api/invoice-save",
         'invoice-edit' => "/api/invoice-edit/(?'invno'\d+)",
+        
+        'invoice-template' => "/api/invoice-template-save",
 
         'invoice-recieve-list' => "/api/invoice-recieve-list",
     );
